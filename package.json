@@ -9,6 +9,9 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "firebase": "^9.8.1",
+    "firebaseui": "^6.0.1",
+    "i": "^0.3.7",
     "vue": "^3.2.33",
     "vue-router": "^4.0.14"
   },
