@@ -1,4 +1,12 @@
-<svg id="kangaroo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 196.33 292.11"
+<script lang="ts">
+	export let colourChoice: string;
+</script>
+
+<svg
+	id="kangaroo"
+	xmlns="http://www.w3.org/2000/svg"
+	viewBox="0 0 196.33 292.11"
+	style="--colour-change: {colourChoice}"
 	><path
 		d="M190.18,126.5c7.86,20.24,7.87,46,.02,70.66-2.62,8.25-8.8,20.92-12.43,28.06,.07-1.69,.05-2.76,.05-2.95l-.54-.53c3.64-7.26,8.73-17.98,11.02-25.18,7.71-24.24,7.72-49.51,.02-69.34-5.19-13.35-15.57-21.03-24.24-25.32-.01-.01-.02-.02-.03-.02-4.59-3.52-8.14-5.32-8.62-5.56,8.99,2.79,27.18,10.69,34.75,30.18Z"
 	/><path
@@ -655,10 +663,10 @@
 
 <style>
 	.colour-change {
-		fill: var(--colour-change);
+		fill: hsl(var(--colour-change), 100%, 50%);
 	}
 	.colour-change-light {
-		fill: var(--colour-change-light);
+		fill: hsl(var(--colour-change), 100%, 90%);
 	}
 	.cls-1 {
 		fill: #33c;

@@ -1,4 +1,12 @@
-<svg id="moose" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320.49 315"
+<script lang="ts">
+	export let colourChoice: string;
+</script>
+
+<svg
+	id="moose"
+	xmlns="http://www.w3.org/2000/svg"
+	viewBox="0 0 320.49 315"
+	style="--colour-change: {colourChoice}"
 	><g
 		><path
 			class="colour-change-dark"
@@ -306,10 +314,10 @@
 
 <style>
 	.colour-change {
-		fill: var(--colour-change);
+		fill: hsl(var(--colour-change), 100%, 50%);
 	}
 	.colour-change-dark {
-		fill: var(--colour-change-dark);
+		fill: hsl(var(--colour-change), 100%, 28%);
 	}
 	.cls-1 {
 		fill: #fff;

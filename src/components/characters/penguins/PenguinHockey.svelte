@@ -1,4 +1,12 @@
-<svg id="penguin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 284.5 321.5"
+<script lang="ts">
+	export let colourChoice: string;
+</script>
+
+<svg
+	id="penguin"
+	xmlns="http://www.w3.org/2000/svg"
+	viewBox="0 0 284.5 321.5"
+	style="--colour-change: {colourChoice}"
 	><path
 		class="cls-3"
 		d="M281.88,287.73c1.48,8.69-1.42,14.28-8.89,17.09-.29,.11-.71,.25-1.27,.41,.76-2.67,1.85-8.62-.11-16.97-2.1-8.97-5.33-14.99-6.78-17.41,9.69,.05,15.09,5.46,17.05,16.88Z"
@@ -485,7 +493,7 @@
 
 <style>
 	.colour-change {
-		fill: var(--colour-change);
+		fill: hsl(var(--colour-change), 100%, 50%);
 	}
 	.cls-1 {
 		fill: #fff;

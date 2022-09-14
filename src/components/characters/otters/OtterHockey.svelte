@@ -1,4 +1,12 @@
-<svg id="otter" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 308.23 162.62"
+<script lang="ts">
+	export let colourChoice: string;
+</script>
+
+<svg
+	id="otter"
+	xmlns="http://www.w3.org/2000/svg"
+	viewBox="0 0 308.23 162.62"
+	style="--colour-change: {colourChoice}"
 	><path
 		class="colour-change-light"
 		d="M31.64,78.83c-2.72,2.34-5.16,4.44-6.43,5.49l-.49-.85c1.51-1.49,3.03-2.87,4.52-4.12,2.28-1.92,5.32-3.88,8.36-5.64-2.11,1.81-4.14,3.55-5.96,5.12Z"
@@ -400,10 +408,10 @@
 
 <style>
 	.colour-change {
-		fill: var(--colour-change);
+		fill: hsl(var(--colour-change), 100%, 50%);
 	}
 	.colour-change-light {
-		fill: var(--colour-change-light);
+		fill: hsl(var(--colour-change), 100%, 90%);
 	}
 	.cls-1 {
 		fill: #fff;

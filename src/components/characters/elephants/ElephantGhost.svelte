@@ -1,4 +1,12 @@
-<svg id="elephant" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 396.22 327"
+<script lang="ts">
+	export let colourChoice: string;
+</script>
+
+<svg
+	id="elephant"
+	xmlns="http://www.w3.org/2000/svg"
+	viewBox="0 0 396.22 327"
+	style="--colour-change: {colourChoice}"
 	><g
 		><path
 			class="colour-change"
@@ -57,7 +65,7 @@
 
 <style>
 	.colour-change {
-		fill: var(--colour-change);
+		fill: hsl(var(--colour-change), 100%, 50%);
 	}
 	.cls-1 {
 		fill: #e9e9e9;
