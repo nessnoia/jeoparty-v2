@@ -107,8 +107,8 @@ const activitySelectors = new Map<ComponentType, string>([
 ]);
 
 const elephantActivitySelectors: Array<ComponentType> = [NoneSelector, GhostSelector, HockeySelector, ArtistSelector, BaseballSelector, DoctorSelector, FishermanSelector, GardenerSelector, PhotographySelector];
-const kangarooActivitySelectors: Array<ComponentType> = [NoneSelector, GhostSelector, HockeySelector, ArtistSelector, DoctorSelector];
-const mooseActivitySelectors: Array<ComponentType> = [NoneSelector, GhostSelector, HockeySelector, ArtistSelector, BaseballSelector];
+const kangarooActivitySelectors: Array<ComponentType> = [NoneSelector, GhostSelector, HockeySelector, ArtistSelector, BaseballSelector];
+const mooseActivitySelectors: Array<ComponentType> = [NoneSelector, GhostSelector, HockeySelector, ArtistSelector, DoctorSelector];
 const otterActivitySelectors: Array<ComponentType> = [NoneSelector, GhostSelector, HockeySelector, DoctorSelector, PhotographySelector];
 const penguinActivitySelectors: Array<ComponentType> = [NoneSelector, GhostSelector, HockeySelector, BaseballSelector, FishermanSelector];
 
