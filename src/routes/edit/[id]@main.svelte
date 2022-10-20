@@ -26,6 +26,7 @@
 	export let gameData: any;
 
 	let roundShownIdx: number = 0;
+	// let gameTitle: string = gameData.gameTitle;
 
 	function addRound() {
 		let nextRoundNum = gameData.rounds.length + 1;
@@ -47,11 +48,16 @@
 	}
 </script>
 
+<label for="game-title">Game Title</label>
+<input type="text" id="game-title" bind:value={gameData.gameTitle} />
 <!-- Render rounds -->
 {#each gameData.rounds as round, roundIdx}
-	<button on:click={() => (roundShownIdx = round.num - 1)}>{round.title}</button>
+	<button on:click={() => (roundShownIdx = round.num - 1)}>Round {round.num}: {round.title}</button>
 
 	{#if roundIdx == roundShownIdx}
+		<label for="round-title">Round Title</label>
+		<input type="text" id="round-title" bind:value={round.title} />
+
 		<!-- Render categories -->
 		{#if round.type == 'normal'}
 			{#each round.categories as category, categoryIdx}
