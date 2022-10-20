@@ -1,8 +1,8 @@
-<script lang="ts">
+<script context="module" land="ts">
+	export async function load() {
+		return {
+			status: 302,
+			redirect: '/games'
+		};
+	}
 </script>
-
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
-
-<style>
-</style>
