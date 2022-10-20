@@ -1,9 +1,13 @@
-<script>
+<script lang="ts">
 	import GameCard from './GameCard.svelte';
 
-	let gamesList = ['Game 1', 'Game 2', 'Game 3', 'Game 4', 'Game 5', 'Game 6', 'Game 7', 'Game 8'];
+	let gamesList: { title: string; id: number }[] = [
+		{ title: 'Game 1', id: 1 },
+		{ title: 'Game 2', id: 2 },
+		{ title: 'Game 3', id: 3 }
+	];
 </script>
 
 {#each gamesList as game}
-	<GameCard gameTitle={game} />
+	<GameCard gameTitle={game.title} gameId={game.id} />
 {/each}
