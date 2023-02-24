@@ -1,13 +1,10 @@
 <script lang="ts">
+	import type { GameInfo } from '$lib/models/game-info';
 	import GameCard from './GameCard.svelte';
 
-	let gamesList: { title: string; id: number }[] = [
-		{ title: 'Game 1', id: 1 },
-		{ title: 'Game 2', id: 2 },
-		{ title: 'Game 3', id: 3 }
-	];
+	export let gamesList: GameInfo[];
 </script>
 
 {#each gamesList as game}
-	<GameCard gameTitle={game.title} gameId={game.id} />
+	<GameCard gameTitle={game.gameTitle} gameId={Number(game._id)} />
 {/each}
