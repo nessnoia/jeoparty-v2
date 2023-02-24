@@ -25,7 +25,7 @@ const getAddCategoryData = () => {
         category: 'TestCategory',
         clues: [
             {
-                value: 200,
+                value: 0,
                 clue: 'TestClue',
                 clueImage: null,
                 answer: 'Test Answer',
@@ -37,10 +37,10 @@ const getAddCategoryData = () => {
 
 const getAddClueData = () => {
     return {
-        value: 200,
-        clue: 'TestClue',
+        value: 0,
+        clue: '',
         clueImage: null,
-        answer: 'Test Answer',
+        answer: '',
         isDailyDouble: false
     }
 };
