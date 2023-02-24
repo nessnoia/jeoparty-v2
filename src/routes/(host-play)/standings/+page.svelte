@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Podium from '../components/Podium.svelte';
+	import Podium from "$lib/components/Podium.svelte";
 
 	let players: {
 		character: string;

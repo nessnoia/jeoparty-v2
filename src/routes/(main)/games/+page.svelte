@@ -1,5 +1,5 @@
 <script>
-	import GamesTable from '../components/GamesTable.svelte';
+	import GamesTable from '$lib/components/GamesTable.svelte';
 </script>
 
 <button><img src="/icons/circle-minus.svg" alt="delete games" /></button>

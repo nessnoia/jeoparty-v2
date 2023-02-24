@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Elephant from '../components/characters/elephants/Elephant.svelte';
+	import Elephant from '$lib/components/characters/elephants/Elephant.svelte';
 	import { onMount } from 'svelte';
 	import type { ComponentType } from 'svelte/internal';
 	import {
@@ -7,7 +7,7 @@
 		characters,
 		characterSelectors,
 		animalToActivities
-	} from '../selector-maps';
+	} from '$lib/selector-maps';
 
 	let colourChoice: number = 0;
 	let characterChoice: ComponentType = Elephant;

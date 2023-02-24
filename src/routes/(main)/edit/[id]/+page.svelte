@@ -20,7 +20,7 @@
 </script>
 
 <script lang="ts">
-	import { getAddRoundData, getAddCategoryData, getAddClueData } from '../../edit-defaults';
+	import { getAddRoundData, getAddCategoryData, getAddClueData } from '$lib/edit-defaults';
 
 	export let games: any;
 	export let gameData: any;
