@@ -40,7 +40,7 @@
 
 <svelte:window on:keydown={handleKeydown} />
 
-<div class="modal-background" on:click={close} />
+<div class="modal-background" on:click={close} on:keydown={handleKeydown} />
 
 <div class="modal" role="dialog" aria-modal="true" bind:this={modal}>
 	<button on:click={close}><img src="/icons/xmark.svg" alt="close modal" /></button>
