@@ -1,12 +1,14 @@
 <script lang="ts">
 	import type { ActionData } from './$types';
 	import { enhance } from '$app/forms';
+	import { auth } from '$lib/auth/firebase';
 
 	// const checkFormSubmit = () => {
 	// 	if (form?.success) {
 	// 		goto(form.redirect);
 	// 	}
 	// };
+	let user = auth.currentUser;
 </script>
 
 <h1>Create New Game</h1>
@@ -26,5 +28,6 @@
 		Tags
 		<input type="text" />
 	</label>
+	<input type="hidden" name="uid" value={user?.uid} />
 	<button formaction="?/create">Create</button>
 </form>

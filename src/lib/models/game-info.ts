@@ -4,7 +4,7 @@ export interface GameInfo {
     _id?: mongodb.ObjectId;
 	gameTitle: string;
 	boardType: "custom" | "standard";
-	ownedBy: mongodb.ObjectId;
+	ownedBy: string;
 	numRounds: number;
 	numQuestionsTotal: number;
 	tags?: [string];

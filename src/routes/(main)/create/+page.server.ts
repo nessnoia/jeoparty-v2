@@ -4,7 +4,6 @@ import { ObjectId } from "mongodb";
 import { createGame } from "$lib/server/game-info";
 import { createGameData } from "$lib/server/game-data";
 import { redirect } from "@sveltejs/kit";
-import type { GameData } from "$lib/models/game-data";
 import { customGameData, normalGameData } from "$lib/defaults/game-data";
 
 export const actions = {
@@ -34,7 +33,7 @@ const createGameInfoObject = (data: FormData) => {
     const gameInfo = <GameInfo>{
         gameTitle: (gameTitle && gameTitle.length > 0) ? gameTitle : 'Untitled Game',
         boardType: boardType,
-        ownedBy: new ObjectId(),
+        ownedBy: data.get('uid'),
         numRounds: numRounds,
         numQuestionsTotal: numQuestionsTotal,
     }
