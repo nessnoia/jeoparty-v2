@@ -1,13 +1,14 @@
 <script lang="ts">
+	import type { GameInfo } from '$lib/models/game-info';
 	import GamePreviewModal from './GamePreviewModal.svelte';
-	export let gameTitle: string;
-	export let gameId: number;
+
+	export let gameInfo: GameInfo;
 
 	let gamePreviewOpen: boolean = false;
 </script>
 
 <button on:click={() => (gamePreviewOpen = true)}>
-	<h3>{gameTitle}</h3>
+	<h3>{gameInfo.gameTitle}</h3>
 </button>
 
-<GamePreviewModal bind:isVisible={gamePreviewOpen} {gameId} />
+<GamePreviewModal bind:isVisible={gamePreviewOpen} {gameInfo} />

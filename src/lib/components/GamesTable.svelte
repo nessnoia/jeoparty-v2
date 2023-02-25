@@ -11,6 +11,6 @@
 {#each gamesList as game}
 	<!-- TODO: Instead of filtering after query, we should probably filter at the database query level. -->
 	{#if String(game.ownedBy) === user?.uid}
-		<GameCard gameTitle={game.gameTitle} gameId={Number(game._id)} />
+		<GameCard gameInfo={game} />
 	{/if}
 {/each}
