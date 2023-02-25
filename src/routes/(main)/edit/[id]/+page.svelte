@@ -1,32 +1,16 @@
-<script context="module" lang="ts">
-	export async function load({ fetch, params }: any) {
-		// we should probably see if we can pass this info in, cause we should of already queried on this info on the previous page
-		// for the above, look into either stores or maybe just grabbing it from redis if we decide we're using it
-		const gamesRes = await fetch(`../mocks/games/game${params.id}.json`);
-		const games = await gamesRes.json();
-
-		const gameDataRes = await fetch(`../mocks/gameData/game${params.id}.json`);
-		const gameData = await gameDataRes.json();
-
-		if (gamesRes.ok && gameDataRes.ok) {
-			return {
-				props: {
-					games: games,
-					gameData: gameData
-				}
-			};
-		}
-	}
-</script>
-
 <script lang="ts">
-	import { getAddRoundData, getAddCategoryData, getAddClueData } from '$lib/edit-defaults';
+	import { getAddRoundData, getAddCategoryData, getAddClueData } from '$lib/defaults/edit';
+	import type { GameData } from '$lib/models/game-data';
+	import type { PageData } from './$types';
 
-	export let games: any;
-	export let gameData: any;
+	export let data: PageData;
+
+	let gameData = data.gameData;
+	let games = data.games;
+	console.log(gameData);
 
 	let roundShownIdx: number = 0;
-	// let gameTitle: string = gameData.gameTitle;
+	let gameTitle: string = gameData.gameTitle;
 
 	function addRound() {
 		let nextRoundNum = gameData.rounds.length + 1;
@@ -48,11 +32,11 @@
 	}
 </script>
 
-<label for="game-title">Game Title</label>
+<label for="game-title">{gameTitle}</label>
 <input type="text" id="game-title" bind:value={gameData.gameTitle} />
 <!-- Render rounds -->
 {#each gameData.rounds as round, roundIdx}
-	<button on:click={() => (roundShownIdx = round.num - 1)}>Round {round.num}: {round.title}</button>
+	<button on:click={() => (roundShownIdx = round.num - 1)}>{round.title}</button>
 
 	{#if roundIdx == roundShownIdx}
 		<label for="round-title">Round Title</label>

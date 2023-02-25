@@ -1,5 +1,5 @@
 import { getGames } from '$lib/server/game-info';
-import type { PageServerLoad, Actions } from './$types';
+import type { PageServerLoad } from './$types';
  
 export const load = (async () => {
     let data = await getGames();
