@@ -10,6 +10,10 @@
 	function goToEdit() {
 		goto('/edit/' + gameInfo._id);
 	}
+
+	function goToPlay() {
+		goto('/join');
+	}
 </script>
 
 {#if isVisible}
@@ -20,7 +24,7 @@
 			<GameBoardPlay />
 			<button><img src="/icons/caret-right.svg" alt="view next round" /></button>
 			<button on:click={goToEdit}>Edit Game</button>
-			<button>Start Game</button>
+			<button on:click={goToPlay}>Start Game</button>
 		</div>
 	</ModalBase>
 {/if}

@@ -20,12 +20,13 @@
 
 <input type="text" placeholder="Search for games" />
 
-<div>
+<!-- TODO: Add filtering functionality -->
+<!-- <div>
 	<span>Filter by:</span>
 	<button>Tags</button>
 	<button># of Rounds</button>
 	<button># of Questions</button>
-</div>
+</div> -->
 
 <GamesTable gamesList={data.games} />
 
