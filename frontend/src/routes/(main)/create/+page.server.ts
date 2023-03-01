@@ -1,22 +1,32 @@
 import type { Actions } from "./$types";
 import type { GameInfo } from "$lib/models/game-info";
-import { ObjectId } from "mongodb";
-import { createGame } from "$lib/server/game-info";
-import { createGameData } from "$lib/server/game-data";
-import { redirect } from "@sveltejs/kit";
+import { error, redirect } from "@sveltejs/kit";
 import { customGameData, normalGameData } from "$lib/defaults/game-data";
 
 export const actions = {
-	create: async ({ request }) => {
+	create: async ({ fetch, request }) => {
         const data = await request.formData();
+        const gameInfo = createGameInfoObject(data);
+        let id = '';
+        const promise = await fetch('/api/game-info', {
+            method: 'POST', 
+            body: JSON.stringify(gameInfo),
+        })
+        .then(res => res.json())
+        .then(res => {
+            id = res.id;
+            const gameData = createGameDataObject(data);
+            return fetch(`/api/game-data/${id}`, {
+                method: 'POST',
+                body: JSON.stringify(gameData)
+            });
+        })
         
-        const res = await createGame(createGameInfoObject(data));
-        await createGameData(createGameDataObject(res.id ?? '', data));
-        if (res.id) {
-            throw redirect(303, '/edit/' + res.id)
+        if (promise.ok) {
+            throw redirect(303, '/edit/' + id);
+        } else {
+            throw error(promise.status, promise.statusText);
         }
-        console.log(res.id);
-        return { success: true, id: res.id };
     }
 } satisfies Actions;
 
@@ -40,7 +50,7 @@ const createGameInfoObject = (data: FormData) => {
     return gameInfo;
 };
 
-const createGameDataObject = (id: string, data: FormData) => {
+const createGameDataObject = (data: FormData) => {
     const gameTitle = data.get('title');
     let gameData;
     if (data.get('type') === 'standard') {
@@ -48,7 +58,6 @@ const createGameDataObject = (id: string, data: FormData) => {
     } else {
         gameData = customGameData;
     }
-    gameData._id = new ObjectId(id);
     gameData.gameTitle = (gameTitle && gameTitle.length > 0) ? String(gameTitle) : 'Untitled Game';
     return gameData;
 }

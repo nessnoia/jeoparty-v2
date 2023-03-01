@@ -1,12 +1,9 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { auth } from '$lib/auth/firebase';
 	import GamesTable from '$lib/components/GamesTable.svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-
-	console.log(data);
 
 	const goToCreatePage = () => {
 		goto('/create');
@@ -28,7 +25,7 @@
 	<button># of Questions</button>
 </div> -->
 
-<GamesTable gamesList={data.games} />
+<GamesTable gamesList={data.data} />
 
 <style>
 	button img {

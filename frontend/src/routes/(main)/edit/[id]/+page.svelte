@@ -5,9 +5,8 @@
 
 	export let data: PageData;
 
-	let gameData = data.gameData;
-	let games = data.games;
-	console.log(gameData);
+	let gameData = data.gameData.data;
+	let games = data.games.data;
 
 	let roundShownIdx: number = 0;
 	let gameTitle: string = gameData.gameTitle;
