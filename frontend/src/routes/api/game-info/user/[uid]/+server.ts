@@ -4,7 +4,7 @@ import { collections } from '$lib/server/database';
 export const GET = (async ({ params }) => {
     try {
         const query = ({ ownedBy: params.uid });
-        const res = await collections.gamesInfo?.findOne(query);
+        const res = await collections.gamesInfo?.find(query).toArray();
 
         if (res) {
             return json({ status: 202, data: res })
