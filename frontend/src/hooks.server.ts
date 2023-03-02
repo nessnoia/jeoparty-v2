@@ -17,7 +17,9 @@ if (!ATLAS_URI) {
 
 const authenticate = (async ({ event, resolve }) => {
     const session = await event.locals.validate();
-    if (!session && (!event.url.pathname.startsWith('/login') && !event.url.pathname.startsWith('/register'))) {
+    if (!session && (!event.url.pathname.startsWith('/login') 
+                 && !event.url.pathname.startsWith('/register') 
+                 && !event.url.pathname.startsWith('/api'))) {
         throw redirect(303, '/login');
     } else if (session && (event.url.pathname.startsWith('/login') || event.url.pathname.startsWith('/register'))) {
         throw redirect(303, '/games');

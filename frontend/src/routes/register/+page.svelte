@@ -24,8 +24,4 @@
 {#if form?.message}
 	<p class="error">{form.message || ''}</p>
 {/if}
-<button
-	on:click={() => {
-		goto('/login');
-	}}>Login</button
->
+<a href="/login">Return to login</a>
