@@ -3,7 +3,7 @@
 </script>
 
 <h1>Create New Game</h1>
-<form method="POST" action="?/create" use:enhance>
+<form method="POST" use:enhance>
 	<label>
 		Title
 		<input name="title" type="text" />
@@ -19,5 +19,5 @@
 		Tags
 		<input type="text" />
 	</label>
-	<button formaction="?/create">Create</button>
+	<button type="submit">Create</button>
 </form>

@@ -4,26 +4,31 @@ import { error, redirect } from "@sveltejs/kit";
 import { customGameData, normalGameData } from "$lib/defaults/game-data";
 
 export const actions = {
-	create: async ({ fetch, request }) => {
+	default: async ({ fetch, request, locals }) => {
         const data = await request.formData();
-        const gameInfo = createGameInfoObject(data);
-        let id = '';
-        const promise = await fetch('/api/game-info', {
-            method: 'POST', 
-            body: JSON.stringify(gameInfo),
+
+        let gameId = '';
+        const promise = await locals.validateUser()
+        .then(({ user }) => user.userId)
+        .then(uid => {
+            const gameInfo = createGameInfoObject(data, uid);
+            return fetch('/api/game-info', {
+                method: 'POST', 
+                body: JSON.stringify(gameInfo),
+            })
         })
         .then(res => res.json())
         .then(res => {
-            id = res.id;
+            gameId = res.id;
             const gameData = createGameDataObject(data);
-            return fetch(`/api/game-data/${id}`, {
+            return fetch(`/api/game-data/${gameId}`, {
                 method: 'POST',
                 body: JSON.stringify(gameData)
             });
         })
         
         if (promise.ok) {
-            throw redirect(303, '/edit/' + id);
+            throw redirect(303, '/edit/' + gameId);
         } else {
             throw error(promise.status, promise.statusText);
         }
@@ -31,7 +36,7 @@ export const actions = {
 } satisfies Actions;
 
 
-const createGameInfoObject = (data: FormData) => {
+const createGameInfoObject = (data: FormData, uid: string) => {
     const gameTitle = data.get('title');
     const boardType = data.get('type');
     let numRounds = 1;
@@ -43,7 +48,7 @@ const createGameInfoObject = (data: FormData) => {
     const gameInfo = <GameInfo>{
         gameTitle: (gameTitle && gameTitle.length > 0) ? gameTitle : 'Untitled Game',
         boardType: boardType,
-        ownedBy: data.get('uid'),
+        ownedBy: uid,
         numRounds: numRounds,
         numQuestionsTotal: numQuestionsTotal,
     }
