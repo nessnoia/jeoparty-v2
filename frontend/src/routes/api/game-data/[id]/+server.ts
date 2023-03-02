@@ -33,3 +33,18 @@ export const POST = (async ({ params, request }) => {
         throw error(502, String(err));
     }
 }) satisfies RequestHandler;
+
+export const DELETE = (async ({ params }) => {
+    try {
+        const query = ({ _id: new mongodb.ObjectId(params.id) });
+        const res = await collections.gamesInfo?.deleteOne(query);
+
+        if (res) {
+            return json({ status: 202 })
+        } else {
+            throw error(501, `Failed to delete game data by ID: ${params.id}`);
+        }
+    } catch (err) {
+        throw error(502, String(err));
+    }
+}) satisfies RequestHandler;
