@@ -47,7 +47,7 @@ export const actions: Actions = {
             console.error(error);
 			if (error instanceof LuciaError && error.message === 'AUTH_DUPLICATE_KEY_ID') {
 				return fail(400, {
-					message: 'Username already in use'
+					message: 'Email already in use'
 				});
 			}
 			console.error(error);
