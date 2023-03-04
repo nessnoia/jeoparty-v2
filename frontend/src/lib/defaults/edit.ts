@@ -1,17 +1,18 @@
 const getAddRoundData = (roundNum: number) => {
     return {
         num: roundNum,
-        title: 'TestRound',
+        title: 'Round ' + roundNum,
         type: 'normal',
+        numCategories: 1,
         categories: [
             {
-                category: 'TestCategory',
+                category: 'Category',
+                numClues: 1,
                 clues: [
                     {
-                        value: 200,
-                        clue: 'TestClue',
-                        clueImage: null,
-                        answer: 'Test Answer',
+                        value: 0,
+                        clue: '',
+                        answer: '',
                         isDailyDouble: false
                     }
                 ]
@@ -20,26 +21,28 @@ const getAddRoundData = (roundNum: number) => {
     }   
 };
 
-const getAddCategoryData = () => {
+const getAddCategoryData = (roundIdx: number) => {
     return {
-        category: 'TestCategory',
+        roundIdx: roundIdx,
+        category: 'Category',
+        numClues: 1,
         clues: [
             {
                 value: 0,
-                clue: 'TestClue',
-                clueImage: null,
-                answer: 'Test Answer',
+                clue: '',
+                answer: '',
                 isDailyDouble: false
             }
         ]
     }
 };
 
-const getAddClueData = () => {
+const getAddClueData = (roundIdx: number, categoryIdx: number) => {
     return {
+        roundIdx: roundIdx,
+        categoryIdx: categoryIdx,
         value: 0,
         clue: '',
-        clueImage: null,
         answer: '',
         isDailyDouble: false
     }

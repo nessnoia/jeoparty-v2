@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import GamesTable from '$lib/components/GamesTable.svelte';
+	import GamesTable from '$lib/components/game-select/GamesTable.svelte';
 	import type { PageData } from './$types';
 	import { enhance } from '$app/forms';
 

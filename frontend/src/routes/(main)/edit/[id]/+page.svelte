@@ -1,86 +1,69 @@
 <script lang="ts">
-	import { getAddRoundData, getAddCategoryData, getAddClueData } from '$lib/defaults/edit';
-	import type { GameData } from '$lib/models/game-data';
+	import { enhance } from '$app/forms';
+	import { beforeNavigate } from '$app/navigation';
+	import EditBoard from '$lib/components/edit/EditBoard.svelte';
+	import { unsaved } from '$lib/unsaved';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
+	export let form: { saved?: boolean };
 
-	let gameData = data.gameData.data;
-	let games = data.games.data;
+	let formElement: HTMLFormElement;
 
-	let roundShownIdx: number = 0;
-	let gameTitle: string = gameData.gameTitle;
+	const gameData = data.gameData.data;
+	const gameInfo = data.gameInfo.data;
+	const saveDelay = 10000;
 
-	function addRound() {
-		let nextRoundNum = gameData.rounds.length + 1;
-		gameData.rounds = [...gameData.rounds, getAddRoundData(nextRoundNum)];
-	}
+	$: if (form?.saved) unsaved.set({});
 
-	function addCategory(roundIdx: number) {
-		gameData.rounds[roundIdx].categories = [
-			...gameData.rounds[roundIdx].categories,
-			getAddCategoryData()
-		];
-	}
+	$: $unsaved, handleSave();
 
-	function addClue(roundIdx: number, categoryIdx: number) {
-		gameData.rounds[roundIdx].categories[categoryIdx].clues = [
-			...gameData.rounds[roundIdx].categories[categoryIdx].clues,
-			getAddClueData()
-		];
-	}
+	const debounce = (callback: Function, delay: number) => {
+		let timeout: NodeJS.Timeout;
+		return (...args: any[]) => {
+			clearTimeout(timeout);
+			timeout = setTimeout(() => {
+				callback(...args);
+			}, delay);
+		};
+	};
+
+	const handleSave = debounce(() => {
+		if (formElement && Object.keys($unsaved).length > 0) {
+			console.log('save');
+			formElement.requestSubmit();
+		}
+	}, saveDelay);
+
+	const beforeUnload = (event: BeforeUnloadEvent) => {
+		if (Object.keys($unsaved).length > 0) {
+			event.preventDefault();
+			event.returnValue = '';
+			return '';
+		}
+	};
+
+	beforeNavigate((event) => {
+		console.log($unsaved);
+		if (Object.keys($unsaved).length > 0) {
+			event.cancel();
+			// TODO: show error message to user instead of preventing navigation.
+		}
+	});
 </script>
 
-<label for="game-title">{gameTitle}</label>
-<input type="text" id="game-title" bind:value={gameData.gameTitle} />
-<!-- Render rounds -->
-{#each gameData.rounds as round, roundIdx}
-	<button on:click={() => (roundShownIdx = round.num - 1)}>{round.title}</button>
+{#if Object.keys($unsaved).length > 0}
+	<img src="/icons/spinner.svg" alt="save pending spinner" />
+	<span>Saving...</span>
+{:else}
+	<img src="/icons/circle-check.svg" alt="changes saved" />
+	<span>All changes saved.</span>
+{/if}
 
-	{#if roundIdx == roundShownIdx}
-		<label for="round-title">Round Title</label>
-		<input type="text" id="round-title" bind:value={round.title} />
+<EditBoard {gameInfo} {gameData} />
 
-		<!-- Render categories -->
-		{#if round.type == 'normal'}
-			{#each round.categories as category, categoryIdx}
-				<button>{category.category}</button>
-				<!-- Render clues -->
-				{#each category.clues as clue}
-					<button>{clue.clue}</button>
-				{/each}
-				{#if games.boardType == 'custom'}
-					<button
-						on:click={() => {
-							addClue(roundShownIdx, categoryIdx);
-						}}
-						><img src="/icons/circle-plus.svg" alt="add category" />
-					</button>
-				{/if}
-			{/each}
-		{:else if round.type == 'final'}
-			<button>{round.category}</button>
-		{/if}
-		{#if games.boardType == 'custom' && round.type == 'normal'}
-			<button
-				on:click={() => {
-					addRound();
-				}}
-				><img src="/icons/circle-plus.svg" alt="add round" />
-			</button>
-			<button
-				on:click={() => {
-					addCategory(roundShownIdx);
-				}}
-				><img src="/icons/circle-plus.svg" alt="add clue" />
-			</button>
-		{/if}
-	{/if}
-{/each}
+<form bind:this={formElement} method="POST" use:enhance>
+	<input type="hidden" name="unsaved-changes" value={JSON.stringify($unsaved)} />
+</form>
 
-<style>
-	img {
-		height: 20px;
-		width: auto;
-	}
-</style>
+<svelte:window on:beforeunload={beforeUnload} />

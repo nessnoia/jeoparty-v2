@@ -1,6 +1,6 @@
 import * as mongodb from "mongodb";
-import type { GameInfo } from "$lib/models/game-info";
-import type { GameData } from "$lib/models/game-data";
+import type { GameInfo } from "$lib/database-models/game-info";
+import type { GameData } from "$lib/database-models/game-data";
 
 export const collections: {
     gamesInfo?: mongodb.Collection<GameInfo>;

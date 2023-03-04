@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import type { GameInfo } from '$lib/models/game-info';
-	import GameBoardPlay from './GameBoardPlay.svelte';
+	import type { GameInfo } from '$lib/database-models/game-info';
+	import GameBoardPlay from '../play/GameBoardPlay.svelte';
 	import ModalBase from './ModalBase.svelte';
 
 	export let isVisible = false;

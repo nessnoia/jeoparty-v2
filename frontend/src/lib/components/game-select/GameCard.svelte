@@ -1,6 +1,6 @@
 <script lang="ts">
-	import type { GameInfo } from '$lib/models/game-info';
-	import GamePreviewModal from './GamePreviewModal.svelte';
+	import type { GameInfo } from '$lib/database-models/game-info';
+	import GamePreviewModal from '../modals/GamePreviewModal.svelte';
 
 	export let gameInfo: GameInfo;
 

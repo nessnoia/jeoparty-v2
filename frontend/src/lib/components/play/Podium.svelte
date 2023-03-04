@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { characters } from '../selector-maps';
+	import { characters } from '$lib/selector-maps';
 
 	export let character: string;
 	export let colourChoice: number;

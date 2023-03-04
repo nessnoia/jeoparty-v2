@@ -2,14 +2,14 @@ import type * as mongodb from "mongodb";
 
 export interface GameData {
     _id?: mongodb.ObjectId;
-	gameTitle: string;
+	gameTitle?: string;
 	rounds: Round[];
 }
 
 export interface Round {
     num: number;
     title: string;
-    type: "normal" | "final";
+    type: string;
     numCategories: number;
     categories: Category[];
 }

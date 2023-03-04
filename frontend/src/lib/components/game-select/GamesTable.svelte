@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { GameInfo } from '$lib/models/game-info';
+	import type { GameInfo } from '$lib/database-models/game-info';
 	import GameCard from './GameCard.svelte';
 
 	export let gamesList: GameInfo[];

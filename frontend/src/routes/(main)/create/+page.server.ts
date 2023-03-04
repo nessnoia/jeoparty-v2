@@ -1,5 +1,5 @@
 import type { Actions } from "./$types";
-import type { GameInfo } from "$lib/models/game-info";
+import type { GameInfo } from "$lib/database-models/game-info";
 import { error, redirect } from "@sveltejs/kit";
 import { customGameData, normalGameData } from "$lib/defaults/game-data";
 

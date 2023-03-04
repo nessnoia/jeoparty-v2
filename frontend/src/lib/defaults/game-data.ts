@@ -1,4 +1,4 @@
-import type { GameData, Round } from "$lib/models/game-data";
+import type { GameData, Round } from "$lib/database-models/game-data";
 
 export const customGameData = <GameData>{
     rounds: [{
@@ -7,7 +7,7 @@ export const customGameData = <GameData>{
 		type: 'normal',
 		numCategories: 1,
 		categories: [{
-			category: 'Category 1',
+			category: 'Category',
             numClues: 1,
 			clues: [{
 				value: 0,

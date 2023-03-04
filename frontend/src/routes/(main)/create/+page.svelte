@@ -15,9 +15,9 @@
 		<label for="custom">Custom</label>
 		<input name="type" type="radio" id="custom" value="custom" />
 	</label>
-	<label>
+	<!-- <label>
 		Tags
 		<input type="text" />
-	</label>
+	</label> -->
 	<button type="submit">Create</button>
 </form>
