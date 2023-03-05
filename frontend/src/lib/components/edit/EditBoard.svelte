@@ -18,6 +18,14 @@
 		roundTitles.push(round.title);
 	}
 
+	let shownClue:
+		| {
+				round?: number;
+				category?: number;
+				clue?: number;
+		  }
+		| undefined;
+
 	const saveGameTitleUpdate = () => {
 		unsaved.update((game) => {
 			game.gameTitle = gameTitle;
@@ -110,8 +118,7 @@
 				<EditCategory {category} {categoryIdx} {roundIdx} />
 				<!-- Render clues -->
 				{#each category.clues as clue, clueIdx}
-					<!-- what am I trying to do here? basically, when i toggle visibility for one, I wanna hide the rest-->
-					<EditClue {clue} {roundIdx} {categoryIdx} {clueIdx} />
+					<EditClue {clue} {roundIdx} {categoryIdx} {clueIdx} bind:shownClue />
 				{/each}
 				{#if gameInfo.boardType == 'custom'}
 					<button

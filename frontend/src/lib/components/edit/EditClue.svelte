@@ -8,7 +8,24 @@
 	export let categoryIdx: number;
 	export let clueIdx: number;
 
-	// TODO: make other clues close when one clue opens (maybe, depends on what people think from usability perspective)
+	export let shownClue:
+		| {
+				round?: number;
+				category?: number;
+				clue?: number;
+		  }
+		| undefined = undefined;
+
+	$: if (shownClue !== currentClue) {
+		showClueEditor = false;
+	}
+
+	const currentClue = {
+		round: roundIdx,
+		category: categoryIdx,
+		clue: clueIdx
+	};
+
 	let showClueEditor = false;
 
 	let clueValue = clue.value;
@@ -47,6 +64,7 @@
 
 <button
 	on:click={() => {
+		shownClue = currentClue;
 		showClueEditor = !showClueEditor;
 	}}>{clueValue}</button
 >
