@@ -19,18 +19,18 @@ export interface RoundUpdater {
 export interface CategoryUpdater {
     roundIdx?: number;
     categoryIdx?: number;
-    category: string;
-    numClues: number;
-    clues: ClueUpdater[];
+    category?: string;
+    numClues?: number;
+    clues?: ClueUpdater[];
 }
 
 export interface ClueUpdater {
     roundIdx?: number;
     categoryIdx?: number;
     clueIdx?: number;
-    value: number;
-    clue: string;
+    value?: number;
+    clue?: string;
     clueImage?: string;
-    answer: string;
-    isDailyDouble: boolean;
+    answer?: string;
+    isDailyDouble?: boolean;
 }

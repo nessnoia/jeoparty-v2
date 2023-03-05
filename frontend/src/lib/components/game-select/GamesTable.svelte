@@ -6,8 +6,5 @@
 </script>
 
 {#each gamesList as game}
-	<!-- TODO: Instead of filtering after query, we should probably filter at the database query level. -->
-	<!-- {#if String(game.ownedBy) === user?.uid} -->
 	<GameCard gameInfo={game} />
-	<!-- {/if} -->
 {/each}

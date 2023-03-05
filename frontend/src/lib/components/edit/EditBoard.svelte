@@ -3,6 +3,8 @@
 	import type { GameData } from '$lib/database-models/game-data';
 	import type { GameInfo } from '$lib/database-models/game-info';
 	import { unsaved } from '$lib/unsaved';
+	import EditCategory from './EditCategory.svelte';
+	import EditClue from './EditClue.svelte';
 
 	// TODO: Focus on last used element after form submit
 	export let gameInfo: GameInfo;
@@ -38,12 +40,8 @@
 			if (!priorEdit) {
 				game.rounds.push({ roundIdx: roundIdx, title: roundTitles[roundIdx] });
 			}
-			// What exactly am I trying to do here?
-			// Basically, if the round object with the roundIdx attempting to update already exists, then just update that object
-			// instead of pushing a new object onto the array. How do we do this?
 			return game;
 		});
-		// gameData.rounds[roundIdx].title = roundTitles[roundIdx];
 	};
 
 	const addRound = () => {
@@ -109,10 +107,11 @@
 		<!-- Render categories -->
 		{#if round.type == 'normal'}
 			{#each round.categories as category, categoryIdx}
-				<button>{category.category}</button>
+				<EditCategory {category} {categoryIdx} {roundIdx} />
 				<!-- Render clues -->
-				{#each category.clues as clue}
-					<button>{clue.clue}</button>
+				{#each category.clues as clue, clueIdx}
+					<!-- what am I trying to do here? basically, when i toggle visibility for one, I wanna hide the rest-->
+					<EditClue {clue} {roundIdx} {categoryIdx} {clueIdx} />
 				{/each}
 				{#if gameInfo.boardType == 'custom'}
 					<button
