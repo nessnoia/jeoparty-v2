@@ -123,7 +123,8 @@
 				{/if}
 			{/each}
 		{:else if round.type == 'final'}
-			<button>{round.categories[0].category}</button>
+			<EditCategory category={round.categories[0]} categoryIdx={0} {roundIdx} />
+			<EditClue clue={round.categories[0].clues[0]} {roundIdx} categoryIdx={0} clueIdx={0} />
 		{/if}
 		{#if gameInfo.boardType == 'custom' && round.type == 'normal'}
 			<button
