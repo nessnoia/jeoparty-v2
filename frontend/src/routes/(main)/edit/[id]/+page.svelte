@@ -2,6 +2,7 @@
 	import { enhance } from '$app/forms';
 	import { beforeNavigate } from '$app/navigation';
 	import EditBoard from '$lib/components/edit/EditBoard.svelte';
+	import NotSavedModal from '$lib/components/modals/NotSavedModal.svelte';
 	import { unsaved } from '$lib/unsaved';
 	import type { PageData } from './$types';
 
@@ -9,6 +10,8 @@
 	export let form: { saved?: boolean };
 
 	let formElement: HTMLFormElement;
+	let warnNotSavedOpen = false;
+	let navLinkTo: string;
 
 	const gameData = data.gameData.data;
 	const gameInfo = data.gameInfo.data;
@@ -35,19 +38,12 @@
 		}
 	}, saveDelay);
 
-	const beforeUnload = (event: BeforeUnloadEvent) => {
+	beforeNavigate(({ to }) => {
 		if (Object.keys($unsaved).length > 0) {
-			event.preventDefault();
-			event.returnValue = '';
-			return '';
-		}
-	};
-
-	beforeNavigate((event) => {
-		console.log($unsaved);
-		if (Object.keys($unsaved).length > 0) {
-			event.cancel();
-			// TODO: show error message to user instead of preventing navigation.
+			warnNotSavedOpen = true;
+			if (to) {
+				navLinkTo = to.url.pathname;
+			}
 		}
 	});
 </script>
@@ -66,4 +62,4 @@
 	<input type="hidden" name="unsaved-changes" value={JSON.stringify($unsaved)} />
 </form>
 
-<svelte:window on:beforeunload={beforeUnload} />
+<NotSavedModal bind:isVisible={warnNotSavedOpen} to={navLinkTo} />

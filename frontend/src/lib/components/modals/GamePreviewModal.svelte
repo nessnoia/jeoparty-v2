@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import type { GameInfo } from '$lib/database-models/game-info';
-	import GameBoardPlay from '../play/GameBoardPlay.svelte';
+	import PlayBoard from '../play/PlayBoard.svelte';
 	import ModalBase from './ModalBase.svelte';
 
 	export let isVisible = false;
@@ -21,7 +21,7 @@
 		<div slot="content">
 			<h1>{gameInfo.gameTitle}</h1>
 			<button><img src="/icons/caret-left.svg" alt="view previous round" /></button>
-			<GameBoardPlay />
+			<PlayBoard />
 			<button><img src="/icons/caret-right.svg" alt="view next round" /></button>
 			<button on:click={goToEdit}>Edit Game</button>
 			<button on:click={goToPlay}>Start Game</button>
