@@ -149,10 +149,3 @@
 		{/if}
 	{/if}
 {/each}
-
-<style>
-	img {
-		height: 20px;
-		width: auto;
-	}
-</style>
