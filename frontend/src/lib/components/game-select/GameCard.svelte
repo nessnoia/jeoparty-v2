@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { GameInfo } from '$lib/database-models/game-info';
-	import GamePreviewModal from '../modals/GamePreviewModal.svelte';
+	import GameSelectModal from '../modals/GameSelectModal.svelte';
 
 	export let gameInfo: GameInfo;
 
@@ -11,4 +11,4 @@
 	<h3>{gameInfo.gameTitle}</h3>
 </button>
 
-<GamePreviewModal bind:isVisible={gamePreviewOpen} {gameInfo} />
+<GameSelectModal bind:isVisible={gamePreviewOpen} {gameInfo} />
