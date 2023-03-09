@@ -4,7 +4,7 @@
 	let numLights = 5;
 </script>
 
-{#each Array(numLights) as _, _}
+{#each Array(numLights) as _}
 	<div class={buzzersActive ? 'active' : ''} />
 {/each}
 
