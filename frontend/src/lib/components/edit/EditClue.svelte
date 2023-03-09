@@ -3,7 +3,10 @@
 	import type { ClueUpdater } from '$lib/update-models/game-data';
 
 	export let clue: ClueUpdater;
-	export let type: string = 'standard';
+	export let roundType: string;
+	export let boardType: string;
+
+	// console.log(roundType);
 
 	export let shownClue:
 		| {
@@ -16,6 +19,8 @@
 	$: if (shownClue !== currentClue) {
 		showClueEditor = false;
 	}
+
+	let disableValueInput = boardType === 'standard';
 
 	const currentClue = {
 		round: clue.roundIdx,
@@ -54,7 +59,7 @@
 	};
 </script>
 
-{#if type === 'standard'}
+{#if roundType === 'normal'}
 	<button
 		on:click={() => {
 			shownClue = currentClue;
@@ -63,8 +68,8 @@
 	>
 {/if}
 
-{#if showClueEditor || type === 'final'}
-	{#if type === 'standard'}
+{#if showClueEditor || roundType === 'final'}
+	{#if roundType === 'normal'}
 		<input
 			type="number"
 			placeholder="Value"
@@ -73,6 +78,7 @@
 				if (clue.value === null) clue.value = 0;
 				else unsavedUpdater('value', clue.value);
 			}}
+			disabled={disableValueInput}
 		/>
 	{/if}
 	<input
@@ -93,7 +99,7 @@
 		on:input={() => unsavedUpdater('answer', clue.answer)}
 	/>
 
-	{#if type === 'standard'}
+	{#if roundType === 'normal'}
 		<label for="daily-double">Make clue daily double?</label>
 		<input
 			type="checkbox"

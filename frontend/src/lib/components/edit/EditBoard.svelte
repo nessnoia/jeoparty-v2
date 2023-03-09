@@ -262,7 +262,12 @@
 								}
 							}}
 						>
-							<EditClue bind:clue bind:shownClue />
+							<EditClue
+								bind:clue
+								bind:shownClue
+								roundType={round.type}
+								boardType={gameInfo.boardType}
+							/>
 						</DraggableDiv>
 					{/each}
 				</DraggableDiv>
@@ -280,7 +285,7 @@
 			{#each round.categories || [] as category}
 				<EditCategory {category} />
 				{#each category.clues || [] as clue}
-					<EditClue {clue} type="final" />
+					<EditClue {clue} roundType={round.type} boardType={gameInfo.boardType} />
 				{/each}
 			{/each}
 		{/if}
