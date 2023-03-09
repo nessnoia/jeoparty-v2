@@ -1,5 +1,7 @@
+import type { CategoryUpdater, ClueUpdater, RoundUpdater } from "$lib/update-models/game-data";
+
 const getAddRoundData = (roundNum: number) => {
-    return {
+    let round: RoundUpdater = {
         num: roundNum,
         title: 'Round ' + roundNum,
         type: 'normal',
@@ -18,11 +20,12 @@ const getAddRoundData = (roundNum: number) => {
                 ]
             }
         ]
-    }   
+    }  
+    return round; 
 };
 
 const getAddCategoryData = (roundIdx: number) => {
-    return {
+    let category: CategoryUpdater = {
         roundIdx: roundIdx,
         category: 'Category',
         numClues: 1,
@@ -35,10 +38,11 @@ const getAddCategoryData = (roundIdx: number) => {
             }
         ]
     }
+    return category;
 };
 
 const getAddClueData = (roundIdx: number, categoryIdx: number) => {
-    return {
+    let clue: ClueUpdater =  {
         roundIdx: roundIdx,
         categoryIdx: categoryIdx,
         value: 0,
@@ -46,6 +50,7 @@ const getAddClueData = (roundIdx: number, categoryIdx: number) => {
         answer: '',
         isDailyDouble: false
     }
+    return clue;
 };
 
 export { getAddRoundData, getAddCategoryData, getAddClueData };

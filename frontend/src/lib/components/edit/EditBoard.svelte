@@ -25,6 +25,7 @@
 	let clueDraggableDivs: DraggableDiv[] = [];
 	let categoryDraggableDiv: DraggableDiv;
 
+	// Fill RoundUpdater array with gameData so we're not trying to update the prop (won't update UI)
 	for (let i = 0; i < gameData.rounds.length; i++) {
 		let round = gameData.rounds[i];
 
@@ -86,9 +87,7 @@
 
 	const saveRoundTitleUpdate = (roundIdx: number) => {
 		unsaved.update((game) => {
-			if (!game.rounds) {
-				game.rounds = [];
-			}
+			if (!game.rounds) game.rounds = [];
 			let priorEdit = false;
 			for (let round of game.rounds) {
 				if (round.roundIdx === roundIdx) {
@@ -107,36 +106,33 @@
 		let nextRoundNum = rounds.length + 1;
 		let newRoundData = getAddRoundData(nextRoundNum);
 		unsaved.update((game) => {
-			if (!game.rounds) {
-				game.rounds = [];
-			}
+			if (!game.rounds) game.rounds = [];
 			game.rounds.push(newRoundData);
 			return game;
 		});
+		newRoundData.roundIdx = rounds.length;
 		rounds = [...rounds, newRoundData];
 	};
 
 	const addCategory = (roundIdx: number) => {
 		let newCategoryData = getAddCategoryData(roundIdx);
 		unsaved.update((game) => {
-			if (!game.categories) {
-				game.categories = [];
-			}
+			if (!game.categories) game.categories = [];
 			game.categories.push(newCategoryData);
 			return game;
 		});
+		newCategoryData.categoryIdx = rounds[roundIdx].categories?.length;
 		rounds[roundIdx].categories = [...rounds[roundIdx].categories!, newCategoryData];
 	};
 
 	const addClue = (roundIdx: number, categoryIdx: number) => {
 		let newClueData = getAddClueData(roundIdx, categoryIdx);
 		unsaved.update((game) => {
-			if (!game.clues) {
-				game.clues = [];
-			}
+			if (!game.clues) game.clues = [];
 			game.clues.push(newClueData);
 			return game;
 		});
+		newClueData.clueIdx = rounds[roundIdx].categories![categoryIdx].clues?.length;
 		rounds[roundIdx].categories![categoryIdx].clues = [
 			...rounds[roundIdx].categories![categoryIdx].clues!,
 			newClueData
