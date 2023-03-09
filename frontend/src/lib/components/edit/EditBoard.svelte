@@ -257,7 +257,9 @@
 							on:drop={(event) => {
 								event.preventDefault();
 								clueDraggableDivs[categoryIdx].drop(event, clueIdx, clue, saveClueChangesAfterDrop);
-								updateClueValuesAfterDrop(roundIdx, categoryIdx);
+								if (gameInfo.boardType == 'standard') {
+									updateClueValuesAfterDrop(roundIdx, categoryIdx);
+								}
 							}}
 						>
 							<EditClue bind:clue bind:shownClue />
