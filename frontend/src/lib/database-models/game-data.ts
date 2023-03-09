@@ -27,3 +27,9 @@ export interface Clue {
     answer: string;
     isDailyDouble: boolean;
 }
+
+export const sortClues = (c1: Clue, c2: Clue) => {
+    if (c1.value < c2.value) return -1;
+    else if (c1.value > c2.value) return 1;
+    else return 0;
+}

@@ -34,3 +34,11 @@ export interface ClueUpdater {
     answer?: string;
     isDailyDouble?: boolean;
 }
+
+export const sortClues = (c1: ClueUpdater, c2: ClueUpdater) => {
+    let c1Value = c1.value ?? 0;
+    let c2Value = c2.value ?? 0;
+    if (c1Value < c2Value) return -1;
+    else if (c1Value > c2Value) return 1;
+    else return 0;
+}

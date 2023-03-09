@@ -1,12 +1,8 @@
 <script lang="ts">
-	import type { Category } from '$lib/database-models/game-data';
 	import { unsaved } from '$lib/unsaved';
+	import type { CategoryUpdater } from '$lib/update-models/game-data';
 
-	export let category: Category;
-	export let roundIdx: number;
-	export let categoryIdx: number;
-
-	let categoryTitle = category.category;
+	export let category: CategoryUpdater;
 
 	const saveCategoryUpdate = () => {
 		unsaved.update((game) => {
@@ -15,16 +11,19 @@
 			}
 			let priorEdit = false;
 			for (let categoryUpdate of game.categories) {
-				if (categoryUpdate.roundIdx === roundIdx && categoryUpdate.categoryIdx === categoryIdx) {
-					categoryUpdate.category = categoryTitle;
+				if (
+					categoryUpdate.roundIdx === category.roundIdx &&
+					categoryUpdate.categoryIdx === category.categoryIdx
+				) {
+					categoryUpdate.category = category.category;
 					priorEdit = true;
 				}
 			}
 			if (!priorEdit) {
 				game.categories.push({
-					roundIdx: roundIdx,
-					categoryIdx: categoryIdx,
-					category: categoryTitle
+					roundIdx: category.roundIdx,
+					categoryIdx: category.categoryIdx,
+					category: category.category
 				});
 			}
 			return game;
@@ -35,6 +34,6 @@
 <input
 	type="text"
 	placeholder="Category"
-	bind:value={categoryTitle}
+	bind:value={category.category}
 	on:input={saveCategoryUpdate}
 />

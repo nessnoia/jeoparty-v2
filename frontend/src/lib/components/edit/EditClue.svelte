@@ -1,12 +1,9 @@
 <script lang="ts">
-	import type { Clue } from '$lib/database-models/game-data';
 	import { unsaved } from '$lib/unsaved';
 	import type { ClueUpdater } from '$lib/update-models/game-data';
 
-	export let clue: Clue;
-	export let roundIdx: number;
-	export let categoryIdx: number;
-	export let clueIdx: number;
+	export let clue: ClueUpdater;
+	export let type: string = 'standard';
 
 	export let shownClue:
 		| {
@@ -21,17 +18,12 @@
 	}
 
 	const currentClue = {
-		round: roundIdx,
-		category: categoryIdx,
-		clue: clueIdx
+		round: clue.roundIdx,
+		category: clue.categoryIdx,
+		clue: clue.clueIdx
 	};
 
 	let showClueEditor = false;
-
-	let clueValue = clue.value;
-	let clueText = clue.clue;
-	let answerText = clue.answer;
-	let isDailyDouble = clue.isDailyDouble;
 
 	const unsavedUpdater = (field: keyof ClueUpdater, value: any) => {
 		unsaved.update((game) => {
@@ -41,9 +33,9 @@
 			let priorEdit = false;
 			for (let update of game.clues) {
 				if (
-					update.roundIdx === roundIdx &&
-					update.categoryIdx === categoryIdx &&
-					update.clueIdx === clueIdx
+					update.roundIdx === clue.roundIdx &&
+					update.categoryIdx === clue.categoryIdx &&
+					update.clueIdx === clue.clueIdx
 				) {
 					update[field] = value;
 					priorEdit = true;
@@ -51,9 +43,9 @@
 			}
 			if (!priorEdit) {
 				game.clues.push({
-					roundIdx: roundIdx,
-					categoryIdx: categoryIdx,
-					clueIdx: clueIdx
+					roundIdx: clue.roundIdx,
+					categoryIdx: clue.categoryIdx,
+					clueIdx: clue.clueIdx
 				});
 				game.clues[game.clues.length - 1][field] = value;
 			}
@@ -62,28 +54,32 @@
 	};
 </script>
 
-<button
-	on:click={() => {
-		shownClue = currentClue;
-		showClueEditor = !showClueEditor;
-	}}>{clueValue}</button
->
+{#if type === 'standard'}
+	<button
+		on:click={() => {
+			shownClue = currentClue;
+			showClueEditor = !showClueEditor;
+		}}>{clue.value}</button
+	>
+{/if}
 
-{#if showClueEditor}
-	<input
-		type="number"
-		placeholder="Value"
-		bind:value={clueValue}
-		on:input={() => {
-			if (clueValue === null) clueValue = 0;
-			else unsavedUpdater('value', clueValue);
-		}}
-	/>
+{#if showClueEditor || type === 'final'}
+	{#if type === 'standard'}
+		<input
+			type="number"
+			placeholder="Value"
+			bind:value={clue.value}
+			on:input={() => {
+				if (clue.value === null) clue.value = 0;
+				else unsavedUpdater('value', clue.value);
+			}}
+		/>
+	{/if}
 	<input
 		type="text"
 		placeholder="Clue"
-		bind:value={clueText}
-		on:input={() => unsavedUpdater('clue', clueText)}
+		bind:value={clue.clue}
+		on:input={() => unsavedUpdater('clue', clue.clue)}
 	/>
 
 	<!-- TODO: allow for uploading images for clues -->
@@ -93,15 +89,17 @@
 	<input
 		type="text"
 		placeholder="Answer"
-		bind:value={answerText}
-		on:input={() => unsavedUpdater('answer', answerText)}
+		bind:value={clue.answer}
+		on:input={() => unsavedUpdater('answer', clue.answer)}
 	/>
 
-	<label for="daily-double">Make clue daily double?</label>
-	<input
-		type="checkbox"
-		name="daily-double"
-		bind:checked={isDailyDouble}
-		on:change={() => unsavedUpdater('isDailyDouble', isDailyDouble)}
-	/>
+	{#if type === 'standard'}
+		<label for="daily-double">Make clue daily double?</label>
+		<input
+			type="checkbox"
+			name="daily-double"
+			bind:checked={clue.isDailyDouble}
+			on:change={() => unsavedUpdater('isDailyDouble', clue.isDailyDouble)}
+		/>
+	{/if}
 {/if}
