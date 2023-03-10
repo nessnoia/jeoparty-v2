@@ -261,7 +261,7 @@
 						</DraggableDiv>
 					{/each}
 				</DraggableDiv>
-				{#if gameInfo.boardType == 'custom' && round.type == 'normal' && (category.clues || []).length < 8}
+				{#if gameInfo.boardType == 'custom' && round.type == 'normal' && (category.clues || []).length < 10}
 					<button
 						on:click={() => {
 							addClue(roundShownIdx, categoryIdx);
