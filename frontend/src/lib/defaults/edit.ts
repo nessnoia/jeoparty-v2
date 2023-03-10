@@ -1,10 +1,10 @@
 import type { CategoryUpdater, ClueUpdater, RoundUpdater } from "$lib/update-models/game-data";
 
-const getAddRoundData = (roundNum: number) => {
+const getAddRoundData = (roundNum: number, title: string, type: string) => {
     let round: RoundUpdater = {
         num: roundNum,
-        title: 'Round ' + roundNum,
-        type: 'normal',
+        title: title,
+        type: type,
         numCategories: 1,
         categories: [
             {

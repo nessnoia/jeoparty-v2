@@ -12,6 +12,7 @@
 		type ClueUpdater,
 		type RoundUpdater
 	} from '$lib/update-models/game-data';
+	import AddRoundModal from '../modals/AddRoundModal.svelte';
 
 	// TODO: Focus on last used element after form submit
 	export let gameInfo: GameInfo;
@@ -24,6 +25,8 @@
 
 	let clueDraggableDivs: DraggableDiv[] = [];
 	let categoryDraggableDiv: DraggableDiv;
+
+	let addRoundVisible = false;
 
 	// Fill RoundUpdater array with gameData so we're not trying to update the prop (won't update UI)
 	for (let i = 0; i < gameData.rounds.length; i++) {
@@ -102,18 +105,6 @@
 		});
 	};
 
-	const addRound = () => {
-		let nextRoundNum = rounds.length + 1;
-		let newRoundData = getAddRoundData(nextRoundNum);
-		unsaved.update((game) => {
-			if (!game.rounds) game.rounds = [];
-			game.rounds.push(newRoundData);
-			return game;
-		});
-		newRoundData.roundIdx = rounds.length;
-		rounds = [...rounds, newRoundData];
-	};
-
 	const addCategory = (roundIdx: number) => {
 		let newCategoryData = getAddCategoryData(roundIdx);
 		unsaved.update((game) => {
@@ -151,7 +142,6 @@
 		}
 	};
 
-	// TODO: if database has issues, update this to write only the categories that get changed instead of the entire array
 	const saveCategoryChangesAfterDrop = (
 		categoryArray: CategoryUpdater[],
 		startIdx: number,
@@ -289,13 +279,20 @@
 				{/each}
 			{/each}
 		{/if}
-		{#if gameInfo.boardType == 'custom' && rounds.length < 5}
-			<button
-				on:click={() => {
-					addRound();
-				}}
-				><img src="/icons/circle-plus.svg" alt="add round" />
-			</button>
+		{#if gameInfo.boardType == 'custom'}
+			{#if rounds.length < 5}
+				<button
+					on:click={() => {
+						addRoundVisible = true;
+					}}
+					><img src="/icons/circle-plus.svg" alt="add round" />
+				</button>
+				<AddRoundModal
+					on:changeRound={(event) => (roundShownIdx = event.detail.showRoundIdx)}
+					bind:isVisible={addRoundVisible}
+					bind:rounds
+				/>
+			{/if}
 			{#if round.type == 'normal' && (round.categories || []).length < 8}
 				<button
 					on:click={() => {
