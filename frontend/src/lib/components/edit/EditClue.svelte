@@ -22,8 +22,6 @@
 		showClueEditor = false;
 	}
 
-	let disableValueInput = boardType === 'standard';
-
 	const currentClue = {
 		round: clue.roundIdx,
 		category: clue.categoryIdx,
@@ -71,7 +69,7 @@
 {/if}
 
 {#if showClueEditor || roundType === 'final'}
-	{#if roundType === 'normal'}
+	{#if roundType === 'normal' && boardType === 'custom'}
 		<input
 			type="number"
 			placeholder="Value"
@@ -80,7 +78,6 @@
 				if (clue.value === null) clue.value = 0;
 				else unsavedUpdater('value', clue.value);
 			}}
-			disabled={disableValueInput}
 		/>
 	{/if}
 	<input
