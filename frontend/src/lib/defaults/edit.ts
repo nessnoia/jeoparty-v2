@@ -5,11 +5,10 @@ const getAddRoundData = (roundNum: number, title: string, type: string) => {
         num: roundNum,
         title: title,
         type: type,
-        numCategories: 1,
+        numDailyDoubles: 0,
         categories: [
             {
                 category: 'Category',
-                numClues: 1,
                 clues: [
                     {
                         value: 0,
@@ -28,7 +27,6 @@ const getAddCategoryData = (roundIdx: number) => {
     let category: CategoryUpdater = {
         roundIdx: roundIdx,
         category: 'Category',
-        numClues: 1,
         clues: [
             {
                 value: 0,

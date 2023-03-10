@@ -1,12 +1,14 @@
 <script lang="ts">
 	import { unsaved } from '$lib/unsaved';
 	import type { ClueUpdater } from '$lib/update-models/game-data';
+	import { createEventDispatcher } from 'svelte';
 
 	export let clue: ClueUpdater;
 	export let roundType: string;
 	export let boardType: string;
+	export let maxDailyDoublesReached: boolean = false;
 
-	// console.log(roundType);
+	const dispatch = createEventDispatcher();
 
 	export let shownClue:
 		| {
@@ -105,7 +107,12 @@
 			type="checkbox"
 			name="daily-double"
 			bind:checked={clue.isDailyDouble}
-			on:change={() => unsavedUpdater('isDailyDouble', clue.isDailyDouble)}
+			on:change={() => {
+				unsavedUpdater('isDailyDouble', clue.isDailyDouble);
+				let add = clue.isDailyDouble ? 1 : -1;
+				dispatch('updateDailyDoubleNumber', { add: add });
+			}}
+			disabled={maxDailyDoublesReached && !clue.isDailyDouble}
 		/>
 	{/if}
 {/if}

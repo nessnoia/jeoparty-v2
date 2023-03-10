@@ -28,6 +28,14 @@
 
 	let addRoundVisible = false;
 
+	let shownClue:
+		| {
+				round?: number;
+				category?: number;
+				clue?: number;
+		  }
+		| undefined;
+
 	// Fill RoundUpdater array with gameData so we're not trying to update the prop (won't update UI)
 	for (let i = 0; i < gameData.rounds.length; i++) {
 		let round = gameData.rounds[i];
@@ -36,12 +44,14 @@
 			roundIdx: i,
 			num: round.num,
 			title: round.title,
+			maxDailyDoubles: round.maxDailyDoubles,
 			type: round.type,
 			categories: [] as CategoryUpdater[]
 		};
 		rounds.push(roundUpdater);
 
 		let numCategories = round.categories.length;
+		let numDailyDoubles = 0;
 		for (let j = 0; j < numCategories; j++) {
 			let category = round.categories[j];
 
@@ -57,6 +67,10 @@
 			for (let k = 0; k < numClues; k++) {
 				let clue = round.categories[j].clues[k];
 
+				if (clue.isDailyDouble) {
+					numDailyDoubles += 1;
+				}
+
 				let clueUpdater = {
 					roundIdx: i,
 					categoryIdx: j,
@@ -71,15 +85,8 @@
 				rounds[i].categories![j].clues!.push(clueUpdater);
 			}
 		}
+		rounds[i].numDailyDoubles = numDailyDoubles;
 	}
-
-	let shownClue:
-		| {
-				round?: number;
-				category?: number;
-				clue?: number;
-		  }
-		| undefined;
 
 	const saveGameTitleUpdate = () => {
 		unsaved.update((game) => {
@@ -88,18 +95,19 @@
 		});
 	};
 
-	const saveRoundTitleUpdate = (roundIdx: number) => {
+	const saveRoundUpdate = (roundIdx: number, field: keyof RoundUpdater, value: any) => {
 		unsaved.update((game) => {
 			if (!game.rounds) game.rounds = [];
 			let priorEdit = false;
 			for (let round of game.rounds) {
 				if (round.roundIdx === roundIdx) {
-					round.title = rounds[roundIdx].title;
+					round[field] = value;
 					priorEdit = true;
 				}
 			}
 			if (!priorEdit) {
-				game.rounds.push({ roundIdx: roundIdx, title: rounds[roundIdx].title });
+				game.rounds.push({ roundIdx: roundIdx });
+				game.rounds[game.rounds.length - 1][field] = value;
 			}
 			return game;
 		});
@@ -217,11 +225,22 @@
 			type="text"
 			id="round-title"
 			bind:value={rounds[roundIdx].title}
-			on:input={() => saveRoundTitleUpdate(roundIdx)}
+			on:input={() => saveRoundUpdate(roundIdx, 'title', rounds[roundIdx].title)}
 		/>
 
 		<!-- Render categories -->
 		{#if round.type == 'normal'}
+			{#if gameInfo.boardType == 'standard'}
+				<!-- TODO: make 's' reactive based on the number -->
+				<p>
+					You have {(round.maxDailyDoubles || 0) - (round.numDailyDoubles || 0)} Daily Double(s) left
+					for this round.
+				</p>
+			{:else if gameInfo.boardType == 'custom'}
+				<p>
+					You have {round.numDailyDoubles || 0} Daily Double(s) on this round.
+				</p>
+			{/if}
 			{#each round.categories || [] as category, categoryIdx (`${category.roundIdx}.${category.categoryIdx}`)}
 				<DraggableDiv
 					bind:this={categoryDraggableDiv}
@@ -253,10 +272,19 @@
 							}}
 						>
 							<EditClue
+								on:updateDailyDoubleNumber={(event) => {
+									if (round.numDailyDoubles !== undefined) {
+										round.numDailyDoubles += event.detail.add;
+										saveRoundUpdate(roundIdx, 'numDailyDoubles', round.numDailyDoubles + 1);
+									}
+								}}
 								bind:clue
 								bind:shownClue
 								roundType={round.type}
 								boardType={gameInfo.boardType}
+								maxDailyDoublesReached={(round.maxDailyDoubles || -1) -
+									(round.numDailyDoubles || 0) ==
+									0}
 							/>
 						</DraggableDiv>
 					{/each}

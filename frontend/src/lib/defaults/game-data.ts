@@ -5,10 +5,8 @@ export const customGameData = <GameData>{
 		num: 1,
 		title: 'Round 1',
 		type: 'normal',
-		numCategories: 1,
 		categories: [{
 			category: 'Category',
-            numClues: 1,
 			clues: [{
 				value: 0,
 				clue: '',
@@ -24,10 +22,9 @@ export const normalGameData = <GameData>{
         num: 1,
 		title: 'Round 1',
 		type: 'normal',
-		numCategories: 6,
+        maxDailyDoubles: 1,
 		categories: [{
 			category: 'Category 1',
-            numClues: 5,
 			clues: [{
 				value: 200,
 				clue: '',
@@ -56,7 +53,6 @@ export const normalGameData = <GameData>{
             }]
 		}, {
 			category: 'Category 2',
-            numClues: 5,
 			clues: [{
 				value: 200,
 				clue: '',
@@ -85,7 +81,6 @@ export const normalGameData = <GameData>{
             }]
 		}, {
 			category: 'Category 3',
-            numClues: 5,
 			clues: [{
 				value: 200,
 				clue: '',
@@ -114,7 +109,6 @@ export const normalGameData = <GameData>{
             }]
 		}, {
 			category: 'Category 4',
-            numClues: 5,
 			clues: [{
 				value: 200,
 				clue: '',
@@ -143,7 +137,6 @@ export const normalGameData = <GameData>{
             }]
 		}, {
 			category: 'Category 5',
-            numClues: 5,
 			clues: [{
 				value: 200,
 				clue: '',
@@ -172,7 +165,6 @@ export const normalGameData = <GameData>{
             }]
 		}, {
 			category: 'Category 6',
-            numClues: 5,
 			clues: [{
 				value: 200,
 				clue: '',
@@ -204,10 +196,9 @@ export const normalGameData = <GameData>{
         num: 2,
 		title: 'Round 2',
 		type: 'normal',
-		numCategories: 6,
+        maxDailyDoubles: 2,
 		categories: [{
             category: 'Category 1',
-            numClues: 5,
             clues: [{
                 value: 400,
                 clue: '',
@@ -236,7 +227,6 @@ export const normalGameData = <GameData>{
             }]
 		}, {
             category: 'Category 2',
-            numClues: 5,
             clues: [{
                 value: 400,
                 clue: '',
@@ -265,7 +255,6 @@ export const normalGameData = <GameData>{
             }]
 		}, {
             category: 'Category 3',
-            numClues: 5,
             clues: [{
                 value: 400,
                 clue: '',
@@ -294,7 +283,6 @@ export const normalGameData = <GameData>{
             }]
 		}, {
             category: 'Category 4',
-            numClues: 5,
             clues: [{
                 value: 400,
                 clue: '',
@@ -323,7 +311,6 @@ export const normalGameData = <GameData>{
             }]
 		}, {
             category: 'Category 5',
-            numClues: 5,
             clues: [{
                 value: 400,
                 clue: '',
@@ -352,7 +339,6 @@ export const normalGameData = <GameData>{
             }]
 		}, {
             category: 'Category 6',
-            numClues: 5,
             clues: [{
                 value: 400,
                 clue: '',
@@ -384,15 +370,11 @@ export const normalGameData = <GameData>{
         num: 3,
 		title: 'Round 3',
 		type: 'final',
-		numCategories: 1,
 		categories: [{
 			category: 'Final Jeopardy Category',
-            numClues: 1,
 			clues: [{
-				value: 0,
 				clue: '',
 				answer: '',
-				isDailyDouble: false,
 			}]
 		}]
     }]

@@ -10,26 +10,27 @@ export interface Round {
     num: number;
     title: string;
     type: string;
-    numCategories: number;
+    maxDailyDoubles?: number;
     categories: Category[];
 }
 
 export interface Category {
     category: string;
-    numClues: number;
     clues: Clue[];
 }
 
 export interface Clue {
-    value: number;
+    value?: number;
     clue: string;
     clueImage?: string;
     answer: string;
-    isDailyDouble: boolean;
+    isDailyDouble?: boolean;
 }
 
 export const sortClues = (c1: Clue, c2: Clue) => {
-    if (c1.value < c2.value) return -1;
-    else if (c1.value > c2.value) return 1;
+    let c1Value = c1.value ?? 0;
+    let c2Value = c2.value ?? 0;
+    if (c1Value < c2Value) return -1;
+    else if (c1Value > c2Value) return 1;
     else return 0;
 }

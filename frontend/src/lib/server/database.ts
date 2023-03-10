@@ -73,7 +73,7 @@ async function applySchemaValidation(db: mongodb.Db) {
                     maxItems: 5,
                     items: {
                         bsonType: ["object"],
-                        required: ["num", "title", "type", "numCategories", "categories"],
+                        required: ["num", "title", "type", "categories"],
                         additionalProperties: false,
                         description: "'rounds' must contain the stated fields.",
                         properties: {
@@ -92,11 +92,9 @@ async function applySchemaValidation(db: mongodb.Db) {
                                 enum: ["normal", "final"],
                                 description: "'type' is required and has value of 'normal' or 'final'",
                             },
-                            numCategories: {
+                            maxDailyDoubles: {
                                 bsonType: "int",
-                                minimum: 1,
-                                maximum: 8,
-                                description: "'numCategories' is required and is of int type",
+                                description: "'maxDailyDoubles' is required and is of int type",
                             },
                             categories: {
                                 bsonType: ["array"],
@@ -104,7 +102,7 @@ async function applySchemaValidation(db: mongodb.Db) {
                                 maxItems: 8,
                                 items: {
                                     bsonType: ["object"],
-                                    required: ["category", "numClues", "clues"],
+                                    required: ["category", "clues"],
                                     additionalProperties: false,
                                     description: "'categories' must contain the stated fields.",
                                     properties: {
@@ -112,19 +110,13 @@ async function applySchemaValidation(db: mongodb.Db) {
                                             bsonType: "string",
                                             description: "'category' is required and is of string type",
                                         },
-                                        numClues: {
-                                            bsonType: "int",
-                                            minimum: 1,
-                                            maximum: 10,
-                                            description: "'numClues' is required and is of int type",
-                                        },
                                         clues: {
                                             bsonType: ["array"],
                                             minItems: 1,
                                             maxItems: 10,
                                             items: {
                                                 bsonType: ["object"],
-                                                required: ["value", "clue", "answer", "isDailyDouble"],
+                                                required: ["clue", "answer"],
                                                 additionalProperties: false,
                                                 description: "'clues' must contain the stated fields.",
                                                 properties: {

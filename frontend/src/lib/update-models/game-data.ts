@@ -12,7 +12,8 @@ export interface RoundUpdater {
     num?: number;
     title?: string;
     type?: string;
-    numCategories?: number;
+    numDailyDoubles?: number;
+    maxDailyDoubles?: number;
     categories?: CategoryUpdater[];
 }
 
@@ -20,7 +21,6 @@ export interface CategoryUpdater {
     roundIdx?: number;
     categoryIdx?: number;
     category?: string;
-    numClues?: number;
     clues?: ClueUpdater[];
 }
 
