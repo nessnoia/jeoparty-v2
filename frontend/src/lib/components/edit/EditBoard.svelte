@@ -271,7 +271,7 @@
 						</DraggableDiv>
 					{/each}
 				</DraggableDiv>
-				{#if gameInfo.boardType == 'custom'}
+				{#if gameInfo.boardType == 'custom' && round.type == 'normal' && (category.clues || []).length < 8}
 					<button
 						on:click={() => {
 							addClue(roundShownIdx, categoryIdx);
@@ -289,19 +289,21 @@
 				{/each}
 			{/each}
 		{/if}
-		{#if gameInfo.boardType == 'custom' && round.type == 'normal'}
+		{#if gameInfo.boardType == 'custom' && rounds.length < 5}
 			<button
 				on:click={() => {
 					addRound();
 				}}
 				><img src="/icons/circle-plus.svg" alt="add round" />
 			</button>
-			<button
-				on:click={() => {
-					addCategory(roundShownIdx);
-				}}
-				><img src="/icons/circle-plus.svg" alt="add clue" />
-			</button>
+			{#if round.type == 'normal' && (round.categories || []).length < 8}
+				<button
+					on:click={() => {
+						addCategory(roundShownIdx);
+					}}
+					><img src="/icons/circle-plus.svg" alt="add clue" />
+				</button>
+			{/if}
 		{/if}
 	{/if}
 {/each}
