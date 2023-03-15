@@ -73,10 +73,14 @@ async function applySchemaValidation(db: mongodb.Db) {
                     maxItems: 5,
                     items: {
                         bsonType: ["object"],
-                        required: ["num", "title", "type", "categories"],
+                        required: ["id", "num", "title", "type", "categories"],
                         additionalProperties: false,
                         description: "'rounds' must contain the stated fields.",
                         properties: {
+                            id: {
+                                bsonType: "string",
+                                description: "'id' is required and is of string type",
+                            },
                             num: {
                                 bsonType: "int",
                                 minimum: 1,
@@ -102,10 +106,14 @@ async function applySchemaValidation(db: mongodb.Db) {
                                 maxItems: 8,
                                 items: {
                                     bsonType: ["object"],
-                                    required: ["category", "clues"],
+                                    required: ["id", "category", "clues"],
                                     additionalProperties: false,
                                     description: "'categories' must contain the stated fields.",
                                     properties: {
+                                        id: {
+                                            bsonType: "string",
+                                            description: "'id' is required and is of string type",
+                                        },
                                         category: {
                                             bsonType: "string",
                                             description: "'category' is required and is of string type",
@@ -116,13 +124,17 @@ async function applySchemaValidation(db: mongodb.Db) {
                                             maxItems: 10,
                                             items: {
                                                 bsonType: ["object"],
-                                                required: ["clue", "answer"],
+                                                required: ["id", "clue", "answer"],
                                                 additionalProperties: false,
                                                 description: "'clues' must contain the stated fields.",
                                                 properties: {
+                                                    id: {
+                                                        bsonType: "string",
+                                                        description: "'id' is required and is of string type",
+                                                    },
                                                     value: {
                                                         bsonType: "int",
-                                                        description: "'value' is required and is of int type",
+                                                        description: "'value' is optional and is of int type",
                                                     },
                                                     clue: {
                                                         bsonType: "string",
@@ -138,7 +150,7 @@ async function applySchemaValidation(db: mongodb.Db) {
                                                     },
                                                     isDailyDouble: {
                                                         bsonType: "boolean",
-                                                        description: "'isDailyDouble' is required and is of boolean type",
+                                                        description: "'isDailyDouble' is optional and is of boolean type",
                                                     }
                                                 }
                                             }

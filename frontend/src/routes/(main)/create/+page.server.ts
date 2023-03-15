@@ -1,7 +1,7 @@
 import type { Actions } from "./$types";
 import type { GameInfo } from "$lib/database-models/game-info";
 import { error, redirect } from "@sveltejs/kit";
-import { customGameData, normalGameData } from "$lib/defaults/game-data";
+import { generateCustomGameData, generateNormalGameData } from "$lib/defaults/game-data";
 
 export const actions = {
 	default: async ({ fetch, request, locals }) => {
@@ -59,9 +59,9 @@ const createGameDataObject = (data: FormData) => {
     const gameTitle = data.get('title');
     let gameData;
     if (data.get('type') === 'standard') {
-        gameData = normalGameData;
+        gameData = generateNormalGameData();
     } else {
-        gameData = customGameData;
+        gameData = generateCustomGameData();
     }
     gameData.gameTitle = (gameTitle && gameTitle.length > 0) ? String(gameTitle) : 'Untitled Game';
     return gameData;

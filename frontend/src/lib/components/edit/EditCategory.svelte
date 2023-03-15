@@ -1,28 +1,23 @@
 <script lang="ts">
 	import { unsaved } from '$lib/unsaved';
-	import type { CategoryUpdater } from '$lib/update-models/game-data';
+	import { isCategoryUpdate, type CategoryUpdater } from '$lib/update-models/game-data';
 
 	export let category: CategoryUpdater;
 
 	const saveCategoryUpdate = () => {
 		unsaved.update((game) => {
-			if (!game.categories) {
-				game.categories = [];
-			}
+			if (!game.updates) game.updates = [];
 			let priorEdit = false;
-			for (let categoryUpdate of game.categories) {
-				if (
-					categoryUpdate.roundIdx === category.roundIdx &&
-					categoryUpdate.categoryIdx === category.categoryIdx
-				) {
-					categoryUpdate.category = category.category;
+			for (let update of game.updates) {
+				if (isCategoryUpdate(update) && update.id === category.id) {
+					update.category = category.category;
 					priorEdit = true;
 				}
 			}
 			if (!priorEdit) {
-				game.categories.push({
-					roundIdx: category.roundIdx,
-					categoryIdx: category.categoryIdx,
+				game.updates.push({
+					roundId: category.roundId,
+					id: category.id,
 					category: category.category
 				});
 			}

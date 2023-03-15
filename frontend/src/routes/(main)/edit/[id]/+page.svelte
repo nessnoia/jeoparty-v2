@@ -15,9 +15,11 @@
 
 	const gameData = data.gameData.data;
 	const gameInfo = data.gameInfo.data;
-	const saveDelay = 10000;
+	const saveDelay = 5000;
 
 	$: if (form?.saved) unsaved.set({});
+	// TODO: implement stuff to save to local storage if there's an error saving to the database
+	// $: if (!form?.saved) saveOnError();
 
 	$: $unsaved, handleSave();
 
@@ -33,10 +35,14 @@
 
 	const handleSave = debounce(() => {
 		if (formElement && Object.keys($unsaved).length > 0) {
-			console.log('save');
 			formElement.requestSubmit();
+			console.log('save');
 		}
 	}, saveDelay);
+
+	// const saveOnError = () => {
+	//     window.localStorage.set()
+	// }
 
 	beforeNavigate(({ to }) => {
 		if (Object.keys($unsaved).length > 0) {
@@ -54,6 +60,10 @@
 {:else}
 	<img src="/icons/circle-check.svg" alt="changes saved" />
 	<span>All changes saved.</span>
+{/if}
+
+{#if !form?.saved}
+	<span>Error saving data. Please refresh the page to try and save data.</span>
 {/if}
 
 <EditBoard {gameInfo} {gameData} />

@@ -31,3 +31,20 @@ export const DELETE = (async ({ params }) => {
         throw error(502, String(err));
     }
 }) satisfies RequestHandler;
+
+export const PUT = (async ({ params, request }) => {
+    try {
+        const query = ({ _id: new mongodb.ObjectId(params.id) });
+        const gameTitle = await request.text();
+
+        const res = await collections.gamesInfo?.updateOne(query, { $set: { gameTitle: gameTitle }});
+
+        if (res) {
+            return json({ status: 202 })
+        } else {
+            throw error(501, `Failed to delete game info by ID: ${params.id}`);
+        }
+    } catch (err) {
+        throw error(502, String(err));
+    }
+}) satisfies RequestHandler;

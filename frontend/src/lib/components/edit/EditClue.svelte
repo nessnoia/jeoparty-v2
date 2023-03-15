@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { unsaved } from '$lib/unsaved';
-	import type { ClueUpdater } from '$lib/update-models/game-data';
+	import { isClueUpdate, type ClueUpdater } from '$lib/update-models/game-data';
 	import { createEventDispatcher } from 'svelte';
 
 	export let clue: ClueUpdater;
@@ -12,9 +12,7 @@
 
 	export let shownClue:
 		| {
-				round?: number;
-				category?: number;
-				clue?: number;
+				id?: string;
 		  }
 		| undefined = undefined;
 
@@ -23,36 +21,29 @@
 	}
 
 	const currentClue = {
-		round: clue.roundIdx,
-		category: clue.categoryIdx,
-		clue: clue.clueIdx
+		id: clue.id
 	};
 
 	let showClueEditor = false;
 
 	const unsavedUpdater = (field: keyof ClueUpdater, value: any) => {
 		unsaved.update((game) => {
-			if (!game.clues) {
-				game.clues = [];
-			}
+			if (!game.updates) game.updates = [];
 			let priorEdit = false;
-			for (let update of game.clues) {
-				if (
-					update.roundIdx === clue.roundIdx &&
-					update.categoryIdx === clue.categoryIdx &&
-					update.clueIdx === clue.clueIdx
-				) {
+			for (let update of game.updates) {
+				if (isClueUpdate(update) && update.id === clue.id) {
 					update[field] = value;
 					priorEdit = true;
 				}
 			}
 			if (!priorEdit) {
-				game.clues.push({
-					roundIdx: clue.roundIdx,
-					categoryIdx: clue.categoryIdx,
-					clueIdx: clue.clueIdx
-				});
-				game.clues[game.clues.length - 1][field] = value;
+				let clueUpdate: ClueUpdater = {
+					roundId: clue.roundId,
+					categoryId: clue.categoryId,
+					id: clue.id,
+					[field]: value
+				};
+				game.updates.push(clueUpdate);
 			}
 			return game;
 		});

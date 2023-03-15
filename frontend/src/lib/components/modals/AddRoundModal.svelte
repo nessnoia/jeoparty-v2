@@ -17,11 +17,10 @@
 		let nextRoundNum = rounds.length + 1;
 		let newRoundData = getAddRoundData(nextRoundNum, title, type);
 		unsaved.update((game) => {
-			if (!game.rounds) game.rounds = [];
-			game.rounds.push(newRoundData);
+			if (!game.updates) game.updates = [];
+			game.updates.push(newRoundData);
 			return game;
 		});
-		newRoundData.roundIdx = rounds.length;
 		rounds = [...rounds, newRoundData];
 		dispatch('changeRound', { showRoundIdx: rounds.length - 1 });
 		isVisible = false;

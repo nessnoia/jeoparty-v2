@@ -1,8 +1,3 @@
-// import { getGameData } from '$lib/server/game-data';
-// import { getGame } from '$lib/server/game-info';
-import { unsaved } from '$lib/unsaved';
-import {  } from '@sveltejs/kit';
-// import { json } from 'stream/consumers';
 import type { Actions, PageServerLoad } from './$types';
  
 export const load = (async ({ fetch, params }) => {
@@ -19,8 +14,18 @@ export const actions = {
         const form = await request.formData();
         const userUpdates = form.get('unsaved-changes');
 
-        console.log(JSON.stringify(userUpdates))
-        
+        const jsonUpdates = JSON.parse(String(userUpdates));
+        let infoRes = { ok: true };
+        if (jsonUpdates.gameTitle) {
+            infoRes = await fetch(`/api/game-info/${params.id}`, {
+                method: 'PUT',
+                body: jsonUpdates.gameTitle,
+                headers: {
+                    'content-type': 'text/plain'
+                }
+            })
+        }
+
         const res = await fetch(`/api/game-data/${params.id}`, { 
             method: 'PUT',
             body: JSON.stringify(userUpdates),
@@ -29,7 +34,7 @@ export const actions = {
             }
         })
 
-        if (res.ok) {
+        if (res.ok && infoRes.ok) {
             return { saved: true };
         } else {
             return { saved: false };

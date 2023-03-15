@@ -7,6 +7,7 @@ export interface GameData {
 }
 
 export interface Round {
+    id: string;
     num: number;
     title: string;
     type: string;
@@ -15,11 +16,13 @@ export interface Round {
 }
 
 export interface Category {
+    id: string;
     category: string;
     clues: Clue[];
 }
 
 export interface Clue {
+    id: string;
     value?: number;
     clue: string;
     clueImage?: string;

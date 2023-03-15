@@ -7,12 +7,14 @@
 	import EditClue from './EditClue.svelte';
 	import DraggableDiv from './DraggableDiv.svelte';
 	import {
+		isRoundUpdate,
 		sortClues,
 		type CategoryUpdater,
 		type ClueUpdater,
 		type RoundUpdater
 	} from '$lib/update-models/game-data';
 	import AddRoundModal from '../modals/AddRoundModal.svelte';
+	import GarbageCan from './GarbageCan.svelte';
 
 	// TODO: Focus on last used element after form submit
 	export let gameInfo: GameInfo;
@@ -23,16 +25,13 @@
 
 	let rounds: RoundUpdater[] = [];
 
-	let clueDraggableDivs: DraggableDiv[] = [];
-	let categoryDraggableDiv: DraggableDiv;
+	let draggableDivs: Record<string, DraggableDiv> = {};
 
 	let addRoundVisible = false;
 
 	let shownClue:
 		| {
-				round?: number;
-				category?: number;
-				clue?: number;
+				id: string;
 		  }
 		| undefined;
 
@@ -41,7 +40,7 @@
 		let round = gameData.rounds[i];
 
 		let roundUpdater = {
-			roundIdx: i,
+			id: round.id,
 			num: round.num,
 			title: round.title,
 			maxDailyDoubles: round.maxDailyDoubles,
@@ -56,11 +55,13 @@
 			let category = round.categories[j];
 
 			let categoryUpdater = {
-				roundIdx: i,
-				categoryIdx: j,
+				roundId: round.id,
+				id: category.id,
 				category: category.category,
 				clues: [] as ClueUpdater[]
 			};
+
+			draggableDivs[`${i}.${j}`];
 			rounds[i].categories!.push(categoryUpdater);
 
 			let numClues = category.clues.length;
@@ -72,9 +73,9 @@
 				}
 
 				let clueUpdater = {
-					roundIdx: i,
-					categoryIdx: j,
-					clueIdx: k,
+					roundId: round.id,
+					categoryId: category.id,
+					id: clue.id,
 					value: clue.value,
 					clue: clue.clue,
 					clueImage: clue.clueImage,
@@ -82,6 +83,7 @@
 					isDailyDouble: clue.isDailyDouble
 				};
 
+				draggableDivs[`${i}.${j}.${k}`];
 				rounds[i].categories![j].clues!.push(clueUpdater);
 			}
 		}
@@ -95,43 +97,44 @@
 		});
 	};
 
-	const saveRoundUpdate = (roundIdx: number, field: keyof RoundUpdater, value: any) => {
+	const saveRoundUpdate = (id: string, field: keyof RoundUpdater, value: any) => {
 		unsaved.update((game) => {
-			if (!game.rounds) game.rounds = [];
+			if (!game.updates) game.updates = [];
 			let priorEdit = false;
-			for (let round of game.rounds) {
-				if (round.roundIdx === roundIdx) {
-					round[field] = value;
+			for (let update of game.updates) {
+				if (isRoundUpdate(update) && update.id === id) {
+					update[field] = value;
 					priorEdit = true;
 				}
 			}
 			if (!priorEdit) {
-				game.rounds.push({ roundIdx: roundIdx });
-				game.rounds[game.rounds.length - 1][field] = value;
+				let roundUpdate: RoundUpdater = {
+					id: id,
+					[field]: value
+				};
+				game.updates.push(roundUpdate);
 			}
 			return game;
 		});
 	};
 
-	const addCategory = (roundIdx: number) => {
-		let newCategoryData = getAddCategoryData(roundIdx);
+	const addCategory = (roundIdx: number, roundId: string) => {
+		let newCategoryData = getAddCategoryData(roundId);
 		unsaved.update((game) => {
-			if (!game.categories) game.categories = [];
-			game.categories.push(newCategoryData);
+			if (!game.updates) game.updates = [];
+			game.updates.push(newCategoryData);
 			return game;
 		});
-		newCategoryData.categoryIdx = rounds[roundIdx].categories?.length;
 		rounds[roundIdx].categories = [...rounds[roundIdx].categories!, newCategoryData];
 	};
 
-	const addClue = (roundIdx: number, categoryIdx: number) => {
-		let newClueData = getAddClueData(roundIdx, categoryIdx);
+	const addClue = (roundIdx: number, categoryIdx: number, roundId: string, categoryId: string) => {
+		let newClueData = getAddClueData(roundId, categoryId);
 		unsaved.update((game) => {
-			if (!game.clues) game.clues = [];
-			game.clues.push(newClueData);
+			if (!game.updates) game.updates = [];
+			game.updates.push(newClueData);
 			return game;
 		});
-		newClueData.clueIdx = rounds[roundIdx].categories![categoryIdx].clues?.length;
 		rounds[roundIdx].categories![categoryIdx].clues = [
 			...rounds[roundIdx].categories![categoryIdx].clues!,
 			newClueData
@@ -150,63 +153,44 @@
 		}
 	};
 
-	const saveCategoryChangesAfterDrop = (
-		categoryArray: CategoryUpdater[],
-		startIdx: number,
-		finishIdx: number
-	) => {
-		const categoryChanges: CategoryUpdater[] = [];
-
-		const updateCategory = (i: number) => {
-			let category = categoryArray[i];
-			category.categoryIdx = i;
+	const saveCategoryChangesAfterDrop = (categoryArray: CategoryUpdater[], roundId: string) => {
+		let categoryArrayCopy = [...categoryArray];
+		for (let category of categoryArrayCopy) {
+			delete category.roundId;
 			for (let clue of category.clues || []) {
-				clue.categoryIdx = i;
-			}
-			categoryChanges.push(category);
-		};
-		if (startIdx < finishIdx) {
-			for (let i = startIdx; i <= finishIdx; i++) {
-				updateCategory(i);
-			}
-		} else {
-			for (let i = startIdx; i >= finishIdx; i--) {
-				updateCategory(i);
+				delete clue.categoryId;
+				delete clue.roundId;
 			}
 		}
-
 		unsaved.update((game) => {
-			if (!game.categories) game.categories = [];
-			game.categories = [...game.categories, ...categoryChanges];
+			let update: RoundUpdater = {
+				id: roundId,
+				categories: categoryArrayCopy
+			};
+			if (!game.updates) game.updates = [];
+			game.updates = [...game.updates, update];
 			return game;
 		});
 	};
 
 	const saveClueChangesAfterDrop = (
 		clueArray: ClueUpdater[],
-		startIdx: number,
-		finishIdx: number
+		roundId: string,
+		categoryId: string
 	) => {
-		const clueChanges: ClueUpdater[] = [];
-
-		const updateClue = (i: number) => {
-			let clue = clueArray[i];
-			clue.clueIdx = i;
-			clueChanges.push(clue);
-		};
-
-		if (startIdx < finishIdx) {
-			for (let i = startIdx; i <= finishIdx; i++) {
-				updateClue(i);
-			}
-		} else {
-			for (let i = startIdx; i >= finishIdx; i--) {
-				updateClue(i);
-			}
+		let clueArrayCopy = [...clueArray];
+		for (let clue of clueArrayCopy) {
+			delete clue.categoryId;
+			delete clue.roundId;
 		}
 		unsaved.update((game) => {
-			if (!game.clues) game.clues = [];
-			game.clues = [...game.clues, ...clueChanges];
+			let update: CategoryUpdater = {
+				roundId: roundId,
+				id: categoryId,
+				clues: clueArrayCopy
+			};
+			if (!game.updates) game.updates = [];
+			game.updates = [...game.updates, update];
 			return game;
 		});
 	};
@@ -214,10 +198,24 @@
 
 <label for="game-title">Game Title</label>
 <input type="text" id="game-title" bind:value={gameTitle} on:input={saveGameTitleUpdate} />
+<GarbageCan bind:rounds />
 
 <!-- Render rounds -->
-{#each rounds as round, roundIdx (`${round.roundIdx}`)}
-	<button on:click={() => (roundShownIdx = roundIdx)}>{rounds[roundIdx].title}</button>
+{#each rounds as round, roundIdx (`${roundIdx}`)}
+	{@const key = `${roundIdx}`}
+	<!-- Prevent round swapping, but still needs to be draggable for deletion. -->
+	<DraggableDiv
+		bind:this={draggableDivs[key]}
+		bind:updateArray={rounds}
+		on:dragstart={(event) => {
+			draggableDivs[key].dragStart(event, roundIdx, round);
+		}}
+		on:drop={(event) => {
+			event.preventDefault();
+		}}
+	>
+		<button on:click={() => (roundShownIdx = roundIdx)}>{rounds[roundIdx].title}</button>
+	</DraggableDiv>
 
 	{#if roundIdx == roundShownIdx}
 		<label for="round-title">Round Title</label>
@@ -225,7 +223,7 @@
 			type="text"
 			id="round-title"
 			bind:value={rounds[roundIdx].title}
-			on:input={() => saveRoundUpdate(roundIdx, 'title', rounds[roundIdx].title)}
+			on:input={() => saveRoundUpdate(round.id ?? '', 'title', rounds[roundIdx].title)}
 		/>
 
 		<!-- Render categories -->
@@ -241,41 +239,45 @@
 					You have {round.numDailyDoubles || 0} Daily Double(s) on this round.
 				</p>
 			{/if}
-			{#each round.categories || [] as category, categoryIdx (`${category.roundIdx}.${category.categoryIdx}`)}
+			{#each round.categories || [] as category, categoryIdx (`${roundIdx}.${categoryIdx}`)}
+				{@const key = `${roundIdx}.${categoryIdx}`}
 				<DraggableDiv
-					bind:this={categoryDraggableDiv}
+					bind:this={draggableDivs[key]}
 					bind:updateArray={round.categories}
 					on:dragstart={(event) => {
-						categoryDraggableDiv.dragStart(event, categoryIdx, category);
+						draggableDivs[key].dragStart(event, categoryIdx, category);
 					}}
 					on:drop={(event) => {
 						event.preventDefault();
-						categoryDraggableDiv.drop(event, categoryIdx, category, saveCategoryChangesAfterDrop);
+						draggableDivs[key].drop(event, categoryIdx, category);
+						saveCategoryChangesAfterDrop(round.categories || [], round.id || '');
 					}}
 				>
 					<EditCategory bind:category />
 
 					<!-- Render clues -->
-					{#each category.clues || [] as clue, clueIdx (`${clue.roundIdx}.${clue.categoryIdx}.${clue.clueIdx}`)}
+					{#each category.clues || [] as clue, clueIdx (`${roundIdx}.${categoryIdx}.${clueIdx}`)}
+						{@const key = `${roundIdx}.${categoryIdx}.${clueIdx}`}
 						<DraggableDiv
-							bind:this={clueDraggableDivs[categoryIdx]}
+							bind:this={draggableDivs[key]}
 							bind:updateArray={category.clues}
 							on:dragstart={(event) => {
-								clueDraggableDivs[categoryIdx].dragStart(event, clueIdx, clue);
+								draggableDivs[key].dragStart(event, clueIdx, clue);
 							}}
 							on:drop={(event) => {
 								event.preventDefault();
-								clueDraggableDivs[categoryIdx].drop(event, clueIdx, clue, saveClueChangesAfterDrop);
+								draggableDivs[key].drop(event, clueIdx, clue);
 								if (gameInfo.boardType == 'standard') {
 									updateClueValuesAfterDrop(roundIdx, categoryIdx);
 								}
+								saveClueChangesAfterDrop(category.clues || [], round.id || '', category.id || '');
 							}}
 						>
 							<EditClue
 								on:updateDailyDoubleNumber={(event) => {
 									if (round.numDailyDoubles !== undefined) {
 										round.numDailyDoubles += event.detail.add;
-										saveRoundUpdate(roundIdx, 'numDailyDoubles', round.numDailyDoubles + 1);
+										saveRoundUpdate(round.id ?? '', 'numDailyDoubles', round.numDailyDoubles + 1);
 									}
 								}}
 								bind:clue
@@ -292,7 +294,7 @@
 				{#if gameInfo.boardType == 'custom' && round.type == 'normal' && (category.clues || []).length < 10}
 					<button
 						on:click={() => {
-							addClue(roundShownIdx, categoryIdx);
+							addClue(roundShownIdx, categoryIdx, round.id || '', category.id || '');
 						}}
 						><img src="/icons/circle-plus.svg" alt="add category" />
 					</button>
@@ -324,7 +326,7 @@
 			{#if round.type == 'normal' && (round.categories || []).length < 8}
 				<button
 					on:click={() => {
-						addCategory(roundShownIdx);
+						addCategory(roundShownIdx, round.id || '');
 					}}
 					><img src="/icons/circle-plus.svg" alt="add clue" />
 				</button>
