@@ -198,7 +198,9 @@
 
 <label for="game-title">Game Title</label>
 <input type="text" id="game-title" bind:value={gameTitle} on:input={saveGameTitleUpdate} />
-<GarbageCan bind:rounds />
+{#if gameInfo.boardType === 'custom'}
+	<GarbageCan bind:rounds />
+{/if}
 
 <!-- Render rounds -->
 {#each rounds as round, roundIdx (`${roundIdx}`)}
