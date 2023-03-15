@@ -11,7 +11,13 @@
 	export let rounds: RoundUpdater[];
 
 	const handleRoundDelete = (dropItem: RoundUpdater, deleteIdx: number) => {
+		if (rounds.length === 1) {
+			alert('Must have at least one round per game.');
+			return;
+		}
+
 		rounds.splice(deleteIdx, 1);
+
 		const round = {
 			id: dropItem.id,
 			delete: true
@@ -24,7 +30,14 @@
 	};
 
 	const handleCategoryDelete = (dropItem: CategoryUpdater, deleteIdx: number) => {
-		rounds.find((val) => val.id === dropItem.roundId)?.categories?.splice(deleteIdx, 1);
+		let categories = rounds.find((val) => val.id === dropItem.roundId)?.categories;
+
+		if (categories?.length === 1) {
+			alert('Must have at least one category per round.');
+			return;
+		}
+
+		categories?.splice(deleteIdx, 1);
 
 		const category = {
 			roundId: dropItem.roundId,
@@ -39,10 +52,16 @@
 	};
 
 	const handleClueDelete = (dropItem: ClueUpdater, deleteIdx: number) => {
-		rounds
+		let clues = rounds
 			.find((val) => val.id === dropItem.roundId)
-			?.categories?.find((val) => val.id === dropItem.categoryId)
-			?.clues?.splice(deleteIdx, 1);
+			?.categories?.find((val) => val.id === dropItem.categoryId)?.clues;
+
+		if (clues?.length === 1) {
+			alert('Must have at least one clue per category.');
+			return;
+		}
+
+		clues?.splice(deleteIdx, 1);
 
 		const clue = {
 			roundId: dropItem.roundId,
