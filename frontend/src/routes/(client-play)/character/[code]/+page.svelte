@@ -8,16 +8,21 @@
 		characterSelectors,
 		animalToActivities
 	} from '$lib/selector-maps';
+	import * as Colyseus from 'colyseus.js';
+	import type { PageData } from './$types';
+	import { PUBLIC_COLYSEUS_URL } from '$env/static/public';
 
+	export let data: PageData;
+
+	let gameCode = data.code;
+	let randomElephantIndexes = data.indexes;
+
+	let nickname = '';
 	let colourChoice: number = 0;
 	let characterChoice: ComponentType = Elephant;
 	let animalChoiceString: string = 'elephant';
 
-	let randomElephantIndexes: Set<number> = new Set();
-
-	onMount(() => {
-		randomElephantIndexes = getTwoRandomIndexes(3, animalToActivities['elephant'].length);
-	});
+	onMount(() => {});
 
 	function changeCharaterSelection(selector: ComponentType) {
 		animalChoiceString = characterSelectors.get(selector) || '';
@@ -30,31 +35,20 @@
 		characterChoice = characters[character];
 	}
 
-	function getTwoRandomIndexes(min: number, max: number): Set<number> {
-		let indexes = new Set<number>();
-		return generateTwoRandomUniqueIndexes(indexes, min, max);
-	}
-
-	function generateTwoRandomUniqueIndexes(
-		indexes: Set<number>,
-		min: number,
-		max: number
-	): Set<number> {
-		console.log(indexes);
-		let index = Math.floor(Math.random() * (max - min) + min);
-		if (indexes.size == 2) {
-			return indexes;
-		}
-		if (!indexes.has(index)) {
-			indexes.add(index);
-		}
-		return generateTwoRandomUniqueIndexes(indexes, min, max);
-	}
+	const join = () => {
+		let client = new Colyseus.Client(PUBLIC_COLYSEUS_URL);
+		client.join('jeoparty', {
+			gameCode: gameCode,
+			name: nickname,
+			character: animalChoiceString,
+			colour: colourChoice
+		});
+	};
 </script>
 
 <div>
 	<h1>Create Character</h1>
-	<input placeholder="Nickname" type="text" />
+	<input placeholder="Nickname" type="text" bind:value={nickname} />
 
 	<div class="charactor">
 		<svelte:component this={characterChoice} {colourChoice} />
@@ -62,17 +56,17 @@
 
 	<h2>Select Character</h2>
 
-	<button><img src="icons/caret-left.svg" alt="character scroll left" /></button>
+	<!-- <button><img src="icons/caret-left.svg" alt="character scroll left" /></button> -->
 	{#each [...characterSelectors] as [selector, _]}
 		<button class="char-selector" on:click={() => changeCharaterSelection(selector)}>
 			<svelte:component this={selector} />
 		</button>
 	{/each}
-	<button><img src="icons/caret-right.svg" alt="character scroll right" /></button>
+	<!-- <button><img src="icons/caret-right.svg" alt="character scroll right" /></button> -->
 
 	<h2>Select Activity</h2>
 
-	<button><img src="icons/caret-left.svg" alt="activity scroll left" /></button>
+	<!-- <button><img src="icons/caret-left.svg" alt="activity scroll left" /></button> -->
 	{#if animalChoiceString == 'elephant'}
 		{#each animalToActivities[animalChoiceString] as selector, i}
 			{#if i == 0 || i == 1 || i == 2 || randomElephantIndexes.has(i)}
@@ -88,7 +82,7 @@
 			</button>
 		{/each}
 	{/if}
-	<button><img src="icons/caret-right.svg" alt="activity scroll right" /></button>
+	<!-- <button><img src="icons/caret-right.svg" alt="activity scroll right" /></button> -->
 
 	<div>
 		<h2>Colour</h2>
@@ -96,14 +90,10 @@
 		<div class="colour" />
 	</div>
 
-	<button>Join Game</button>
+	<button on:click={join}>Join Game</button>
 </div>
 
 <style>
-	img {
-		height: 10px;
-	}
-
 	.charactor {
 		width: 300px;
 		height: 300px;
@@ -122,6 +112,7 @@
 		height: 15px;
 		border-radius: 15px;
 		-webkit-appearance: none;
+		appearance: none;
 		background: linear-gradient(
 			to right,
 			#ff0000 0%,

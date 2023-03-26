@@ -4,17 +4,16 @@ import { monitor } from "@colyseus/monitor";
 /**
  * Import your Room files
  */
-import { MyRoom } from "./rooms/MyRoom";
+import { JeopartyRoom } from "./rooms/JeopartyRoom";
 
 export default Arena({
-    getId: () => "Your Colyseus App",
+    getId: () => "Jeoparty",
 
     initializeGameServer: (gameServer) => {
         /**
          * Define your room handlers:
          */
-        gameServer.define('my_room', MyRoom);
-
+        gameServer.define('jeoparty', JeopartyRoom).filterBy(['gameCode']);
     },
 
     initializeExpress: (app) => {

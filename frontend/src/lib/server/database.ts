@@ -2,9 +2,15 @@ import * as mongodb from "mongodb";
 import type { GameInfo } from "$lib/database-models/game-info";
 import type { GameData } from "$lib/database-models/game-data";
 
+interface GameCode {
+    _id?: mongodb.ObjectId;
+    code: string;
+}
+
 export const collections: {
     gamesInfo?: mongodb.Collection<GameInfo>;
     gamesData?: mongodb.Collection<GameData>;
+    gameCodes?: mongodb.Collection<GameCode>;
 } = {};
 
 export async function connectToDatabase(uri: string) {
@@ -18,7 +24,10 @@ export async function connectToDatabase(uri: string) {
     collections.gamesInfo = gamesInfoCollection;
 
     const gamesDataCollection = db.collection<GameData>("gamesData");
-    collections.gamesData = gamesDataCollection;    
+    collections.gamesData = gamesDataCollection; 
+    
+    const gameCodesCollection = db.collection<GameCode>("gameCodes");
+    collections.gameCodes = gameCodesCollection;    
 }
 
 async function applySchemaValidation(db: mongodb.Db) {
