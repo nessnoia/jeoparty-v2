@@ -1,19 +1,10 @@
-import * as dotenv from "dotenv";
 import { connectToDatabase } from "$lib/server/database";
 import mongoose from "mongoose";
 import { auth } from "$lib/server/lucia";
 import { handleHooks } from "@lucia-auth/sveltekit";
 import { redirect, type Handle } from "@sveltejs/kit";
 import { sequence } from "@sveltejs/kit/hooks";
-
-dotenv.config();
-
-const { ATLAS_URI } = process.env;
-
-if (!ATLAS_URI) {
-    console.error("No ATLAS_URI environment variable has been defined in config.env");
-    process.exit(1);
-}
+import { ATLAS_URI } from "$env/static/private";
 
 const authenticate = (async ({ event, resolve }) => {
     const session = await event.locals.validate();
