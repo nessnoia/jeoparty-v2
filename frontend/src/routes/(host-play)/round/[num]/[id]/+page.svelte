@@ -5,6 +5,7 @@
 	import BuzzersActiveLights from '$lib/components/play/BuzzersActiveLights.svelte';
 	import PlayBoard from '$lib/components/play/PlayBoard.svelte';
 	import PlayerDock from '$lib/components/play/PlayerDock.svelte';
+	import Timer from '$lib/components/play/Timer.svelte';
 	import type { GameData } from '$lib/database-models/game-data';
 	import type { Player } from '$lib/player';
 	import type { PageData } from './$types';
@@ -14,6 +15,8 @@
 	let gameData = data.gameData?.data as GameData;
 	let roundNum = Number(data.roundNum);
 	let gameId = data.gameId;
+
+	let buzzersActive = false;
 
 	let round = gameData?.rounds[roundNum - 1];
 
@@ -40,7 +43,7 @@
 	});
 </script>
 
-<BuzzersActiveLights />
+<BuzzersActiveLights bind:buzzersActive />
+<Timer length={5} bind:buzzersActive />
 <PlayBoard {round} on:goToNext={goToNext} />
-<BuzzersActiveLights />
 <PlayerDock players={playerList} buzzWinner={undefined} />
