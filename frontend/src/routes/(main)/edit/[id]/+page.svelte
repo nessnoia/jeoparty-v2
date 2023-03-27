@@ -62,9 +62,9 @@
 	<span>All changes saved.</span>
 {/if}
 
-{#if !form?.saved}
+<!-- {#if form !== undefined && !form?.saved}
 	<span>Error saving data. Please refresh the page to try and save data.</span>
-{/if}
+{/if} -->
 
 <EditBoard {gameInfo} {gameData} />
 
