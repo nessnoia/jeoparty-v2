@@ -22,7 +22,7 @@
 	let colourChoice: number = 0;
 	let characterChoice: ComponentType = Elephant;
 	let animalChoiceString: string = 'elephant';
-	let characterChoiceString: string = '';
+	let characterChoiceString: string = 'elephant';
 
 	function changeCharaterSelection(selector: ComponentType) {
 		animalChoiceString = characterSelectors.get(selector) || '';
@@ -47,6 +47,8 @@
 			})
 			.then((room) => {
 				roomStore.set(room);
+				sessionStorage.setItem('roomId', room.id);
+				sessionStorage.setItem('sessionId', room.sessionId);
 			});
 		goto('/waitingroom');
 	};
