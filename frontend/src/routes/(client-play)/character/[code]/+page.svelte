@@ -21,18 +21,18 @@
 	let colourChoice: number = 0;
 	let characterChoice: ComponentType = Elephant;
 	let animalChoiceString: string = 'elephant';
-
-	onMount(() => {});
+	let characterChoiceString: string = '';
 
 	function changeCharaterSelection(selector: ComponentType) {
 		animalChoiceString = characterSelectors.get(selector) || '';
+		characterChoiceString = animalChoiceString;
 		characterChoice = characters[animalChoiceString];
 	}
 
 	function changeActivitySelection(selector: ComponentType) {
 		let choice = activitySelectors.get(selector) || '';
-		let character = animalChoiceString + choice;
-		characterChoice = characters[character];
+		characterChoiceString = animalChoiceString + choice;
+		characterChoice = characters[characterChoiceString];
 	}
 
 	const join = () => {
@@ -40,7 +40,7 @@
 		client.join('jeoparty', {
 			gameCode: gameCode,
 			name: nickname,
-			character: animalChoiceString,
+			character: characterChoiceString,
 			colour: colourChoice
 		});
 	};

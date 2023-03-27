@@ -1,28 +1,21 @@
 <script lang="ts">
 	import type { Player } from '$lib/player';
-	import { characters } from '$lib/selector-maps';
+	import PlayerScore from './PlayerScore.svelte';
 
-	export let topThree: Player[];
+	export let players: Player[];
 	export let buzzWinner: Player | undefined;
+
+	players.sort((p1, p2) => (p1.score > p2.score ? -1 : 1));
 </script>
 
-{#each topThree as player}
-	<div>
-		<svelte:component this={characters[player.character]} colourChoice={player.characterColour} />
-	</div>
-	<div><p>${player.score}</p></div>
-	<div><p>{player.name}</p></div>
+{#each players as player, i}
+	{#if i < 3}
+		<PlayerScore name={player.name} score={player.score} />
+	{/if}
 {/each}
 
 {#if buzzWinner}
-	<div>
-		<svelte:component
-			this={characters[buzzWinner.character]}
-			colourChoice={buzzWinner.characterColour}
-		/>
-	</div>
-	<div><p>${buzzWinner.score}</p></div>
-	<div><p>{buzzWinner.name}</p></div>
+	<PlayerScore name={buzzWinner.name} score={buzzWinner.score} />
 {:else}
 	<div />
 {/if}
