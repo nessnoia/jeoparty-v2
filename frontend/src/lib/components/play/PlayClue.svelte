@@ -1,8 +1,10 @@
 <script lang="ts">
 	import type { Clue } from '$lib/database-models/game-data';
+	import { createEventDispatcher } from 'svelte';
 
 	export let clue: Clue;
-	export let updateScoreValue = 0;
+
+	const dispatch = createEventDispatcher();
 
 	let displayClue = false;
 	let displayAnswer = false;
@@ -30,9 +32,9 @@
 		if (displayClue) {
 			if (key === ' ') {
 			} else if (key === 'ArrowUp' || key === '+' || key === 'w') {
-				updateScoreValue = clue.value;
+				dispatch('updateScore', { amount: clue.value ?? 0 });
 			} else if (key === 'ArrowDown' || key === '-' || key === 's') {
-				updateScoreValue = -clue.value;
+				dispatch('updateScore', { amount: -(clue.value ?? 0) });
 			} else if (key === 'ArrowRight' || key === 'd') {
 				displayClue = false;
 				displayAnswer = true;
@@ -54,14 +56,15 @@
 				// before closing the question (@me) - or we could force them to manually update on this case...
 				// perhaps dispatch it, as a "score update event", and then respond to it in the main board to update
 				// the backend
-				updateScoreValue = clue.value;
+				dispatch('updateScore', { amount: clue.value ?? 0 });
 			} else if (key === 'ArrowDown' || key === '-' || key === 's') {
-				updateScoreValue = -clue.value;
+				dispatch('updateScore', { amount: -(clue.value ?? 0) });
 			} else if (key === 'ArrowLeft' || key === 'a') {
 				displayAnswer = false;
 				displayClue = true;
 			} else if (key === 'ArrowRight' || key === 'd' || key === 'Esc' || key === 'Escape') {
 				displayAnswer = false;
+				dispatch('clueUsed');
 				clueUsed = true;
 			}
 			return;

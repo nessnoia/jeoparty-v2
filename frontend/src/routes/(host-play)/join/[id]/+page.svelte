@@ -9,14 +9,14 @@
 
 	export let data: PageData;
 
-	let gameId = data.game.data._id;
+	// let gameId = data.game.data._id;
+	let gameId = data.gameId;
 	let gameCode = data.code.code;
 
 	let playerList: Record<any, any> = {};
 
 	if (browser) {
 		let client = new Colyseus.Client(PUBLIC_COLYSEUS_URL);
-		window.localStorage.setItem('game-data', JSON.stringify(data.game.data));
 		client.create('jeoparty', { gameCode }).then((room) => {
 			hostClient.set(room);
 			room.onStateChange((state) => {
@@ -46,6 +46,6 @@
 	/>
 {/each}
 
-{#if Object.keys(playerList).length > 0}
+{#if Object.keys(playerList).length >= 3}
 	<button on:click={startGame}>Start Game</button>
 {/if}
