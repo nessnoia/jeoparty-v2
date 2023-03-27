@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Elephant from '$lib/components/characters/elephants/Elephant.svelte';
-	import { onMount } from 'svelte';
 	import type { ComponentType } from 'svelte/internal';
 	import {
 		activitySelectors,
@@ -11,6 +10,8 @@
 	import * as Colyseus from 'colyseus.js';
 	import type { PageData } from './$types';
 	import { PUBLIC_COLYSEUS_URL } from '$env/static/public';
+	import { goto } from '$app/navigation';
+	import { roomStore } from '$lib/colyseus-client';
 
 	export let data: PageData;
 
@@ -37,12 +38,17 @@
 
 	const join = () => {
 		let client = new Colyseus.Client(PUBLIC_COLYSEUS_URL);
-		client.join('jeoparty', {
-			gameCode: gameCode,
-			name: nickname,
-			character: characterChoiceString,
-			colour: colourChoice
-		});
+		client
+			.join('jeoparty', {
+				gameCode: gameCode,
+				name: nickname,
+				character: characterChoiceString,
+				colour: colourChoice
+			})
+			.then((room) => {
+				roomStore.set(room);
+			});
+		goto('/waitingroom');
 	};
 </script>
 
@@ -56,17 +62,14 @@
 
 	<h2>Select Character</h2>
 
-	<!-- <button><img src="icons/caret-left.svg" alt="character scroll left" /></button> -->
-	{#each [...characterSelectors] as [selector, _]}
+	{#each [...characterSelectors] as [selector, i]}
 		<button class="char-selector" on:click={() => changeCharaterSelection(selector)}>
 			<svelte:component this={selector} />
 		</button>
 	{/each}
-	<!-- <button><img src="icons/caret-right.svg" alt="character scroll right" /></button> -->
 
 	<h2>Select Activity</h2>
 
-	<!-- <button><img src="icons/caret-left.svg" alt="activity scroll left" /></button> -->
 	{#if animalChoiceString == 'elephant'}
 		{#each animalToActivities[animalChoiceString] as selector, i}
 			{#if i == 0 || i == 1 || i == 2 || randomElephantIndexes.has(i)}
@@ -82,7 +85,6 @@
 			</button>
 		{/each}
 	{/if}
-	<!-- <button><img src="icons/caret-right.svg" alt="activity scroll right" /></button> -->
 
 	<div>
 		<h2>Colour</h2>
