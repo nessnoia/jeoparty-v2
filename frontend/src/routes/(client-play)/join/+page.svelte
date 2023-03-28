@@ -17,7 +17,12 @@
 </script>
 
 <div>
-	<input placeholder="Game Code" type="text" bind:value={gameCode} />
-	<button on:click={join}>Join</button>
+	<form on:submit|preventDefault={join}>
+		<label
+			>Game Code
+			<input placeholder="Game Code" type="text" bind:value={gameCode} />
+		</label>
+		<button type="submit">Join</button>
+	</form>
 	<span>{errorMessage}</span>
 </div>

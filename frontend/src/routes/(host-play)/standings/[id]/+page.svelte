@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { browser } from '$app/environment';
+	import { attemptReconnect, roomStore } from '$lib/colyseus-client';
 	import Podium from '$lib/components/play/Podium.svelte';
 
 	let players: {
@@ -15,6 +17,12 @@
 		{ character: 'penguinGhost', colourChoice: 278, name: 'ginny', score: 500, standing: 5 },
 		{ character: 'mooseArtist', colourChoice: 358, name: 'vic', score: 400, standing: 6 }
 	];
+
+	if (browser) {
+		if ($roomStore === undefined) {
+			attemptReconnect();
+		}
+	}
 </script>
 
 <h1>Standings</h1>

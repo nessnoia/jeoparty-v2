@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
+	import { attemptReconnect, roomStore } from '$lib/colyseus-client';
 	import Podium from '$lib/components/play/Podium.svelte';
 	import type { PageData } from './$types';
 
@@ -28,6 +29,10 @@
 		setTimeout(() => {
 			goto(`/round/${Number(roundNum) + 1}/${gameId}`);
 		}, 8000);
+
+		if ($roomStore === undefined) {
+			attemptReconnect();
+		}
 	}
 </script>
 

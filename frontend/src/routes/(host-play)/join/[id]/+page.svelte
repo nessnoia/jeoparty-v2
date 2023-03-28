@@ -1,15 +1,14 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { goto } from '$app/navigation';
+	import { beforeNavigate, goto } from '$app/navigation';
 	import type { PageData } from './$types';
 	import * as Colyseus from 'colyseus.js';
 	import { PUBLIC_COLYSEUS_URL } from '$env/static/public';
 	import PlayerDetailed from '$lib/components/play/PlayerDetailed.svelte';
-	import { hostClient } from '$lib/colyseus-client';
+	import { roomStore } from '$lib/colyseus-client';
 
 	export let data: PageData;
 
-	// let gameId = data.game.data._id;
 	let gameId = data.gameId;
 	let gameCode = data.code.code;
 
@@ -18,10 +17,16 @@
 	if (browser) {
 		let client = new Colyseus.Client(PUBLIC_COLYSEUS_URL);
 		client.create('jeoparty', { gameCode }).then((room) => {
-			hostClient.set(room);
+			roomStore.set(room);
+			sessionStorage.setItem('roomId', room.id);
+			sessionStorage.setItem('sessionId', room.sessionId);
 			room.onStateChange((state) => {
 				(state as any).players.onAdd = (player: any, key: any) => {
 					playerList[key] = player;
+				};
+				(state as any).players.onRemove = (_: any, key: any) => {
+					delete playerList[key];
+					playerList = playerList;
 				};
 			});
 		});
@@ -46,6 +51,6 @@
 	/>
 {/each}
 
-{#if Object.keys(playerList).length >= 3}
-	<button on:click={startGame}>Start Game</button>
-{/if}
+<!-- {#if Object.keys(playerList).length >= 1} -->
+<button on:click={startGame}>Start Game</button>
+<!-- {/if} -->

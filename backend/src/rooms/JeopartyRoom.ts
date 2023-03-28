@@ -38,18 +38,40 @@ export class JeopartyRoom extends Room<JeopartyRoomState> {
     onJoin (client: Client, options: any) {
         console.log(client.sessionId, "joined!");
         if (!this.state.host) {
-            this.state.host = new Host();
+            this.state.host = new Host(client.sessionId);
         } else {
-            console.log("player")
             const player = new Player(options.name, options.character, options.colour);
             this.state.players.set(client.sessionId, player);
         }
     }
 
-    onLeave (client: Client, consented: boolean) {
-        console.log(client.sessionId, "left!");
-
-        this.state.players.delete(client.sessionId);
+    async onLeave (client: Client, consented: boolean) {
+        if (this.state.host.sessionId === client.sessionId) {
+            this.state.host.connected = false;
+        } else {
+            this.state.players.get(client.sessionId).connected = false;
+        }
+        try {
+            if (consented) {
+                throw new Error("consented leave");
+            }
+            await this.allowReconnection(client, 60);
+            if (this.state.host.sessionId === client.sessionId) {
+                this.state.host.connected = true;
+                console.log(client.sessionId, "reconnect!");
+            } else {
+                this.state.players.get(client.sessionId).connected = true;
+                console.log(client.sessionId, "reconnect!");
+            }
+        } catch (e) {
+            if (this.state.host.sessionId === client.sessionId) {
+                this.state.host = undefined;
+                this.state.players = undefined;
+            } else {
+                this.state.players.delete(client.sessionId);
+            }
+            console.log(client.sessionId, "left!");
+        }
     }
 
     onDispose() {

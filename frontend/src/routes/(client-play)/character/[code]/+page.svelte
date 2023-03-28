@@ -38,18 +38,16 @@
 
 	const join = () => {
 		let client = new Colyseus.Client(PUBLIC_COLYSEUS_URL);
-		client
-			.join('jeoparty', {
-				gameCode: gameCode,
-				name: nickname,
-				character: characterChoiceString,
-				colour: colourChoice
-			})
-			.then((room) => {
-				roomStore.set(room);
-				sessionStorage.setItem('roomId', room.id);
-				sessionStorage.setItem('sessionId', room.sessionId);
-			});
+		let joinObj = {
+			gameCode: gameCode,
+			name: nickname,
+			character: characterChoiceString,
+			colour: colourChoice
+		};
+		client.join('jeoparty', joinObj).then((room) => {
+			roomStore.set(room);
+			sessionStorage.setItem('joinObj', JSON.stringify(joinObj));
+		});
 		goto('/waitingroom');
 	};
 </script>

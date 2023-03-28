@@ -1,5 +1,13 @@
 <script>
+	import { browser } from '$app/environment';
+	import { attemptReconnect, roomStore } from '$lib/colyseus-client';
 	import Waiting from '$lib/components/play/client/Waiting.svelte';
+
+	if (browser) {
+		if ($roomStore === undefined) {
+			attemptReconnect();
+		}
+	}
 </script>
 
 <Waiting>

@@ -1,6 +1,7 @@
 import { Schema, type } from "@colyseus/schema";
 
 export class Player extends Schema {
+    connected: boolean;
     constructor(name: string, character: string, colour: number) {
         super();
         this.name = name;

@@ -1,4 +1,6 @@
 <script>
+	import { browser } from '$app/environment';
+	import { attemptReconnect, roomStore } from '$lib/colyseus-client';
 	import Waiting from '$lib/components/play/client/Waiting.svelte';
 
 	let score = 0;
@@ -9,6 +11,12 @@
 
 	let pointsAhead = 100;
 	let playerBehind = 'justis';
+
+	if (browser) {
+		if ($roomStore === undefined) {
+			attemptReconnect();
+		}
+	}
 </script>
 
 <Waiting>
