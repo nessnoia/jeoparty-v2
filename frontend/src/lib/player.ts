@@ -1,6 +1,6 @@
 export interface Player {
     name: string;
     character: string;
-    characterColour: string;
+    characterColour: number;
     score: number;
 }

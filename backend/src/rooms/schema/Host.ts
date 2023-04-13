@@ -2,13 +2,9 @@ import { Schema, type } from "@colyseus/schema";
 
 export class Host extends Schema {
     connected: boolean;
-    constructor(sessionId: string) {
+    constructor() {
         super();
-        this.sessionId = sessionId;
-        this.gameState = "join";
-        this.buzzersActive = false;
+        this.sessionId = "";
     }
     @type("string") sessionId: string;
-    @type("string") gameState: string;
-    @type("boolean") buzzersActive: boolean;
 }

@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { roomStore } from '$lib/colyseus-client';
+
 	export let buzzersActive: boolean;
 	let numLights = 5;
 
@@ -8,6 +10,16 @@
 			buzzersActive = !buzzersActive;
 		}
 	};
+
+	$: roomStore.subscribe((room: any) => {
+		if (room) {
+			if (buzzersActive) {
+				room.send('activateBuzzers');
+			} else {
+				room.send('deactivateBuzzers');
+			}
+		}
+	});
 </script>
 
 {#each Array(numLights) as _}

@@ -29,6 +29,8 @@
 					playerList = playerList;
 				};
 			});
+			// For some reason it seems to default to the last game state, so this is to make sure it starts fresh.
+			room.send('updateGameState', { state: 'join' });
 		});
 	}
 

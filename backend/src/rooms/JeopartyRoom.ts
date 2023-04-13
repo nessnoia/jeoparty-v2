@@ -17,10 +17,18 @@ export class JeopartyRoom extends Room<JeopartyRoomState> {
         // from client: buzzer pressed, character update (game joined), daily double wager submitted, final jeopardy info submitted
 
         // HOST MESSAGES
-        this.onMessage("stateUpdate", (_, data) => {
-            const host = this.state.host;
-            host.gameState = data.state;
+        this.onMessage("updateGameState", (_, data) => {
+            this.state.gameState = data.state;
         });
+
+        this.onMessage("activateBuzzers", () => {
+            console.log("active")
+            this.state.buzzersActive = true;
+        })
+
+        this.onMessage("deactivateBuzzers", () => {
+            this.state.buzzersActive = false;
+        })
 
         this.onMessage("updatePlayerScore", (client, data) => {
             let player = this.state.players.get(client.sessionId);
@@ -37,8 +45,10 @@ export class JeopartyRoom extends Room<JeopartyRoomState> {
 
     onJoin (client: Client, options: any) {
         console.log(client.sessionId, "joined!");
-        if (!this.state.host) {
-            this.state.host = new Host(client.sessionId);
+        if (!this.state.hostJoined) {
+            this.state.host = new Host();
+            this.state.host.sessionId = client.sessionId;
+            this.state.hostJoined = true;
         } else {
             const player = new Player(options.name, options.character, options.colour);
             this.state.players.set(client.sessionId, player);

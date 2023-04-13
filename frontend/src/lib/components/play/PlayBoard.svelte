@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { roomStore } from '$lib/colyseus-client';
 	import { type Round, sortClues } from '$lib/database-models/game-data';
 	import { createEventDispatcher } from 'svelte';
 	import PlayCategory from './PlayCategory.svelte';
@@ -23,6 +23,20 @@
 	$: if (numClues === numCluesPlayed) {
 		dispatch('goToNext');
 	}
+
+	$: roomStore.subscribe((room: any) => {
+		if (room) {
+			if (showCategories) {
+				room.send('updateGameState', {
+					state: 'showCategories'
+				});
+			} else {
+				room.send('updateGameState', {
+					state: 'buzzer'
+				});
+			}
+		}
+	});
 </script>
 
 <!-- Render categories -->

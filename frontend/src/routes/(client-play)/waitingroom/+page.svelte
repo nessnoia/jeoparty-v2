@@ -1,18 +1,19 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { beforeNavigate } from '$app/navigation';
+	import { beforeNavigate, goto } from '$app/navigation';
 	import { PUBLIC_COLYSEUS_URL } from '$env/static/public';
 	import { roomStore } from '$lib/colyseus-client';
 	import Waiting from '$lib/components/play/client/Waiting.svelte';
+	import type { Room } from 'colyseus.js';
 	import * as Colyseus from 'colyseus.js';
 
 	beforeNavigate(({ type }) => {
 		roomStore.subscribe((room: any) => {
 			if (room) {
-				if (type === 'leave') {
-					room.leave(true);
-					roomStore.set(undefined);
-				}
+				// if (type === 'leave') {
+				// 	room.leave(true);
+				// 	roomStore.set(undefined);
+				// }
 			}
 		});
 	});
@@ -27,6 +28,16 @@
 				sessionStorage.setItem('sessionId', room.sessionId);
 			});
 		}
+
+		roomStore.subscribe((room) => {
+			if (room) {
+				(room as Room).state.listen('gameState', (change: any) => {
+					if (change == 'showCategories') {
+						goto('/categories');
+					}
+				});
+			}
+		});
 	}
 </script>
 
