@@ -24,9 +24,9 @@
 				};
 				playerList.push(playerObj);
 			});
-			playerList.sort((p1, p2) => (p1.score > p2.score ? -1 : 1));
+			// playerList.sort((p1, p2) => (p1.score > p2.score ? -1 : 1));
 
-			room.send('updateGameState', { state: 'podium' });
+			// room.send('updateGameState', { state: 'podium' });
 		}
 	});
 </script>

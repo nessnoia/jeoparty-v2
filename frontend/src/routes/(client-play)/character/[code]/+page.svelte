@@ -47,6 +47,8 @@
 		client.join('jeoparty', joinObj).then((room) => {
 			roomStore.set(room);
 			sessionStorage.setItem('joinObj', JSON.stringify(joinObj));
+			sessionStorage.setItem('roomId', room.id);
+			sessionStorage.setItem('sessionId', room.sessionId);
 		});
 		goto('/waitingroom');
 	};

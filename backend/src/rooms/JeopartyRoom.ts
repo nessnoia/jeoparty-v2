@@ -2,6 +2,7 @@ import { Room, Client } from "colyseus";
 import { Host } from "./schema/Host";
 import { Player } from "./schema/Player";
 import { JeopartyRoomState } from "./schema/JeopartyRoomState";
+import { MapSchema } from "@colyseus/schema";
 
 export class JeopartyRoom extends Room<JeopartyRoomState> {
 
@@ -33,6 +34,9 @@ export class JeopartyRoom extends Room<JeopartyRoomState> {
         this.onMessage("updatePlayerScore", (client, data) => {
             let player = this.state.players.get(client.sessionId);
             player.score += data.score;
+            this.state.players = new MapSchema<Player>(new Map([...this.state.players].sort((a, b) =>
+                a[1].score > b[1].score ? -1 : 1
+            )))
         });
 
 
