@@ -25,6 +25,7 @@ export class JeopartyRoom extends Room<JeopartyRoomState> {
         this.onMessage("activateBuzzers", () => {
             console.log("active")
             this.state.buzzersActive = true;
+            this.state.buzzerWinner = "";
         })
 
         this.onMessage("deactivateBuzzers", () => {
@@ -41,9 +42,10 @@ export class JeopartyRoom extends Room<JeopartyRoomState> {
 
 
         // CLIENT MESSAGES
-        this.onMessage("buzzer", (client, data) => {
-            let player = this.state.players.get(client.sessionId);
-            // unsure how to handle this with how my objects are currently designed - might need to redesign those
+        this.onMessage("buzzer", (client) => {
+            if (this.state.buzzerWinner === "") {
+                this.state.buzzerWinner = client.sessionId;
+            }
         });
     }
 
