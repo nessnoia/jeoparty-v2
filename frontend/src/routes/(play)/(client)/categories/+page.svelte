@@ -6,9 +6,6 @@
 	import type { Room } from 'colyseus.js';
 
 	if (browser) {
-		if ($roomStore === undefined) {
-			attemptReconnect();
-		}
 		roomStore.subscribe((room) => {
 			if (room) {
 				(room as Room).state.listen('gameState', (change: any) => {

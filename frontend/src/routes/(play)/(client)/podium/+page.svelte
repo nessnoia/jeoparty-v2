@@ -19,10 +19,6 @@
 	let playerBehind = '';
 
 	if (browser) {
-		if ($roomStore === undefined) {
-			attemptReconnect();
-		}
-
 		sessionId = sessionStorage.getItem('sessionId') ?? '';
 		roomStore.subscribe((room) => {
 			if (room) {
