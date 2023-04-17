@@ -5,7 +5,7 @@
 	import type { Player } from '$lib/player';
 	import type { Room } from 'colyseus.js';
 
-	let playerList: Player[] = [];
+	let playerList: Record<string, Player> = {};
 	let sessionId = '';
 
 	let score = 0;
@@ -43,32 +43,41 @@
 
 				(room as Room).state.players.forEach((player: any, id: string) => {
 					let playerObj = {
-						sessionId: id,
 						name: player.name,
 						character: player.character,
 						characterColour: player.colour,
 						score: player.score
 					};
-					playerList.push(playerObj);
+					playerList[id] = playerObj;
 				});
-				// playerList.sort((p1, p2) => (p1.score > p2.score ? -1 : 1));
 
-				for (let i = 0; i < playerList.length; i++) {
-					if (sessionId === playerList[i].sessionId) {
+				// (room as Room).state.players[sessionId].onChange((curr: any, prev: any) => {
+
+				// })
+
+				let playerIds = Object.keys(playerList);
+				for (let i = 0; i < playerIds.length; i++) {
+					let id = playerIds[i];
+					if (sessionId === id) {
 						place = i + 1;
-						score = playerList[i].score;
-						if (i === 0 && playerList) {
-							pointsAhead = score - playerList[i + 1].score;
-							playerBehind = playerList[i + 1].name;
-						} else if (i === playerList.length - 1) {
-							pointsBehind = playerList[i - 1].score - score;
-							playerAhead = playerList[i - 1].name;
-						} else {
-							pointsBehind = playerList[i - 1].score - score;
-							playerAhead = playerList[i - 1].name;
+						score = playerList[id].score;
 
-							pointsAhead = score - playerList[i + 1].score;
-							playerBehind = playerList[i + 1].name;
+						if (i === 0 && playerList) {
+							let nextId = playerIds[i + 1];
+							pointsAhead = score - playerList[nextId].score;
+							playerBehind = playerList[nextId].name;
+						} else if (i === playerIds.length - 1) {
+							let prevId = playerIds[i - 1];
+							pointsBehind = playerList[prevId].score - score;
+							playerAhead = playerList[prevId].name;
+						} else {
+							let prevId = playerIds[i - 1];
+							pointsBehind = playerList[prevId].score - score;
+							playerAhead = playerList[prevId].name;
+
+							let nextId = playerIds[i + 1];
+							pointsAhead = score - playerList[nextId].score;
+							playerBehind = playerList[nextId].name;
 						}
 					}
 				}
@@ -87,7 +96,7 @@
 	{#if place > 1}
 		<p>You are ${pointsBehind} behind {playerAhead}.</p>
 	{/if}
-	{#if place < playerList.length - 1}
+	{#if place < Object.keys(playerList).length - 1}
 		<p>You are ${pointsAhead} behind {playerBehind}.</p>
 	{/if}
 </div>

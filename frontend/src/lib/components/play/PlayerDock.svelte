@@ -4,8 +4,6 @@
 
 	export let players: Player[];
 	export let buzzWinner: Player | undefined;
-
-	players.sort((p1, p2) => (p1.score > p2.score ? -1 : 1));
 </script>
 
 {#each players as player, i}
