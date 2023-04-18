@@ -55,5 +55,10 @@
 
 <BuzzersActiveLights bind:buzzersActive />
 <Timer length={5} bind:buzzersActive {startTimer} />
-<PlayBoard {round} bind:buzzerWinnerId on:goToNext={goToNext} />
+<PlayBoard
+	{round}
+	bind:buzzerWinnerId
+	firstPlayer={(Array.from(players.keys()) ?? [''])[0]}
+	on:goToNext={goToNext}
+/>
 <PlayerDock players={Array.from(players.values())} buzzerWinner={players.get(buzzerWinnerId)} />

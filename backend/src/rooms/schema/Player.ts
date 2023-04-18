@@ -17,22 +17,24 @@ export class Player extends Schema {
     @type("number") place: number;
 }
 
-// export class PlayerDailyDouble extends Player {
-//     constructor() {
-//         super();
-//         this.won = false;
-//         this.wager = 0;
-//     }
-//     @type("boolean") won: boolean;
-//     @type("number") wager: number;
-// }
+export class PlayerDailyDouble extends Schema {
+    constructor() {
+        super();
+        this.playerId = '';
+        this.playerWager = 0;
+        this.clueValue = 0;
+    }
+    @type ("string") playerId: string;
+    @type("number") playerWager: number;
+    @type("number") clueValue: number;
+}
 
-// export class PlayerFinalJeoparty extends Player {
-//     constructor() {
-//         super();
-//         this.wager = 0;
-//         this.answer = "";
-//     }
-//     @type("number") wager: number;
-//     @type("string") answer: string;
-// }
+export class PlayerFinalJeoparty extends Schema {
+    constructor() {
+        super();
+        this.wager = 0;
+        this.answer = "";
+    }
+    @type("number") wager: number;
+    @type("string") answer: string;
+}

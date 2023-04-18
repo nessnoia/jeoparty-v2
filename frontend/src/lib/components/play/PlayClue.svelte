@@ -13,9 +13,13 @@
 	let clueUsed = false;
 
 	const displayClueCard = () => {
-		if (clue.isDailyDouble) displayDailyDouble = true;
-		else displayClue = true;
-		dispatch('clueOpen', { value: clue.value ?? 0 });
+		if (clue.isDailyDouble) {
+			displayDailyDouble = true;
+			dispatch('dailyDouble');
+		} else {
+			displayClue = true;
+			dispatch('clueOpen', { value: clue.value ?? 0 });
+		}
 	};
 
 	const onKeyUp = (e: KeyboardEvent) => {

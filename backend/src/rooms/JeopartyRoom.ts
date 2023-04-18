@@ -1,6 +1,6 @@
 import { Room, Client } from "colyseus";
 import { Host } from "./schema/Host";
-import { Player } from "./schema/Player";
+import { Player, PlayerDailyDouble } from "./schema/Player";
 import { JeopartyRoomState } from "./schema/JeopartyRoomState";
 import { MapSchema } from "@colyseus/schema";
 
@@ -52,6 +52,11 @@ export class JeopartyRoom extends Room<JeopartyRoomState> {
             }
         });
 
+        this.onMessage("updateDailyDoubleInfo", (_, data) => {
+            this.state.dailyDouble.playerId = data.playerId;
+            this.state.dailyDouble.clueValue = data.clueValue;
+        })
+
         // CLIENT MESSAGES
         this.onMessage("buzzer", (client) => {
             console.log('buzz');
@@ -60,6 +65,11 @@ export class JeopartyRoom extends Room<JeopartyRoomState> {
                 this.state.buzzersActive = false;
             }
         });
+
+        this.onMessage("updateDailyDoubleWager", (_, data) => {
+            console.log("update wager", data.wager)
+            this.state.dailyDouble.playerWager = data.wager;
+        })
     }
 
     onJoin (client: Client, options: any) {

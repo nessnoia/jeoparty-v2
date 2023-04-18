@@ -6,9 +6,21 @@
 	import PlayClue from './PlayClue.svelte';
 	import ShowCategories from './ShowCategories.svelte';
 	import type { Room } from 'colyseus.js';
+	import { browser } from '$app/environment';
 
 	export let round: Round;
 	export let buzzerWinnerId: string;
+	export let firstPlayer: string;
+
+	let secondMostRecentWinner = '';
+	let mostRecentWinner = firstPlayer;
+
+	// host knows who the last winner was: when the up arrow is hit, the last winner field gets updated
+	// when the down arrow is hit, this gets reverted to the previous winner
+	// then, when a daily double is found:
+	//  the client redirects the character who was the last winner to the daily double screen
+	//  the host updates the daily double clue value and who the daily double should be assigned to
+	//  the client submits their wager and updates the clue based on that
 
 	let room = $roomStore as Room | undefined;
 
@@ -16,9 +28,13 @@
 	let dispatch = createEventDispatcher();
 
 	let numClues = 0;
+	let maxRoundClueValue = 0;
 	for (let category of round.categories) {
-		for (let _ of category.clues) {
+		for (let clue of category.clues) {
 			numClues++;
+			if ((clue.value ?? 0) > maxRoundClueValue) {
+				maxRoundClueValue = clue.value ?? 0;
+			}
 		}
 	}
 
@@ -26,7 +42,7 @@
 	let lastClueValue = 0;
 
 	$: if (numClues === numCluesPlayed) {
-		dispatch('goToNext');
+		// dispatch('goToNext');
 	}
 
 	$: if (showCategories) {
@@ -37,6 +53,25 @@
 		room?.send('updateGameState', {
 			state: 'buzzer'
 		});
+	}
+
+	if (browser) {
+		if (room !== undefined) {
+			// console.log('yes');
+			console.log(room.state.dailyDouble);
+			room.state.dailyDouble.playerWager.onChange = function (changes: any) {
+				console.log(changes);
+			};
+			// room.state.listen('dailyDouble', (change: any) => {
+			// 	console.log(change);
+			// 	// lastClueValue = change.playerWager;
+			// 	// console.log(change);
+			// 	// console.log(prev.playerWager);
+			// 	// if (change.field == 'playerWager') {
+			// 	// 	lastClueValue = change.value;
+			// 	// }
+			// });
+		}
 	}
 
 	const clueClosed = () => {
@@ -54,6 +89,16 @@
 		buzzerWinnerId = '';
 	};
 
+	const handleDailyDouble = () => {
+		room?.send('updateDailyDoubleInfo', {
+			playerId: mostRecentWinner,
+			clueValue: maxRoundClueValue
+		});
+		room?.send('updateGameState', {
+			state: 'dailyDouble'
+		});
+	};
+
 	const onKeyUp = (e: KeyboardEvent) => {
 		const key = e.key;
 		if (buzzerWinnerId !== '') {
@@ -62,11 +107,14 @@
 					id: buzzerWinnerId,
 					clueValue: lastClueValue
 				});
+				secondMostRecentWinner = mostRecentWinner;
+				mostRecentWinner = buzzerWinnerId;
 			} else if (key === 'ArrowDown' || key === '-' || key === 's') {
 				room?.send('updatePlayerScore', {
 					id: buzzerWinnerId,
 					clueValue: -lastClueValue
 				});
+				mostRecentWinner = secondMostRecentWinner;
 			}
 		}
 	};
@@ -81,7 +129,12 @@
 			<PlayCategory {category} />
 			<!-- Render clues -->
 			{#each category.clues.sort(sortClues) as clue}
-				<PlayClue {clue} on:clueUsed={clueClosed} on:clueOpen={clueOpen} />
+				<PlayClue
+					{clue}
+					on:clueUsed={clueClosed}
+					on:clueOpen={clueOpen}
+					on:dailyDouble={handleDailyDouble}
+				/>
 			{/each}
 		{/each}
 	{/if}

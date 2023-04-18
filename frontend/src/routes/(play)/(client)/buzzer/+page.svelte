@@ -20,7 +20,7 @@
 	let buzzersActive = false;
 	let clueOpen = false;
 
-	$: room = $roomStore as Room | undefined;
+	let room = $roomStore as Room | undefined;
 
 	const buzz = () => {
 		if (clueOpen) {
@@ -67,6 +67,12 @@
 					// Need this so if someone wins the buzz, when the timer runs out their screen stays green.
 					if (!wonBuzz) {
 						lostBuzz = true;
+					}
+				}
+
+				if (change == 'dailyDouble') {
+					if (room?.state.dailyDouble.playerId == sessionId) {
+						goto('/dailydouble');
 					}
 				}
 			});
