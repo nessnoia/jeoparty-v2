@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { roomStore } from '$lib/colyseus-client';
 	import Waiting from '$lib/components/play/client/Waiting.svelte';
@@ -8,15 +7,16 @@
 	$: room = $roomStore as Room | undefined;
 
 	$: if (room !== undefined) {
-		room.state.listen('gameState', (change: any) => {
-			if (change == 'buzzer') {
-				goto('/buzzer');
+		room?.state.listen('gameState', (change: any) => {
+			if (change == 'showCategories') {
+				goto('/categories');
 			}
 		});
 	}
 </script>
 
 <Waiting>
-	<h1>Showing categories</h1>
-	<h2>Get ready...</h2>
+	<h1>Waiting for game to start</h1>
 </Waiting>
+
+<!-- <svelte:window on:beforeunload={onBeforeUnload} /> -->

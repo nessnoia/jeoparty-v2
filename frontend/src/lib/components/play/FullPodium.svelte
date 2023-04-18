@@ -1,34 +1,25 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
-	import { attemptReconnect, roomStore } from '$lib/colyseus-client';
+	import { roomStore } from '$lib/colyseus-client';
 	import Podium from '$lib/components/play/Podium.svelte';
 	import type { Player } from '$lib/player';
 	import type { Room } from 'colyseus.js';
 
 	let playerList: Player[] = [];
 
-	if (browser) {
-		if ($roomStore === undefined) {
-			attemptReconnect();
-		}
+	$: room = $roomStore as Room | undefined;
+
+	$: if (room !== undefined) {
+		room.state.players.$items.forEach((player: any) => {
+			let playerObj = {
+				name: player.name,
+				character: player.character,
+				characterColour: player.colour,
+				score: player.score,
+				place: -1
+			};
+			playerList.push(playerObj);
+		});
 	}
-
-	roomStore.subscribe((room: any) => {
-		if (room) {
-			room.state.players.$items.forEach((player: any) => {
-				let playerObj = {
-					name: player.name,
-					character: player.character,
-					characterColour: player.colour,
-					score: player.score
-				};
-				playerList.push(playerObj);
-			});
-			// playerList.sort((p1, p2) => (p1.score > p2.score ? -1 : 1));
-
-			// room.send('updateGameState', { state: 'podium' });
-		}
-	});
 </script>
 
 <div class="podium">

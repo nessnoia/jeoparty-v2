@@ -1,15 +1,12 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
-	import { goto } from '$app/navigation';
 	import { roomStore } from '$lib/colyseus-client';
 	import FullPodium from '$lib/components/play/FullPodium.svelte';
+	import type { Room } from 'colyseus.js';
 
-	if (browser) {
-		roomStore.subscribe((room: any) => {
-			if (room) {
-				room.send('updateGameState', { state: 'finalpodium' });
-			}
-		});
+	$: room = $roomStore as Room | undefined;
+
+	$: if (room !== undefined) {
+		room.send('updateGameState', { state: 'finalpodium' });
 	}
 </script>
 

@@ -1,8 +1,19 @@
 <script lang="ts">
 	import { roomStore } from '$lib/colyseus-client';
+	import type { Room } from 'colyseus.js';
 
 	export let buzzersActive: boolean;
 	let numLights = 5;
+
+	$: room = $roomStore as Room | undefined;
+
+	$: if (room !== undefined) {
+		if (buzzersActive) {
+			room.send('activateBuzzers');
+		} else {
+			room.send('deactivateBuzzers');
+		}
+	}
 
 	const onKeyUp = (e: KeyboardEvent) => {
 		const key = e.key;
@@ -10,16 +21,6 @@
 			buzzersActive = !buzzersActive;
 		}
 	};
-
-	$: roomStore.subscribe((room: any) => {
-		if (room) {
-			if (buzzersActive) {
-				room.send('activateBuzzers');
-			} else {
-				room.send('deactivateBuzzers');
-			}
-		}
-	});
 </script>
 
 {#each Array(numLights) as _}

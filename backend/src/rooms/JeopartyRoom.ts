@@ -95,7 +95,7 @@ export class JeopartyRoom extends Room<JeopartyRoomState> {
             if (consented) {
                 throw new Error("consented leave");
             }
-            await this.allowReconnection(client, 60);
+            await this.allowReconnection(client, 15);
             if (this.state.host.sessionId === client.sessionId) {
                 this.state.host.connected = true;
                 console.log(client.sessionId, "reconnect!");
