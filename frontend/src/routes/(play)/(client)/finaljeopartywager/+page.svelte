@@ -6,17 +6,14 @@
 	import type { Room } from 'colyseus.js';
 
 	let score: number;
-	let maxWager: number;
-
 	let sessionId = '';
+
 	$: room = $roomStore as Room | undefined;
 
 	$: if (room !== undefined) {
 		let player = room.state.players.get(sessionId);
 		if (player !== undefined) {
 			score = player.score;
-			maxWager =
-				score > room.state.dailyDouble.clueValue ? score : room.state.dailyDouble.clueValue;
 		}
 	}
 
@@ -24,12 +21,12 @@
 		sessionId = sessionStorage.getItem('sessionId') ?? '';
 	}
 
-	const submitDailyDouble = (e: CustomEvent<{ wager: number }>) => {
-		room?.send('updateDailyDoubleWager', {
+	const submitWager = (e: CustomEvent<{ wager: number }>) => {
+		room?.send('finalJeopartyWager', {
 			wager: e.detail.wager
 		});
-		goto('/buzzer');
+		goto('/finaljeopartywait');
 	};
 </script>
 
-<WagerSubmittal {maxWager} {score} on:submitWager={submitDailyDouble} />
+<WagerSubmittal maxWager={score} {score} on:submitWager={submitWager} />

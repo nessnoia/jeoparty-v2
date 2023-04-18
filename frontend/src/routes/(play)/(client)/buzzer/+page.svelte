@@ -33,7 +33,7 @@
 				goto('/podium');
 			}
 
-			if (change == 'finalpodium') {
+			if (change == 'finalPodium') {
 				goto('/finalpodium');
 			}
 
@@ -104,12 +104,10 @@
 						let nextIdx = place;
 						pointsAhead = score - players[nextIdx].score;
 						playerBehind = players[nextIdx].name;
-						pointsBehind = -1;
 					} else if (place === players.length && players.length != 1) {
 						let prevIdx = place - 2;
 						pointsBehind = players[prevIdx].score - score;
 						playerAhead = players[prevIdx].name;
-						pointsAhead = -1;
 					} else if (players.length != 1) {
 						let nextIdx = place;
 						let prevIdx = place - 2;

@@ -21,6 +21,7 @@
 	let startTimer = false;
 
 	let round = gameData?.rounds[roundNum - 1];
+	let roundType = round.type;
 
 	let players: Map<string, Player> = new Map();
 	$: room = $roomStore as Room | undefined;
@@ -53,7 +54,9 @@
 	};
 </script>
 
-<BuzzersActiveLights bind:buzzersActive />
+{#if roundType == 'normal'}
+	<BuzzersActiveLights bind:buzzersActive />
+{/if}
 <Timer length={5} bind:buzzersActive {startTimer} />
 <PlayBoard
 	{round}

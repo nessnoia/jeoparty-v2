@@ -30,9 +30,9 @@ export class PlayerDailyDouble extends Schema {
 }
 
 export class PlayerFinalJeoparty extends Schema {
-    constructor() {
+    constructor(wager: number) {
         super();
-        this.wager = 0;
+        this.wager = wager;
         this.answer = "";
     }
     @type("number") wager: number;

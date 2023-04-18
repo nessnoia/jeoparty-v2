@@ -6,7 +6,7 @@
 	$: room = $roomStore as Room | undefined;
 
 	$: if (room !== undefined) {
-		room.send('updateGameState', { state: 'finalpodium' });
+		room.send('updateGameState', { state: 'finalPodium' });
 	}
 </script>
 

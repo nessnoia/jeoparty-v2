@@ -7,18 +7,19 @@
 	let player: Player;
 	let sessionId = '';
 
-	let room = $roomStore as Room | undefined;
+	$: room = $roomStore as Room | undefined;
+
+	$: if (room !== undefined) {
+		for (let [id, player] of room.state.players) {
+			if (sessionId === id) {
+				player = player;
+				break;
+			}
+		}
+	}
 
 	if (browser) {
 		sessionId = sessionStorage.getItem('sessionId') ?? '';
-		if (room !== undefined) {
-			for (let [id, player] of room.state.players) {
-				if (sessionId === id) {
-					player = player;
-					break;
-				}
-			}
-		}
 	}
 </script>
 

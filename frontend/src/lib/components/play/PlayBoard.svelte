@@ -6,7 +6,7 @@
 	import PlayClue from './PlayClue.svelte';
 	import ShowCategories from './ShowCategories.svelte';
 	import type { Room } from 'colyseus.js';
-	import { browser } from '$app/environment';
+	import FinalJeopardyClue from './FinalJeopardyClue.svelte';
 
 	export let round: Round;
 	export let buzzerWinnerId: string;
@@ -124,8 +124,12 @@
 		{/each}
 	{/if}
 {:else if round.type == 'final'}
-	<!--This div will be an empty space until the category is revealed-->
-	<div />
+	<!-- Should only ever be one of each, but need to loop because of the possibly undefined arrays -->
+	{#each round.categories || [] as category}
+		{#each category.clues || [] as clue}
+			<FinalJeopardyClue {category} {clue} />
+		{/each}
+	{/each}
 {/if}
 
 <svelte:window on:keyup|preventDefault={onKeyUp} />

@@ -9,57 +9,68 @@
 	let playerList: Player[] = [];
 	let sessionId = '';
 
-	let score = 0;
-	let place = 0;
+	let score: number;
+	let place: number;
 
-	let pointsBehind = 0;
-	let playerAhead = '';
+	let pointsBehind: number;
+	let playerAhead: string;
+	let pointsAhead: number;
+	let playerBehind: string;
 
-	let pointsAhead = 0;
-	let playerBehind = '';
+	$: room = $roomStore as Room | undefined;
 
-	let room = $roomStore as Room | undefined;
+	$: if (room !== undefined) {
+		updatePlayerInfo(room.state.players);
+		room.state.listen('gameState', (change: string) => {
+			if (change == 'showCategories') {
+				goto('/categories');
+			}
+
+			if (change == 'finalJeoparty') {
+				goto('/finaljeopartywait');
+			}
+		});
+
+		room.state.listen('players', (playerChanges: any) => {
+			updatePlayerInfo(playerChanges);
+		});
+	}
+
+	const updatePlayerInfo = (playersMap: any) => {
+		let playerIds: string[] = Array.from(playersMap.keys());
+		let players: Player[] = Array.from(playersMap.values());
+		for (let i = 0; i < players.length; i++) {
+			let player = players[i];
+			if (sessionId === playerIds[i]) {
+				place = player.place;
+				score = player.score;
+
+				if (place != -1) {
+					if (place === 1 && players.length != 1) {
+						let nextIdx = place;
+						pointsAhead = score - players[nextIdx].score;
+						playerBehind = players[nextIdx].name;
+					} else if (place === players.length && players.length != 1) {
+						let prevIdx = place - 2;
+						pointsBehind = players[prevIdx].score - score;
+						playerAhead = players[prevIdx].name;
+					} else if (players.length != 1) {
+						let nextIdx = place;
+						let prevIdx = place - 2;
+						pointsBehind = players[prevIdx].score - score;
+						playerAhead = players[prevIdx].name;
+
+						pointsAhead = score - players[nextIdx].score;
+						playerBehind = players[nextIdx].name;
+					}
+					break;
+				}
+			}
+		}
+	};
 
 	if (browser) {
 		sessionId = sessionStorage.getItem('sessionId') ?? '';
-		if (room !== undefined) {
-			room.state.listen('gameState', (change: string) => {
-				if (change == 'showCategories') {
-					goto('/categories');
-				}
-			});
-
-			let playerIds: string[] = Array.from(room.state.players.keys());
-			let players: Player[] = Array.from(room.state.players.values());
-			room.state.listen('players', () => {
-				for (let i = 0; i < players.length; i++) {
-					let player = players[i];
-					if (sessionId === playerIds[i]) {
-						place = player.place;
-						score = player.score;
-
-						if (place != -1) {
-							if (place === 1) {
-								pointsAhead = score - players[place + 1].score;
-								playerBehind = players[place + 1].name;
-								pointsBehind = -1;
-							} else if (place === players.length - 1) {
-								pointsBehind = players[place - 1].score - score;
-								playerAhead = players[place - 1].name;
-								pointsAhead = -1;
-							} else {
-								pointsBehind = players[place - 1].score - score;
-								playerAhead = players[place - 1].name;
-
-								pointsAhead = score - players[place + 1].score;
-								playerBehind = players[place + 1].name;
-							}
-							break;
-						}
-					}
-				}
-			});
-		}
 	}
 </script>
 
@@ -69,9 +80,9 @@
 
 <p>Your score: ${score}</p>
 <p>You are in {place} place.</p>
-{#if place > 1}
+{#if place > 1 && pointsBehind !== undefined}
 	<p>You are ${pointsBehind} behind {playerAhead}.</p>
 {/if}
-{#if place < playerList.length - 1}
+{#if place < playerList.length - 1 && pointsAhead !== undefined}
 	<p>You are ${pointsAhead} behind {playerBehind}.</p>
 {/if}

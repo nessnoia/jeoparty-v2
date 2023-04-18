@@ -1,6 +1,6 @@
 import { Room, Client } from "colyseus";
 import { Host } from "./schema/Host";
-import { Player } from "./schema/Player";
+import { Player, PlayerFinalJeoparty } from "./schema/Player";
 import { JeopartyRoomState } from "./schema/JeopartyRoomState";
 import { MapSchema } from "@colyseus/schema";
 
@@ -70,6 +70,17 @@ export class JeopartyRoom extends Room<JeopartyRoomState> {
         this.onMessage("updateDailyDoubleWager", (_, data) => {
             console.log("update wager", data.wager)
             this.state.dailyDouble.playerWager = data.wager;
+        })
+
+        this.onMessage("finalJeopartyWager", (client, data) => {
+            console.log("final jeoparty", data);
+            let finalJeoparty = new PlayerFinalJeoparty(data.wager);
+            this.state.finalJeoparty.set(client.sessionId, finalJeoparty);
+        })
+
+        this.onMessage("finalJeopartyAnswer", (client, data) => {
+            let finalJeoparty = this.state.finalJeoparty.get(client.sessionId);
+            finalJeoparty.answer = data.answer;
         })
     }
 
