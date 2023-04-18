@@ -1,5 +1,9 @@
 <script lang="ts">
+	import { roomStore } from '$lib/colyseus-client';
+	import type { Room } from 'colyseus.js';
+
 	export let buzzersActive: boolean;
+	export let startTimer: boolean;
 	export let length: number;
 
 	let numLights = 9;
@@ -7,7 +11,15 @@
 	let lightsActive: boolean[] = [];
 	let counter = length;
 
+	let room = $roomStore as Room | undefined;
+
 	let timer: number | undefined;
+
+	$: if (startTimer) {
+		handleTimerStart();
+	} else {
+		handleTimerCancel();
+	}
 
 	for (let i = 0; i < numLights; i++) {
 		lightsActive.push(false);
@@ -25,6 +37,27 @@
 			window.clearInterval(timer);
 			timer = undefined;
 			buzzersActive = false;
+			room?.send('updateGameState', { state: 'timesUp' });
+		}
+	};
+
+	const handleTimerStart = () => {
+		for (let i = 0; i < numLights; i++) {
+			lightsActive[i] = true;
+		}
+		counter = length;
+		if (timer === undefined) {
+			timer = window.setInterval(handleTimer, interval * 1000);
+		}
+	};
+
+	const handleTimerCancel = () => {
+		for (let i = 0; i < numLights; i++) {
+			lightsActive[i] = false;
+		}
+		if (timer !== undefined) {
+			window.clearInterval(timer);
+			timer = undefined;
 		}
 	};
 
@@ -32,21 +65,9 @@
 		const key = e.key;
 		if (key === ' ') {
 			if (buzzersActive) {
-				for (let i = 0; i < numLights; i++) {
-					lightsActive[i] = true;
-				}
-				counter = length;
-				if (timer === undefined) {
-					timer = window.setInterval(handleTimer, interval * 1000);
-				}
+				handleTimerStart();
 			} else {
-				for (let i = 0; i < numLights; i++) {
-					lightsActive[i] = false;
-				}
-				if (timer !== undefined) {
-					window.clearInterval(timer);
-					timer = undefined;
-				}
+				handleTimerCancel();
 			}
 		}
 	};

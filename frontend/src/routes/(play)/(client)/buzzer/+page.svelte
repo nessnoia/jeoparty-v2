@@ -1,104 +1,156 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import { attemptReconnect, roomStore } from '$lib/colyseus-client';
+	import { roomStore } from '$lib/colyseus-client';
 	import type { Player } from '$lib/player';
 	import type { Room } from 'colyseus.js';
 
-	let playerList: Record<string, Player> = {};
 	let sessionId = '';
 
 	let score = 0;
-	let place = 0;
+	let place = -1;
 
 	let pointsBehind = 0;
 	let playerAhead = '';
-
 	let pointsAhead = 0;
 	let playerBehind = '';
 
-	$: buzzersActive = false;
+	let wonBuzz = false;
+	let lostBuzz = false;
+	let buzzersActive = false;
+	let clueOpen = false;
+
+	$: room = $roomStore as Room | undefined;
+
+	const buzz = () => {
+		if (clueOpen) {
+			room?.send('buzzer');
+		}
+	};
+
+	// $: if (room !== undefined) {
+	// 	console.log('refresh');
+	// 	for (let [id, player] of room.state.players) {
+	// 		if (id === sessionId) {
+	// 			score = player.score;
+	// 			place = player.place;
+	// 		}
+	// 	}
+	// }
 
 	if (browser) {
 		sessionId = sessionStorage.getItem('sessionId') ?? '';
-		roomStore.subscribe((room) => {
-			if (room) {
-				(room as Room).state.listen('gameState', (change: string) => {
-					if (change == 'podium') {
-						goto('/podium');
+		if (room !== undefined) {
+			room.state.listen('gameState', (change: string) => {
+				if (change == 'podium') {
+					goto('/podium');
+				}
+
+				if (change == 'finalpodium') {
+					goto('/finalpodium');
+				}
+
+				// Question has been closed, clear buzzer colours.
+				if (change == 'buzzer') {
+					wonBuzz = false;
+					lostBuzz = false;
+					clueOpen = false;
+				}
+
+				if (change == 'clueOpen') {
+					clueOpen = true;
+					wonBuzz = false;
+					lostBuzz = false;
+				}
+
+				if (change == 'timesUp') {
+					// Need this so if someone wins the buzz, when the timer runs out their screen stays green.
+					if (!wonBuzz) {
+						lostBuzz = true;
 					}
+				}
+			});
 
-					if (change == 'finalpodium') {
-						goto('/finalpodium');
-					}
-				});
+			room.state.listen('buzzersActive', (current: boolean) => {
+				buzzersActive = current;
+			});
 
-				(room as Room).state.listen('buzzersActive', (current: boolean) => {
-					buzzersActive = current;
-				});
+			room.state.listen('buzzerWinner', (winId: string) => {
+				if (winId === sessionId) {
+					wonBuzz = true;
+				} else if (winId === '') {
+					wonBuzz = false;
+					lostBuzz = false;
+				} else {
+					lostBuzz = true;
+				}
+			});
 
-				(room as Room).state.players.forEach((player: any, id: string) => {
-					let playerObj = {
-						name: player.name,
-						character: player.character,
-						characterColour: player.colour,
-						score: player.score
-					};
-					playerList[id] = playerObj;
-				});
+			room.state.listen('players', (playersChange: any) => {
+				let playerIds: string[] = Array.from(playersChange.keys());
+				let players: Player[] = Array.from(playersChange.values());
+				for (let i = 0; i < players.length; i++) {
+					let player = players[i];
+					if (sessionId === playerIds[i]) {
+						place = player.place;
+						score = player.score;
 
-				// (room as Room).state.players[sessionId].onChange((curr: any, prev: any) => {
+						if (place != -1) {
+							if (place === 1) {
+								let nextIdx = place;
+								pointsAhead = score - players[nextIdx].score;
+								playerBehind = players[nextIdx].name;
+								pointsBehind = -1;
+							} else if (place === players.length) {
+								let prevIdx = place - 2;
+								pointsBehind = players[prevIdx].score - score;
+								playerAhead = players[prevIdx].name;
+								pointsAhead = -1;
+							} else {
+								let nextIdx = place;
+								let prevIdx = place - 2;
+								pointsBehind = players[prevIdx].score - score;
+								playerAhead = players[prevIdx].name;
 
-				// })
-
-				let playerIds = Object.keys(playerList);
-				for (let i = 0; i < playerIds.length; i++) {
-					let id = playerIds[i];
-					if (sessionId === id) {
-						place = i + 1;
-						score = playerList[id].score;
-
-						if (i === 0 && playerList) {
-							let nextId = playerIds[i + 1];
-							pointsAhead = score - playerList[nextId].score;
-							playerBehind = playerList[nextId].name;
-						} else if (i === playerIds.length - 1) {
-							let prevId = playerIds[i - 1];
-							pointsBehind = playerList[prevId].score - score;
-							playerAhead = playerList[prevId].name;
-						} else {
-							let prevId = playerIds[i - 1];
-							pointsBehind = playerList[prevId].score - score;
-							playerAhead = playerList[prevId].name;
-
-							let nextId = playerIds[i + 1];
-							pointsAhead = score - playerList[nextId].score;
-							playerBehind = playerList[nextId].name;
+								pointsAhead = score - players[nextIdx].score;
+								playerBehind = players[nextIdx].name;
+							}
+							break;
 						}
 					}
 				}
-			}
-		});
+			});
+		}
 	}
 </script>
 
-<div class={buzzersActive ? 'active' : ''}>
+<div class:active={buzzersActive} class:winner={wonBuzz} class:loser={lostBuzz}>
 	<h3>Your score</h3>
 	<span>${score}</span>
 
-	<button />
+	<button on:click={buzz} />
 
-	<p>You are in {place} place.</p>
-	{#if place > 1}
-		<p>You are ${pointsBehind} behind {playerAhead}.</p>
-	{/if}
-	{#if place < Object.keys(playerList).length - 1}
-		<p>You are ${pointsAhead} behind {playerBehind}.</p>
+	{#if place != -1}
+		<p>You are in {place} place.</p>
+		{#if pointsBehind !== -1}
+			<p>You are ${pointsBehind} behind {playerAhead}.</p>
+		{/if}
+		{#if pointsAhead !== -1}
+			<p>You are ${pointsAhead} ahead of {playerBehind}.</p>
+		{/if}
 	{/if}
 </div>
 
 <style>
 	.active {
 		background-color: blue;
+	}
+
+	.winner {
+		background-color: green;
+	}
+
+	.loser {
+		background-color: red;
 	}
 </style>

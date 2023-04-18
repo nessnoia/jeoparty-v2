@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import { attemptReconnect, roomStore } from '$lib/colyseus-client';
+	import { roomStore } from '$lib/colyseus-client';
 	import BuzzersActiveLights from '$lib/components/play/BuzzersActiveLights.svelte';
 	import PlayBoard from '$lib/components/play/PlayBoard.svelte';
 	import PlayerDock from '$lib/components/play/PlayerDock.svelte';
 	import Timer from '$lib/components/play/Timer.svelte';
 	import type { GameData } from '$lib/database-models/game-data';
 	import type { Player } from '$lib/player';
+	import type { Room } from 'colyseus.js';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -17,10 +17,17 @@
 	let gameId = data.gameId;
 
 	let buzzersActive = false;
+	let buzzerWinnerId = '';
+	let startTimer = false;
 
 	let round = gameData?.rounds[roundNum - 1];
 
-	let playerList: Player[] = [];
+	let players: Map<string, Player> = new Map();
+	let room = $roomStore as Room | undefined;
+
+	$: if (buzzersActive) {
+		startTimer = false;
+	}
 
 	const goToNext = () => {
 		if (gameData.rounds.length === roundNum) {
@@ -30,28 +37,23 @@
 		}
 	};
 
-	if (browser) {
-		if ($roomStore === undefined) {
-			attemptReconnect();
-		}
-	}
+	if (room !== undefined) {
+		players = new Map(room.state.players);
+		room.state.listen('buzzerWinner', (winId: string) => {
+			buzzerWinnerId = winId;
+			if (winId !== '') {
+				buzzersActive = false;
+				startTimer = true;
+			}
+		});
 
-	roomStore.subscribe((room: any) => {
-		if (room) {
-			room.state.players.$items.forEach((player: any) => {
-				let playerObj = {
-					name: player.name,
-					character: player.character,
-					characterColour: player.colour,
-					score: player.score
-				};
-				playerList.push(playerObj);
-			});
-		}
-	});
+		room.state.listen('players', (playerChange: any) => {
+			players = new Map(playerChange);
+		});
+	}
 </script>
 
 <BuzzersActiveLights bind:buzzersActive />
-<Timer length={5} bind:buzzersActive />
-<PlayBoard {round} on:goToNext={goToNext} />
-<PlayerDock players={playerList} buzzWinner={undefined} />
+<Timer length={5} bind:buzzersActive {startTimer} />
+<PlayBoard {round} bind:buzzerWinnerId on:goToNext={goToNext} />
+<PlayerDock players={Array.from(players.values())} buzzerWinner={players.get(buzzerWinnerId)} />

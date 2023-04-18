@@ -8,21 +8,13 @@ export class Player extends Schema {
         this.character = character;
         this.colour = colour;
         this.score = 0;
+        this.place = -1;
     }
     @type("string") name: string;
     @type("string") character: string;
     @type("number") colour: number;
     @type("number") score: number;
-}
-
-export class PlayerBuzzer extends Schema {
-    constructor() {
-        super();
-        this.didBuzz = false;
-        this.buzzTime = 0;
-    }
-    @type("boolean") didBuzz: boolean;
-    @type("number") buzzTime: number; // unsure if this one is necessary in Colyseus
+    @type("number") place: number;
 }
 
 // export class PlayerDailyDouble extends Player {

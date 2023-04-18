@@ -19,6 +19,7 @@ export class JeopartyRoom extends Room<JeopartyRoomState> {
 
         // HOST MESSAGES
         this.onMessage("updateGameState", (_, data) => {
+            console.log('update', data.state);
             this.state.gameState = data.state;
         });
 
@@ -32,19 +33,31 @@ export class JeopartyRoom extends Room<JeopartyRoomState> {
             this.state.buzzersActive = false;
         })
 
-        this.onMessage("updatePlayerScore", (client, data) => {
-            let player = this.state.players.get(client.sessionId);
-            player.score += data.score;
+        this.onMessage("updatePlayerScore", (_, data) => {
+            console.log('score update', data);
+            let player = this.state.players.get(data.id);
+            if (data.score !== undefined) {
+                player.score = data.score;
+            }
+            if (data.clueValue !== undefined) {
+                player.score += data.clueValue;
+            }
             this.state.players = new MapSchema<Player>(new Map([...this.state.players].sort((a, b) =>
                 a[1].score > b[1].score ? -1 : 1
             )))
-        });
 
+            for (let i = 0; i < this.state.players.size; i++) {
+                let player = Array.from(this.state.players.values())[i]
+                player.place = i + 1;
+            }
+        });
 
         // CLIENT MESSAGES
         this.onMessage("buzzer", (client) => {
+            console.log('buzz');
             if (this.state.buzzerWinner === "") {
                 this.state.buzzerWinner = client.sessionId;
+                this.state.buzzersActive = false;
             }
         });
     }
@@ -93,5 +106,4 @@ export class JeopartyRoom extends Room<JeopartyRoomState> {
     onDispose() {
         console.log("room", this.roomId, "disposing...");
     }
-
 }

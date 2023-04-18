@@ -1,9 +1,11 @@
 <script lang="ts">
+	import { roomStore } from '$lib/colyseus-client';
 	import type { Player } from '$lib/player';
+	import type { Room } from 'colyseus.js';
 	import PlayerScore from './PlayerScore.svelte';
 
 	export let players: Player[];
-	export let buzzWinner: Player | undefined;
+	export let buzzerWinner: Player | undefined;
 </script>
 
 {#each players as player, i}
@@ -12,8 +14,8 @@
 	{/if}
 {/each}
 
-{#if buzzWinner}
-	<PlayerScore name={buzzWinner.name} score={buzzWinner.score} />
+{#if buzzerWinner}
+	<PlayerScore name={buzzerWinner.name} score={buzzerWinner.score} />
 {:else}
 	<div />
 {/if}
