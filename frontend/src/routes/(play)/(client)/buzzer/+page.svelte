@@ -27,7 +27,6 @@
 	$: room = $roomStore as Room | undefined;
 
 	$: if (room !== undefined) {
-		console.log(room);
 		updatePlayerInfo(room.state.players);
 		room.state.listen('gameState', (change: string) => {
 			if (change == 'podium') {
