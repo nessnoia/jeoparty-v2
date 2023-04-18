@@ -23,21 +23,13 @@
 	let round = gameData?.rounds[roundNum - 1];
 
 	let players: Map<string, Player> = new Map();
-	let room = $roomStore as Room | undefined;
+	$: room = $roomStore as Room | undefined;
 
 	$: if (buzzersActive) {
 		startTimer = false;
 	}
 
-	const goToNext = () => {
-		if (gameData.rounds.length === roundNum) {
-			goto(`/standings/${gameId}`);
-		} else {
-			goto(`/standings/${round.num}/${gameId}`);
-		}
-	};
-
-	if (room !== undefined) {
+	$: if (room !== undefined) {
 		players = new Map(room.state.players);
 		room.state.listen('buzzerWinner', (winId: string) => {
 			buzzerWinnerId = winId;
@@ -51,6 +43,14 @@
 			players = new Map(playerChange);
 		});
 	}
+
+	const goToNext = () => {
+		if (gameData.rounds.length === roundNum) {
+			goto(`/standings/${gameId}`);
+		} else {
+			goto(`/standings/${round.num}/${gameId}`);
+		}
+	};
 </script>
 
 <BuzzersActiveLights bind:buzzersActive />

@@ -15,15 +15,6 @@
 	let secondMostRecentWinner = '';
 	let mostRecentWinner = firstPlayer;
 
-	// host knows who the last winner was: when the up arrow is hit, the last winner field gets updated
-	// when the down arrow is hit, this gets reverted to the previous winner
-	// then, when a daily double is found:
-	//  the client redirects the character who was the last winner to the daily double screen
-	//  the host updates the daily double clue value and who the daily double should be assigned to
-	//  the client submits their wager and updates the clue based on that
-
-	let room = $roomStore as Room | undefined;
-
 	let showCategories = true;
 	let dispatch = createEventDispatcher();
 
@@ -41,6 +32,8 @@
 	let numCluesPlayed = 0;
 	let lastClueValue = 0;
 
+	$: room = $roomStore as Room | undefined;
+
 	$: if (numClues === numCluesPlayed) {
 		dispatch('goToNext');
 	}
@@ -55,16 +48,14 @@
 		});
 	}
 
-	if (browser) {
-		if (room !== undefined) {
-			room.state.dailyDouble.onChange = function (changes: any) {
-				for (let change of changes) {
-					if (change.field == 'playerWager') {
-						lastClueValue = change.value;
-					}
+	$: if (room !== undefined) {
+		room.state.dailyDouble.onChange = function (changes: any) {
+			for (let change of changes) {
+				if (change.field == 'playerWager') {
+					lastClueValue = change.value;
 				}
-			};
-		}
+			}
+		};
 	}
 
 	const clueClosed = () => {
