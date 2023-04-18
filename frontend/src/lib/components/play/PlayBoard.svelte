@@ -42,7 +42,7 @@
 	let lastClueValue = 0;
 
 	$: if (numClues === numCluesPlayed) {
-		// dispatch('goToNext');
+		dispatch('goToNext');
 	}
 
 	$: if (showCategories) {
@@ -57,20 +57,13 @@
 
 	if (browser) {
 		if (room !== undefined) {
-			// console.log('yes');
-			console.log(room.state.dailyDouble);
-			room.state.dailyDouble.playerWager.onChange = function (changes: any) {
-				console.log(changes);
+			room.state.dailyDouble.onChange = function (changes: any) {
+				for (let change of changes) {
+					if (change.field == 'playerWager') {
+						lastClueValue = change.value;
+					}
+				}
 			};
-			// room.state.listen('dailyDouble', (change: any) => {
-			// 	console.log(change);
-			// 	// lastClueValue = change.playerWager;
-			// 	// console.log(change);
-			// 	// console.log(prev.playerWager);
-			// 	// if (change.field == 'playerWager') {
-			// 	// 	lastClueValue = change.value;
-			// 	// }
-			// });
 		}
 	}
 
@@ -97,6 +90,7 @@
 		room?.send('updateGameState', {
 			state: 'dailyDouble'
 		});
+		buzzerWinnerId = mostRecentWinner;
 	};
 
 	const onKeyUp = (e: KeyboardEvent) => {

@@ -14,7 +14,7 @@
 		room?.send('updateDailyDoubleWager', {
 			wager: Number(new FormData(e.target as HTMLFormElement).get('bet'))
 		});
-		// goto('/buzzer');
+		goto('/buzzer');
 	};
 
 	if (browser) {

@@ -1,6 +1,6 @@
 import { Room, Client } from "colyseus";
 import { Host } from "./schema/Host";
-import { Player, PlayerDailyDouble } from "./schema/Player";
+import { Player } from "./schema/Player";
 import { JeopartyRoomState } from "./schema/JeopartyRoomState";
 import { MapSchema } from "@colyseus/schema";
 
@@ -55,6 +55,7 @@ export class JeopartyRoom extends Room<JeopartyRoomState> {
         this.onMessage("updateDailyDoubleInfo", (_, data) => {
             this.state.dailyDouble.playerId = data.playerId;
             this.state.dailyDouble.clueValue = data.clueValue;
+            this.state.dailyDouble.playerWager = 0;
         })
 
         // CLIENT MESSAGES
