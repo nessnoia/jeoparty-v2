@@ -74,7 +74,7 @@
 
 		room.state.finalJeoparty.onChange = () => {
 			finalJeopartyResponses = new Map(room?.state.finalJeoparty);
-
+			console.log(finalJeopartyResponses);
 			for (let [key, response] of finalJeopartyResponses) {
 				let player = room?.state.players.get(key);
 				response.name = player.name;

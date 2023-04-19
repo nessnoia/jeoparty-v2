@@ -10,9 +10,10 @@
 	$: room = $roomStore as Room | undefined;
 
 	$: if (room !== undefined) {
-		for (let [id, player] of room.state.players) {
+		for (let [id, playerObj] of room.state.players) {
 			if (sessionId === id) {
-				player = player;
+				player = playerObj;
+				console.log(player);
 				break;
 			}
 		}
