@@ -3,19 +3,37 @@
 	import { roomStore } from '$lib/colyseus-client';
 	import type { Category, Clue } from '$lib/database-models/game-data';
 	import type { Room } from 'colyseus.js';
+	import { createEventDispatcher } from 'svelte';
 
 	export let category: Category;
 	export let clue: Clue;
 
+	let dispatch = createEventDispatcher();
+
 	let displayTitle = true;
 	let displayCategory = false;
 	let displayClue = false;
-	let displayAnswer = false;
 
 	$: room = $roomStore as Room | undefined;
 
 	$: if (room !== undefined) {
-		room.send('updateGameState', { state: 'finalJeoparty' });
+		if (displayTitle) {
+			room.send('updateGameState', { state: 'finalJeoparty' });
+		}
+
+		room.state.listen('gameState', (change: string) => {
+			if (displayClue && change == 'timesUp') {
+				dispatch('showPlayerAnswers');
+			}
+		});
+
+		let numPlayers = room?.state.players.size;
+		room.state.finalJeoparty.onChange = () => {
+			let numWagersSubmitted = room?.state.finalJeoparty.size;
+			if (displayCategory && numPlayers === numWagersSubmitted) {
+				showClue();
+			}
+		};
 	}
 
 	const handleKeyUp = (e: KeyboardEvent) => {
@@ -23,44 +41,36 @@
 
 		if (displayTitle) {
 			if (key === 'ArrowRight' || key === 'd') {
-				displayCategory = true;
-				displayTitle = false;
-				room?.send('updateGameState', { state: 'finalJeopartyCategory' });
+				showCategory();
 			}
 			return;
 		}
 
 		if (displayCategory) {
 			if (key === 'ArrowRight' || key === 'd') {
-				displayCategory = false;
-				displayClue = true;
-				room?.send('updateGameState', { state: 'finalJeopartyAnswer' });
+				showClue();
 			}
 			return;
 		}
 
 		if (displayClue) {
-			if (key === 'ArrowLeft' || key === 'a') {
-				displayCategory = true;
-				displayClue = false;
-			} else if (key === 'ArrowRight' || key === 'd') {
-				displayClue = false;
-				displayAnswer = true;
-			} else if (key === 'Esc' || key === 'Escape') {
-				displayClue = false;
+			if (key === 'ArrowRight' || key === 'd') {
+				dispatch('showPlayerAnswers');
 			}
 			return;
 		}
+	};
 
-		if (displayAnswer) {
-			if (key === 'ArrowLeft' || key === 'a') {
-				displayAnswer = false;
-				displayClue = true;
-			} else if (key === 'ArrowRight' || key === 'd' || key === 'Esc' || key === 'Escape') {
-				// go to podium
-			}
-			return;
-		}
+	const showCategory = () => {
+		displayCategory = true;
+		displayTitle = false;
+		room?.send('updateGameState', { state: 'finalJeopartyCategory' });
+	};
+
+	const showClue = () => {
+		displayCategory = false;
+		displayClue = true;
+		room?.send('updateGameState', { state: 'finalJeopartyAnswer' });
 	};
 </script>
 
@@ -79,12 +89,6 @@
 {#if displayClue}
 	<div>
 		<p>{clue.clue}</p>
-	</div>
-{/if}
-
-{#if displayAnswer}
-	<div>
-		<p>{clue.answer}</p>
 	</div>
 {/if}
 

@@ -5,13 +5,14 @@
 	export let buzzersActive: boolean;
 	export let startTimer: boolean;
 	export let length: number;
+	export let roundType: string;
 
 	let numLights = 9;
 	let interval = Number(length / Math.ceil(numLights / 2));
 	let lightsActive: boolean[] = [];
 	let counter = length;
 
-	let room = $roomStore as Room | undefined;
+	$: room = $roomStore as Room | undefined;
 
 	let timer: number | undefined;
 
@@ -38,6 +39,7 @@
 			timer = undefined;
 			buzzersActive = false;
 			room?.send('updateGameState', { state: 'timesUp' });
+			room?.send('deactivateFJTimer');
 		}
 	};
 
@@ -64,10 +66,20 @@
 	const onKeyUp = (e: KeyboardEvent) => {
 		const key = e.key;
 		if (key === ' ') {
-			if (buzzersActive) {
+			if (buzzersActive && roundType == 'normal') {
 				handleTimerStart();
-			} else {
+			} else if (!buzzersActive && roundType == 'normal') {
 				handleTimerCancel();
+			}
+
+			if (roundType == 'final') {
+				if (timer === undefined) {
+					handleTimerStart();
+					room?.send('activateFJTimer');
+				} else {
+					handleTimerCancel();
+					room?.send('deactivateFJTimer');
+				}
 			}
 		}
 	};

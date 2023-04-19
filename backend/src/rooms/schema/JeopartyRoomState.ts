@@ -12,6 +12,7 @@ export class JeopartyRoomState extends Schema {
     @type("string") gameState: string = "join";
     @type("boolean") buzzersActive: boolean = false;
     @type("string") buzzerWinner: string = "";
+    @type("boolean") fjTimerActive: boolean = false;
 
     hostJoined: boolean = false; 
 }

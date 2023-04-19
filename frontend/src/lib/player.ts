@@ -5,3 +5,9 @@ export interface Player {
     score: number;
     place: number;
 }
+
+export interface PlayerFinalJeoparty {
+    name?: string;
+    wager: number;
+    answer: string;
+}

@@ -7,6 +7,8 @@
 	import ShowCategories from './ShowCategories.svelte';
 	import type { Room } from 'colyseus.js';
 	import FinalJeopardyClue from './FinalJeopardyClue.svelte';
+	import FinalJeopartyResponses from './FinalJeopartyResponses.svelte';
+	import type { Player, PlayerFinalJeoparty } from '$lib/player';
 
 	export let round: Round;
 	export let buzzerWinnerId: string;
@@ -15,7 +17,10 @@
 	let secondMostRecentWinner = '';
 	let mostRecentWinner = firstPlayer;
 
-	let showCategories = true;
+	let showCategories = round.type === 'normal';
+	let showPlayerAnswers = false;
+
+	let finalJeopartyResponses: Map<string, PlayerFinalJeoparty> = new Map();
 	let dispatch = createEventDispatcher();
 
 	let numClues = 0;
@@ -38,24 +43,33 @@
 		dispatch('goToNext');
 	}
 
-	$: if (showCategories) {
+	$: if (showCategories && round.type === 'normal') {
 		room?.send('updateGameState', {
 			state: 'showCategories'
 		});
-	} else {
+	} else if (!showCategories && round.type === 'normal') {
 		room?.send('updateGameState', {
 			state: 'buzzer'
 		});
 	}
 
 	$: if (room !== undefined) {
-		room.state.dailyDouble.onChange = function (changes: any) {
+		room.state.dailyDouble.onChange = (changes: any) => {
 			for (let change of changes) {
 				if (change.field == 'playerWager') {
 					lastClueValue = change.value;
 				}
 			}
 		};
+
+		room.state.listen('finalJeoparty', (changes: any) => {
+			finalJeopartyResponses = new Map(changes);
+
+			for (let [key, response] of finalJeopartyResponses) {
+				let player = room?.state.players.get(key);
+				response.name = player.name;
+			}
+		});
 	}
 
 	const clueClosed = () => {
@@ -82,6 +96,13 @@
 			state: 'dailyDouble'
 		});
 		buzzerWinnerId = mostRecentWinner;
+	};
+
+	const updateFinalJeopartyScoreInfo = (e: CustomEvent<{ playerId: string; amount: number }>) => {
+		// TODO: maybe change these variable names to be more generic, so it makes more sense
+		// to be using them here
+		buzzerWinnerId = e.detail.playerId;
+		lastClueValue = e.detail.amount;
 	};
 
 	const onKeyUp = (e: KeyboardEvent) => {
@@ -127,7 +148,20 @@
 	<!-- Should only ever be one of each, but need to loop because of the possibly undefined arrays -->
 	{#each round.categories || [] as category}
 		{#each category.clues || [] as clue}
-			<FinalJeopardyClue {category} {clue} />
+			{#if showPlayerAnswers}
+				<FinalJeopartyResponses
+					{clue}
+					responses={finalJeopartyResponses}
+					on:updateScore={updateFinalJeopartyScoreInfo}
+					on:allAnswersShown={() => dispatch('goToNext')}
+				/>
+			{:else}
+				<FinalJeopardyClue
+					{category}
+					{clue}
+					on:showPlayerAnswers={() => (showPlayerAnswers = true)}
+				/>
+			{/if}
 		{/each}
 	{/each}
 {/if}

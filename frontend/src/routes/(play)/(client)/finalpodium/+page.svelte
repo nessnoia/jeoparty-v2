@@ -24,5 +24,5 @@
 </script>
 
 <h1>Thanks for playing!</h1>
-<h2>Final score: ${player.score}</h2>
-<h2>Congratulations! You finished in {player.place} place.</h2>
+<h2>Final score: ${player?.score ?? ''}</h2>
+<h2>Congratulations! You finished in {player?.place ?? ''} place.</h2>

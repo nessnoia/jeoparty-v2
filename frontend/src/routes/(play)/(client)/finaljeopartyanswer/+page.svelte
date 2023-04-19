@@ -8,6 +8,8 @@
 	let wager: number;
 	let sessionId = '';
 
+	let form: HTMLFormElement;
+
 	$: room = $roomStore as Room | undefined;
 
 	$: if (room !== undefined) {
@@ -17,6 +19,12 @@
 			score = player.score;
 			wager = playerFinalJeoparty.wager;
 		}
+
+		room.state.listen('gameState', (change: any) => {
+			if (change == 'timesUp') {
+				form.submit();
+			}
+		});
 	}
 
 	if (browser) {
@@ -30,10 +38,10 @@
 	};
 </script>
 
-<form on:submit|preventDefault={submitAnswer}>
+<form bind:this={form} on:submit|preventDefault={submitAnswer}>
 	<span>Your score: ${score ?? ''}</span>
 	<span>Your wager: ${wager ?? ''}</span>
 	<label for="answer">Answer</label>
-	<span>$</span><input name="answer" placeholder="Enter answer" type="text" required />
+	<input name="answer" placeholder="Enter answer" type="text" required />
 	<button type="submit">Submit Answer</button>
 </form>

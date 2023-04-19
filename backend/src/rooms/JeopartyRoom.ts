@@ -58,6 +58,15 @@ export class JeopartyRoom extends Room<JeopartyRoomState> {
             this.state.dailyDouble.playerWager = 0;
         })
 
+        this.onMessage("activateFJTimer", () => {
+            console.log("active")
+            this.state.fjTimerActive = true;
+        })
+
+        this.onMessage("deactivateFJTimer", () => {
+            this.state.fjTimerActive = false;
+        })
+
         // CLIENT MESSAGES
         this.onMessage("buzzer", (client) => {
             console.log('buzz');

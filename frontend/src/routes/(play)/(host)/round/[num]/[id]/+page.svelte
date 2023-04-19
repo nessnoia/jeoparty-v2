@@ -16,12 +16,13 @@
 	let roundNum = Number(data.roundNum);
 	let gameId = data.gameId;
 
+	let round = gameData?.rounds[roundNum - 1];
+	let roundType = round.type;
+
 	let buzzersActive = false;
 	let buzzerWinnerId = '';
 	let startTimer = false;
-
-	let round = gameData?.rounds[roundNum - 1];
-	let roundType = round.type;
+	let timerLength = roundType === 'normal' ? 5 : 30;
 
 	let players: Map<string, Player> = new Map();
 	$: room = $roomStore as Room | undefined;
@@ -57,7 +58,7 @@
 {#if roundType == 'normal'}
 	<BuzzersActiveLights bind:buzzersActive />
 {/if}
-<Timer length={5} bind:buzzersActive {startTimer} />
+<Timer length={timerLength} bind:buzzersActive {startTimer} {roundType} />
 <PlayBoard
 	{round}
 	bind:buzzerWinnerId
