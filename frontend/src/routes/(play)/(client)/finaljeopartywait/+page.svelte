@@ -17,7 +17,6 @@
 
 	$: if (room !== undefined) {
 		room.state.listen('fjTimerActive', (change: boolean) => {
-			console.log(change);
 			timerActive = change;
 		});
 

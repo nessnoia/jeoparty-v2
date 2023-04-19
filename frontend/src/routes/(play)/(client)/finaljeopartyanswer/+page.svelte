@@ -22,7 +22,8 @@
 
 		room.state.listen('gameState', (change: any) => {
 			if (change == 'timesUp') {
-				form.submit();
+				form.requestSubmit();
+				goto('/finaljeopartywait');
 			}
 		});
 	}

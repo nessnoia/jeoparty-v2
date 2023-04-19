@@ -3,6 +3,7 @@
 	import { createEventDispatcher } from 'svelte';
 
 	export let clue: Clue;
+	export let dailyDoubleWagerSubmitted: boolean;
 
 	const dispatch = createEventDispatcher();
 
@@ -24,7 +25,7 @@
 
 	const onKeyUp = (e: KeyboardEvent) => {
 		const key = e.key;
-		if (displayDailyDouble) {
+		if (displayDailyDouble && dailyDoubleWagerSubmitted) {
 			if (key === 'Esc' || key === 'Escape') {
 				displayDailyDouble = false;
 			} else if (key === 'ArrowRight' || key === 'd') {

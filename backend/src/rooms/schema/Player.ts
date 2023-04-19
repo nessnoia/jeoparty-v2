@@ -22,7 +22,7 @@ export class PlayerDailyDouble extends Schema {
         super();
         this.playerId = '';
         this.playerWager = 0;
-        this.clueValue = 0;
+        this.clueValue = -1;
     }
     @type ("string") playerId: string;
     @type("number") playerWager: number;

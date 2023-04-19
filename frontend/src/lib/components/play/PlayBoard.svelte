@@ -8,17 +8,20 @@
 	import type { Room } from 'colyseus.js';
 	import FinalJeopardyClue from './FinalJeopardyClue.svelte';
 	import FinalJeopartyResponses from './FinalJeopartyResponses.svelte';
-	import type { Player, PlayerFinalJeoparty } from '$lib/player';
+	import type { PlayerFinalJeoparty } from '$lib/player';
 
 	export let round: Round;
 	export let buzzerWinnerId: string;
 	export let firstPlayer: string;
+	export let dailyDoubleOpen: boolean;
+	export let dailyDoubleWager: number | undefined;
 
 	let secondMostRecentWinner = '';
 	let mostRecentWinner = firstPlayer;
 
 	let showCategories = round.type === 'normal';
 	let showPlayerAnswers = false;
+	let dailyDoubleWagerSubmitted = false;
 
 	let finalJeopartyResponses: Map<string, PlayerFinalJeoparty> = new Map();
 	let dispatch = createEventDispatcher();
@@ -47,7 +50,7 @@
 		room?.send('updateGameState', {
 			state: 'showCategories'
 		});
-	} else if (!showCategories && round.type === 'normal') {
+	} else if (!showCategories && round.type === 'normal' && !dailyDoubleOpen) {
 		room?.send('updateGameState', {
 			state: 'buzzer'
 		});
@@ -56,20 +59,27 @@
 	$: if (room !== undefined) {
 		room.state.dailyDouble.onChange = (changes: any) => {
 			for (let change of changes) {
-				if (change.field == 'playerWager') {
-					lastClueValue = change.value;
+				if (change.field == 'playerWager' && dailyDoubleOpen) {
+					if (change.value !== -1) {
+						lastClueValue = change.value;
+						dailyDoubleWagerSubmitted = true;
+						dailyDoubleWager = change.value;
+					} else {
+						dailyDoubleWager = undefined;
+						dailyDoubleWagerSubmitted = false;
+					}
 				}
 			}
 		};
 
-		room.state.listen('finalJeoparty', (changes: any) => {
-			finalJeopartyResponses = new Map(changes);
+		room.state.finalJeoparty.onChange = () => {
+			finalJeopartyResponses = new Map(room?.state.finalJeoparty);
 
 			for (let [key, response] of finalJeopartyResponses) {
 				let player = room?.state.players.get(key);
 				response.name = player.name;
 			}
-		});
+		};
 	}
 
 	const clueClosed = () => {
@@ -77,6 +87,9 @@
 			state: 'buzzer'
 		});
 		numCluesPlayed++;
+		dailyDoubleOpen = false;
+		dailyDoubleWager = undefined;
+		dailyDoubleWagerSubmitted = false;
 	};
 
 	const clueOpen = (e: CustomEvent<{ value: number }>) => {
@@ -88,6 +101,7 @@
 	};
 
 	const handleDailyDouble = () => {
+		dailyDoubleOpen = true;
 		room?.send('updateDailyDoubleInfo', {
 			playerId: mostRecentWinner,
 			clueValue: maxRoundClueValue
@@ -137,6 +151,7 @@
 			{#each category.clues.sort(sortClues) as clue}
 				<PlayClue
 					{clue}
+					{dailyDoubleWagerSubmitted}
 					on:clueUsed={clueClosed}
 					on:clueOpen={clueOpen}
 					on:dailyDouble={handleDailyDouble}
@@ -159,6 +174,7 @@
 				<FinalJeopardyClue
 					{category}
 					{clue}
+					responses={finalJeopartyResponses}
 					on:showPlayerAnswers={() => (showPlayerAnswers = true)}
 				/>
 			{/if}

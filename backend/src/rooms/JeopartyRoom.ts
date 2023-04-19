@@ -55,7 +55,7 @@ export class JeopartyRoom extends Room<JeopartyRoomState> {
         this.onMessage("updateDailyDoubleInfo", (_, data) => {
             this.state.dailyDouble.playerId = data.playerId;
             this.state.dailyDouble.clueValue = data.clueValue;
-            this.state.dailyDouble.playerWager = 0;
+            this.state.dailyDouble.playerWager = -1;
         })
 
         this.onMessage("activateFJTimer", () => {

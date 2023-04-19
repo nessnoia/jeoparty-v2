@@ -3,6 +3,7 @@
 	import type { Room } from 'colyseus.js';
 
 	export let buzzersActive: boolean;
+	export let dailyDoubleOpen: boolean;
 	let numLights = 5;
 
 	$: room = $roomStore as Room | undefined;
@@ -17,7 +18,7 @@
 
 	const onKeyUp = (e: KeyboardEvent) => {
 		const key = e.key;
-		if (key === ' ') {
+		if (key === ' ' && !dailyDoubleOpen) {
 			buzzersActive = !buzzersActive;
 		}
 	};

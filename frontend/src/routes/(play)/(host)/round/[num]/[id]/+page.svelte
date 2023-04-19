@@ -20,6 +20,8 @@
 	let roundType = round.type;
 
 	let buzzersActive = false;
+	let dailyDoubleOpen = false;
+	let dailyDoubleWager: number | undefined;
 	let buzzerWinnerId = '';
 	let startTimer = false;
 	let timerLength = roundType === 'normal' ? 5 : 30;
@@ -30,6 +32,8 @@
 	$: if (buzzersActive) {
 		startTimer = false;
 	}
+
+	$: console.log(dailyDoubleOpen, dailyDoubleWager);
 
 	$: if (room !== undefined) {
 		players = new Map(room.state.players);
@@ -56,13 +60,21 @@
 </script>
 
 {#if roundType == 'normal'}
-	<BuzzersActiveLights bind:buzzersActive />
+	<BuzzersActiveLights bind:buzzersActive {dailyDoubleOpen} />
 {/if}
 <Timer length={timerLength} bind:buzzersActive {startTimer} {roundType} />
 <PlayBoard
 	{round}
 	bind:buzzerWinnerId
+	bind:dailyDoubleOpen
+	bind:dailyDoubleWager
 	firstPlayer={(Array.from(players.keys()) ?? [''])[0]}
 	on:goToNext={goToNext}
 />
 <PlayerDock players={Array.from(players.values())} buzzerWinner={players.get(buzzerWinnerId)} />
+{#if dailyDoubleOpen}
+	<span>Wager: </span>
+	{#if dailyDoubleWager !== undefined}
+		<span>${dailyDoubleWager}</span>
+	{/if}
+{/if}

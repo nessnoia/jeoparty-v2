@@ -2,11 +2,13 @@
 	import { goto } from '$app/navigation';
 	import { roomStore } from '$lib/colyseus-client';
 	import type { Category, Clue } from '$lib/database-models/game-data';
+	import type { PlayerFinalJeoparty } from '$lib/player';
 	import type { Room } from 'colyseus.js';
 	import { createEventDispatcher } from 'svelte';
 
 	export let category: Category;
 	export let clue: Clue;
+	export let responses: Map<string, PlayerFinalJeoparty>;
 
 	let dispatch = createEventDispatcher();
 
@@ -28,12 +30,9 @@
 		});
 
 		let numPlayers = room?.state.players.size;
-		room.state.finalJeoparty.onChange = () => {
-			let numWagersSubmitted = room?.state.finalJeoparty.size;
-			if (displayCategory && numPlayers === numWagersSubmitted) {
-				showClue();
-			}
-		};
+		if (displayCategory && numPlayers === responses.size) {
+			showClue();
+		}
 	}
 
 	const handleKeyUp = (e: KeyboardEvent) => {
