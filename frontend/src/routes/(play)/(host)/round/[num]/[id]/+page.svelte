@@ -33,8 +33,6 @@
 		startTimer = false;
 	}
 
-	$: console.log(dailyDoubleOpen, dailyDoubleWager);
-
 	$: if (room !== undefined) {
 		players = new Map(room.state.players);
 		room.state.listen('buzzerWinner', (winId: string) => {
