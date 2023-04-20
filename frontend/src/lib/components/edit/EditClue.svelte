@@ -142,16 +142,4 @@
 		justify-content: space-between;
 		align-items: center;
 	}
-
-	.daily-double input {
-		appearance: none;
-		-webkit-appearance: none;
-		border: 1px solid var(--black);
-		padding: 6px;
-		border-radius: 3px;
-	}
-
-	.daily-double input:checked {
-		background-color: var(--black);
-	}
 </style>

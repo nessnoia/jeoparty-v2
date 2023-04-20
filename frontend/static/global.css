@@ -61,6 +61,19 @@
 input {
     min-width: 0;
     box-sizing: border-box;
+    padding: 0.2em
+}
+
+input[type=checkbox], input[type=radio] {
+    appearance: none;
+    -webkit-appearance: none;
+    border: 1px solid var(--black);
+    padding: 6px;
+    border-radius: 3px;
+}
+
+input:checked {
+    background-color: var(--black);
 }
 
 svg {
