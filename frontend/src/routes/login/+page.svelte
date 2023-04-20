@@ -33,6 +33,7 @@
 <style>
 	h1 {
 		font-size: var(--size-4);
+		margin-top: 0;
 	}
 	#container {
 		display: flex;
@@ -49,7 +50,8 @@
 		justify-content: center;
 		align-items: center;
 		text-align: center;
-		width: 60%;
+		width: 40%;
+		min-width: 600px;
 	}
 
 	form {
@@ -88,7 +90,7 @@
 		width: 78%;
 	}
 
-	a:visited {
+	.login-link:visited {
 		color: black;
 	}
 
