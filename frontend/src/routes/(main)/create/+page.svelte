@@ -2,22 +2,34 @@
 	import { enhance } from '$app/forms';
 </script>
 
-<h1>Create New Game</h1>
-<form method="POST" use:enhance>
-	<label>
-		Title
-		<input name="title" type="text" />
-	</label>
-	<label>
-		Type
-		<label for="standard">Standard</label>
-		<input name="type" type="radio" id="standard" value="standard" checked />
-		<label for="custom">Custom</label>
-		<input name="type" type="radio" id="custom" value="custom" />
-	</label>
-	<!-- <label>
+<div id="content">
+	<h1>Create New Game</h1>
+	<form method="POST" use:enhance>
+		<label>
+			Title
+			<input name="title" type="text" />
+		</label>
+		<label>
+			Type
+			<label for="standard">Standard</label>
+			<input name="type" type="radio" id="standard" value="standard" checked />
+			<label for="custom">Custom</label>
+			<input name="type" type="radio" id="custom" value="custom" />
+		</label>
+		<!-- <label>
 		Tags
 		<input type="text" />
 	</label> -->
-	<button type="submit">Create</button>
-</form>
+		<button type="submit">Create</button>
+	</form>
+</div>
+
+<style>
+	#content {
+		display: flex;
+		flex-direction: column;
+		gap: 1em;
+		min-width: var(--min-width);
+		padding: 0;
+	}
+</style>

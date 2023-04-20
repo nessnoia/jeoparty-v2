@@ -54,6 +54,8 @@
     --size-11: 12px;
 
     --min-width: 700px;
+    --gutter-size-nav: 50px;
+    --gutter-size-other: 70px;
 }
 
 input {

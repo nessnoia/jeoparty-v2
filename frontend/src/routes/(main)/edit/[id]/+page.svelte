@@ -81,7 +81,7 @@
 <style>
 	#edit {
 		min-width: var(--min-width);
-		padding: 0 70px;
+		padding: 0 var(--gutter-size-other);
 	}
 
 	#save-message {

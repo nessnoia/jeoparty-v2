@@ -21,7 +21,7 @@
 <style>
 	nav {
 		height: 10%;
-		padding: 10px 50px 0 50px;
+		padding: 10px var(--gutter-size-nav) 0 var(--gutter-size-nav);
 		margin-bottom: 40px;
 		min-width: var(--min-width);
 	}

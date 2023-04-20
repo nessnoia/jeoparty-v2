@@ -43,7 +43,7 @@
 <style>
 	#container {
 		min-width: var(--min-width);
-		padding: 10px 60px 0 60px;
+		padding: 10px var(--gutter-size-other) 0 var(--gutter-size-other);
 		margin-top: 100px;
 		display: flex;
 		flex-direction: column;
