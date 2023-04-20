@@ -32,3 +32,11 @@
 	bind:value={category.category}
 	on:input={saveCategoryUpdate}
 />
+
+<style>
+	input {
+		padding: 0.4em;
+		width: 100%;
+		margin: 2.5em 0 0.8em 0;
+	}
+</style>

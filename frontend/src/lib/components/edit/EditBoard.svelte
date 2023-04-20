@@ -15,6 +15,7 @@
 	} from '$lib/update-models/game-data';
 	import AddRoundModal from '../modals/AddRoundModal.svelte';
 	import GarbageCan from './GarbageCan.svelte';
+	import e from 'cors';
 
 	// TODO: Focus on last used element after form submit
 	export let gameInfo: GameInfo;
@@ -196,112 +197,136 @@
 	};
 </script>
 
-<label for="game-title">Game Title</label>
-<input type="text" id="game-title" bind:value={gameTitle} on:input={saveGameTitleUpdate} />
+<div class="game-title">
+	<label for="game-title">Game Title: </label>
+	<input type="text" id="game-title" bind:value={gameTitle} on:input={saveGameTitleUpdate} />
+</div>
 {#if gameInfo.boardType === 'custom'}
 	<GarbageCan bind:rounds />
 {/if}
 
+<!-- Render round toggle buttons before rendering round information -->
+<div class="rounds">
+	{#each rounds as round, roundIdx (`${roundIdx}`)}
+		{@const key = `${roundIdx}`}
+		<!-- Prevent round swapping, but still needs to be draggable for deletion. -->
+		<DraggableDiv
+			bind:this={draggableDivs[key]}
+			bind:updateArray={rounds}
+			on:dragstart={(event) => {
+				draggableDivs[key].dragStart(event, roundIdx, round);
+			}}
+			on:drop={(event) => {
+				event.preventDefault();
+			}}
+		>
+			<button class:active={roundIdx == roundShownIdx} on:click={() => (roundShownIdx = roundIdx)}
+				>{rounds[roundIdx].title}</button
+			>
+		</DraggableDiv>
+	{/each}
+</div>
+
 <!-- Render rounds -->
 {#each rounds as round, roundIdx (`${roundIdx}`)}
-	{@const key = `${roundIdx}`}
-	<!-- Prevent round swapping, but still needs to be draggable for deletion. -->
-	<DraggableDiv
-		bind:this={draggableDivs[key]}
-		bind:updateArray={rounds}
-		on:dragstart={(event) => {
-			draggableDivs[key].dragStart(event, roundIdx, round);
-		}}
-		on:drop={(event) => {
-			event.preventDefault();
-		}}
-	>
-		<button on:click={() => (roundShownIdx = roundIdx)}>{rounds[roundIdx].title}</button>
-	</DraggableDiv>
-
 	{#if roundIdx == roundShownIdx}
-		<label for="round-title">Round Title</label>
-		<input
-			type="text"
-			id="round-title"
-			bind:value={rounds[roundIdx].title}
-			on:input={() => saveRoundUpdate(round.id ?? '', 'title', rounds[roundIdx].title)}
-		/>
+		<div class="round-title">
+			<label for="round-title">Round Title: </label>
+			<input
+				type="text"
+				id="round-title"
+				bind:value={rounds[roundIdx].title}
+				on:input={() => saveRoundUpdate(round.id ?? '', 'title', rounds[roundIdx].title)}
+			/>
+		</div>
 
 		<!-- Render categories -->
 		{#if round.type == 'normal'}
 			{#if gameInfo.boardType == 'standard'}
 				<!-- TODO: make 's' reactive based on the number -->
-				<p>
-					You have {(round.maxDailyDoubles || 0) - (round.numDailyDoubles || 0)} Daily Double(s) left
-					for this round.
+				<p class="daily-double">
+					You have <b
+						>{(round.maxDailyDoubles || 0) - (round.numDailyDoubles || 0)} Daily Double(s)</b
+					> left for this round.
 				</p>
 			{:else if gameInfo.boardType == 'custom'}
 				<p>
 					You have {round.numDailyDoubles || 0} Daily Double(s) on this round.
 				</p>
 			{/if}
-			{#each round.categories || [] as category, categoryIdx (`${roundIdx}.${categoryIdx}`)}
-				{@const key = `${roundIdx}.${categoryIdx}`}
-				<DraggableDiv
-					bind:this={draggableDivs[key]}
-					bind:updateArray={round.categories}
-					on:dragstart={(event) => {
-						draggableDivs[key].dragStart(event, categoryIdx, category);
-					}}
-					on:drop={(event) => {
-						event.preventDefault();
-						draggableDivs[key].drop(event, categoryIdx, category);
-						saveCategoryChangesAfterDrop(round.categories || [], round.id || '');
-					}}
-				>
-					<EditCategory bind:category />
-
-					<!-- Render clues -->
-					{#each category.clues || [] as clue, clueIdx (`${roundIdx}.${categoryIdx}.${clueIdx}`)}
-						{@const key = `${roundIdx}.${categoryIdx}.${clueIdx}`}
-						<DraggableDiv
-							bind:this={draggableDivs[key]}
-							bind:updateArray={category.clues}
-							on:dragstart={(event) => {
-								draggableDivs[key].dragStart(event, clueIdx, clue);
-							}}
-							on:drop={(event) => {
-								event.preventDefault();
-								draggableDivs[key].drop(event, clueIdx, clue);
-								if (gameInfo.boardType == 'standard') {
-									updateClueValuesAfterDrop(roundIdx, categoryIdx);
-								}
-								saveClueChangesAfterDrop(category.clues || [], round.id || '', category.id || '');
-							}}
-						>
-							<EditClue
-								on:updateDailyDoubleNumber={(event) => {
-									if (round.numDailyDoubles !== undefined) {
-										round.numDailyDoubles += event.detail.add;
-										saveRoundUpdate(round.id ?? '', 'numDailyDoubles', round.numDailyDoubles + 1);
-									}
-								}}
-								bind:clue
-								bind:shownClue
-								roundType={round.type}
-								boardType={gameInfo.boardType}
-								maxDailyDoublesReached={(round.maxDailyDoubles || -1) -
-									(round.numDailyDoubles || 0) ==
-									0}
-							/>
-						</DraggableDiv>
-					{/each}
-				</DraggableDiv>
-				{#if gameInfo.boardType == 'custom' && round.type == 'normal' && (category.clues || []).length < 10}
-					<button
-						on:click={() => {
-							addClue(roundShownIdx, categoryIdx, round.id || '', category.id || '');
+			<div class="categories">
+				{#each round.categories || [] as category, categoryIdx (`${roundIdx}.${categoryIdx}`)}
+					{@const key = `${roundIdx}.${categoryIdx}`}
+					<DraggableDiv
+						bind:this={draggableDivs[key]}
+						bind:updateArray={round.categories}
+						on:dragstart={(event) => {
+							draggableDivs[key].dragStart(event, categoryIdx, category);
 						}}
-						><img src="/icons/circle-plus.svg" alt="add category" />
-					</button>
-				{/if}
-			{/each}
+						on:drop={(event) => {
+							event.preventDefault();
+							draggableDivs[key].drop(event, categoryIdx, category);
+							saveCategoryChangesAfterDrop(round.categories || [], round.id || '');
+						}}
+					>
+						<div class="clue-column">
+							<EditCategory bind:category />
+
+							<!-- Render clues -->
+							{#each category.clues || [] as clue, clueIdx (`${roundIdx}.${categoryIdx}.${clueIdx}`)}
+								{@const key = `${roundIdx}.${categoryIdx}.${clueIdx}`}
+								<DraggableDiv
+									bind:this={draggableDivs[key]}
+									bind:updateArray={category.clues}
+									on:dragstart={(event) => {
+										draggableDivs[key].dragStart(event, clueIdx, clue);
+									}}
+									on:drop={(event) => {
+										event.preventDefault();
+										draggableDivs[key].drop(event, clueIdx, clue);
+										if (gameInfo.boardType == 'standard') {
+											updateClueValuesAfterDrop(roundIdx, categoryIdx);
+										}
+										saveClueChangesAfterDrop(
+											category.clues || [],
+											round.id || '',
+											category.id || ''
+										);
+									}}
+								>
+									<EditClue
+										on:updateDailyDoubleNumber={(event) => {
+											if (round.numDailyDoubles !== undefined) {
+												round.numDailyDoubles += event.detail.add;
+												saveRoundUpdate(
+													round.id ?? '',
+													'numDailyDoubles',
+													round.numDailyDoubles + 1
+												);
+											}
+										}}
+										bind:clue
+										bind:shownClue
+										roundType={round.type}
+										boardType={gameInfo.boardType}
+										maxDailyDoublesReached={(round.maxDailyDoubles || -1) -
+											(round.numDailyDoubles || 0) ==
+											0}
+									/>
+								</DraggableDiv>
+							{/each}
+						</div>
+					</DraggableDiv>
+					{#if gameInfo.boardType == 'custom' && round.type == 'normal' && (category.clues || []).length < 10}
+						<button
+							on:click={() => {
+								addClue(roundShownIdx, categoryIdx, round.id || '', category.id || '');
+							}}
+							><img src="/icons/circle-plus.svg" alt="add category" />
+						</button>
+					{/if}
+				{/each}
+			</div>
 		{:else if round.type == 'final'}
 			<!-- Should only ever be on of each, but need to loop because of the possibly undefined arrays -->
 			{#each round.categories || [] as category}
@@ -336,3 +361,86 @@
 		{/if}
 	{/if}
 {/each}
+
+<style>
+	input {
+		width: 200px;
+		padding: 0.2em;
+	}
+
+	.game-title {
+		display: flex;
+		flex-direction: row;
+		gap: 1em;
+		margin: 1em 0;
+		justify-content: start;
+		align-items: center;
+	}
+
+	.game-title label {
+		font-weight: bold;
+	}
+	.rounds {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		gap: 0.4em;
+		margin: 1em 0;
+	}
+
+	.rounds button {
+		background-color: transparent;
+		border-left: 1px solid var(--black);
+		border-right: 1px solid var(--black);
+		border-top: none;
+		border-bottom: none;
+		padding: 0.8em;
+		width: 100%;
+	}
+
+	.rounds button:hover {
+		cursor: pointer;
+	}
+
+	.rounds button.active {
+		color: var(--white);
+		background-color: var(--black);
+		font-weight: bold;
+	}
+
+	.round-title {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		gap: 1em;
+		margin-top: 4em;
+	}
+
+	.round-title label {
+		font-weight: bold;
+	}
+
+	.daily-double {
+		margin-top: 0.5em;
+		margin-bottom: -1em;
+		text-align: center;
+	}
+
+	.categories {
+		display: flex;
+		flex-direction: row;
+		gap: 1.5em;
+		justify-content: space-between;
+		min-width: var(--min-width);
+		margin: 2em 0;
+	}
+
+	.clue-column {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 0.6em;
+		min-width: 90px;
+	}
+</style>

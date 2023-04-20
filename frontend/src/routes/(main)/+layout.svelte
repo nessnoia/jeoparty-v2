@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/stores';
 
-	let pathname = $page.url.pathname;
+	$: pathname = $page.url.pathname;
 </script>
 
 <nav>
@@ -23,7 +23,7 @@
 		height: 10%;
 		padding: 10px 50px 0 50px;
 		margin-bottom: 40px;
-		min-width: 700px;
+		min-width: var(--min-width);
 	}
 
 	ul {

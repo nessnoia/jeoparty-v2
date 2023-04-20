@@ -55,7 +55,7 @@
 		align-items: center;
 		text-align: center;
 		width: 40%;
-		min-width: 600px;
+		min-width: var(--min-width);
 	}
 
 	form {

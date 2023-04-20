@@ -16,5 +16,6 @@
 		display: grid;
 		grid-template-columns: 22% 22% 22% 22%;
 		grid-gap: 20px 3%;
+		margin: 20px 0;
 	}
 </style>

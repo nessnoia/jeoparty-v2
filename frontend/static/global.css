@@ -52,6 +52,13 @@
     --size-9: 16px;
     --size-10: 14px;
     --size-11: 12px;
+
+    --min-width: 700px;
+}
+
+input {
+    min-width: 0;
+    box-sizing: border-box;
 }
 
 svg {
@@ -62,4 +69,12 @@ svg {
 img {
     height: 20px;
     width: auto;
+}
+
+[contenteditable='true']:focus {
+    outline: 1px solid var(--grey-400);
+}
+
+input:focus {
+    outline: 1px solid var(--grey-400);
 }

@@ -60,47 +60,98 @@
 {/if}
 
 {#if showClueEditor || roundType === 'final'}
-	{#if roundType === 'normal' && boardType === 'custom'}
-		<input
-			type="number"
-			placeholder="Value"
-			bind:value={clue.value}
-			on:input={() => {
-				if (clue.value === null) clue.value = 0;
-				else unsavedUpdater('value', clue.value);
-			}}
+	<div class="clue-editor">
+		{#if roundType === 'normal' && boardType === 'custom'}
+			<input
+				type="number"
+				placeholder="Value"
+				bind:value={clue.value}
+				on:input={() => {
+					if (clue.value === null) clue.value = 0;
+					else unsavedUpdater('value', clue.value);
+				}}
+			/>
+		{/if}
+		<div
+			contenteditable="true"
+			placeholder="Clue"
+			bind:textContent={clue.clue}
+			on:input={() => unsavedUpdater('clue', clue.clue)}
 		/>
-	{/if}
-	<input
-		type="text"
-		placeholder="Clue"
-		bind:value={clue.clue}
-		on:input={() => unsavedUpdater('clue', clue.clue)}
-	/>
 
-	<!-- TODO: allow for uploading images for clues -->
-	<!-- <label for="img">Upload clue image:</label>
+		<!-- TODO: allow for uploading images for clues -->
+		<!-- <label for="img">Upload clue image:</label>
 		<input type="file" id="img" name="img" accept="image/*" /> -->
 
-	<input
-		type="text"
-		placeholder="Answer"
-		bind:value={clue.answer}
-		on:input={() => unsavedUpdater('answer', clue.answer)}
-	/>
-
-	{#if roundType === 'normal'}
-		<label for="daily-double">Make clue daily double?</label>
-		<input
-			type="checkbox"
-			name="daily-double"
-			bind:checked={clue.isDailyDouble}
-			on:change={() => {
-				unsavedUpdater('isDailyDouble', clue.isDailyDouble);
-				let add = clue.isDailyDouble ? 1 : -1;
-				dispatch('updateDailyDoubleNumber', { add: add });
-			}}
-			disabled={maxDailyDoublesReached && !clue.isDailyDouble}
+		<div
+			contenteditable="true"
+			placeholder="Answer"
+			bind:textContent={clue.answer}
+			on:input={() => unsavedUpdater('answer', clue.answer)}
 		/>
-	{/if}
+
+		{#if roundType === 'normal'}
+			<div class="daily-double">
+				<label for="daily-double">Make clue daily double?</label>
+				<input
+					type="checkbox"
+					name="daily-double"
+					bind:checked={clue.isDailyDouble}
+					on:change={() => {
+						unsavedUpdater('isDailyDouble', clue.isDailyDouble);
+						let add = clue.isDailyDouble ? 1 : -1;
+						dispatch('updateDailyDoubleNumber', { add: add });
+					}}
+					disabled={maxDailyDoublesReached && !clue.isDailyDouble}
+				/>
+			</div>
+		{/if}
+	</div>
 {/if}
+
+<style>
+	.clue-editor {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5em;
+		justify-content: space-evenly;
+		margin: 0.7em 0 1em 0;
+	}
+	button {
+		padding: 0.8em 1em;
+		width: 100%;
+		padding: 10% 0;
+	}
+
+	[contenteditable] {
+		border: thin solid var(--black);
+		border-radius: 0.1em;
+		padding: 0.3em;
+	}
+
+	[contenteditable='true']:empty:before {
+		content: attr(placeholder);
+		pointer-events: none;
+		display: block; /* For Firefox */
+		color: var(--grey-400);
+	}
+
+	.daily-double {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.daily-double input {
+		appearance: none;
+		-webkit-appearance: none;
+		border: 1px solid var(--black);
+		padding: 6px;
+		border-radius: 3px;
+	}
+
+	.daily-double input:checked {
+		background-color: var(--black);
+	}
+</style>

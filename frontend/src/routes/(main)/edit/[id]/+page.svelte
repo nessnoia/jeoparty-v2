@@ -54,22 +54,45 @@
 	});
 </script>
 
-{#if Object.keys($unsaved).length > 0}
-	<img src="/icons/spinner.svg" alt="save pending spinner" />
-	<span>Saving...</span>
-{:else}
-	<img src="/icons/circle-check.svg" alt="changes saved" />
-	<span>All changes saved.</span>
-{/if}
+<div id="edit">
+	<div id="save-message">
+		{#if Object.keys($unsaved).length > 0}
+			<img src="/icons/spinner.svg" alt="save pending spinner" />
+			<span>Saving...</span>
+		{:else}
+			<img src="/icons/circle-check.svg" alt="changes saved" />
+			<span>All changes saved.</span>
+		{/if}
+	</div>
 
-<!-- {#if form !== undefined && !form?.saved}
+	<!-- {#if form !== undefined && !form?.saved}
 	<span>Error saving data. Please refresh the page to try and save data.</span>
 {/if} -->
 
-<EditBoard {gameInfo} {gameData} />
+	<EditBoard {gameInfo} {gameData} />
+</div>
 
 <form bind:this={formElement} method="POST" use:enhance>
 	<input type="hidden" name="unsaved-changes" value={JSON.stringify($unsaved)} />
 </form>
 
 <NotSavedModal bind:isVisible={warnNotSavedOpen} to={navLinkTo} />
+
+<style>
+	#edit {
+		min-width: var(--min-width);
+		padding: 0 70px;
+	}
+
+	#save-message {
+		display: flex;
+		flex-direction: row;
+		justify-content: start;
+		align-items: center;
+		gap: 0.8em;
+	}
+
+	#save-message img {
+		height: 1.1em;
+	}
+</style>

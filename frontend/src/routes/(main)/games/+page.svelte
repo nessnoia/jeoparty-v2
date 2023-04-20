@@ -27,7 +27,7 @@
 		</div>
 	</div>
 
-	<input id="search" type="text" placeholder="Search for games" />
+	<!-- <input id="search" type="text" placeholder="Search for games" /> -->
 
 	<!-- TODO: Add filtering functionality -->
 	<!-- <div>
@@ -42,9 +42,9 @@
 
 <style>
 	#container {
-		min-width: 700px;
+		min-width: var(--min-width);
 		padding: 10px 60px 0 60px;
-		margin-top: 20%;
+		margin-top: 100px;
 		display: flex;
 		flex-direction: column;
 		align-content: center;
@@ -77,7 +77,7 @@
 		cursor: pointer;
 	}
 
-	#search {
+	/* #search {
 		background: url('/icons/magnifying-glass.svg') no-repeat scroll 5px;
 		background-size: 20px;
 		padding: 8px;
@@ -91,5 +91,5 @@
 		box-shadow: none;
 		outline: none;
 		border: 1px solid var(--grey-200);
-	}
+	} */
 </style>
