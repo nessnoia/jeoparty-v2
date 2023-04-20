@@ -68,11 +68,18 @@
 		overflow: auto;
 		transform: translate(-50%, -50%);
 		padding: 1em;
-		border-radius: 0.2em;
+		border-radius: 0.5em;
 		background: white;
 	}
 
 	button {
 		display: block;
+		background-color: transparent;
+		box-shadow: none;
+		border: none;
+	}
+
+	button:hover {
+		cursor: pointer;
 	}
 </style>

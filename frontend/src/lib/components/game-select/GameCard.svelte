@@ -12,3 +12,19 @@
 </button>
 
 <GameSelectModal bind:isVisible={gamePreviewOpen} {gameInfo} />
+
+<style>
+	button {
+		padding: 10px;
+		height: 100px;
+		max-width: 200px;
+		text-overflow: ellipsis;
+		background-color: white;
+		border: 1px var(--black) solid;
+		border-radius: 10px;
+	}
+
+	button:hover {
+		cursor: pointer;
+	}
+</style>

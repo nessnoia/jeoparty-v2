@@ -5,6 +5,16 @@
 	export let gamesList: GameInfo[];
 </script>
 
-{#each gamesList as game}
-	<GameCard gameInfo={game} />
-{/each}
+<div id="games">
+	{#each gamesList as game}
+		<GameCard gameInfo={game} />
+	{/each}
+</div>
+
+<style>
+	#games {
+		display: grid;
+		grid-template-columns: 22% 22% 22% 22%;
+		grid-gap: 20px 3%;
+	}
+</style>

@@ -21,8 +21,7 @@
 <style>
 	nav {
 		height: 10%;
-		padding-right: 50px;
-		padding-top: 10px;
+		padding: 10px 50px 0 50px;
 		margin-bottom: 40px;
 		min-width: 700px;
 	}
@@ -33,6 +32,7 @@
 		justify-content: space-between;
 		align-content: center;
 		align-items: center;
+		padding: 0;
 	}
 
 	li {

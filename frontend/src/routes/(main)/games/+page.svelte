@@ -13,30 +13,83 @@
 	};
 </script>
 
-<form use:enhance method="post">
+<!-- <form use:enhance method="post">
 	<input type="submit" class="button" value="Sign out" />
-</form>
+</form> -->
 
-<button><img src="/icons/circle-minus.svg" alt="delete games" /></button>
-<button on:click={goToCreatePage}><img src="/icons/circle-plus.svg" alt="add game" /></button>
+<div id="container">
+	<div id="game-add-controls">
+		<h1>Your Games</h1>
 
-<h1>Your Games</h1>
+		<div id="game-buttons">
+			<button><img src="/icons/circle-minus.svg" alt="delete games" /></button>
+			<button on:click={goToCreatePage}><img src="/icons/circle-plus.svg" alt="add game" /></button>
+		</div>
+	</div>
 
-<input type="text" placeholder="Search for games" />
+	<input id="search" type="text" placeholder="Search for games" />
 
-<!-- TODO: Add filtering functionality -->
-<!-- <div>
+	<!-- TODO: Add filtering functionality -->
+	<!-- <div>
 	<span>Filter by:</span>
 	<button>Tags</button>
 	<button># of Rounds</button>
 	<button># of Questions</button>
 </div> -->
 
-<GamesTable gamesList={games} />
+	<GamesTable gamesList={games} />
+</div>
 
 <style>
-	button img {
-		width: 20px;
-		height: 20px;
+	#container {
+		min-width: 700px;
+		padding: 10px 60px 0 60px;
+		margin-top: 20%;
+		display: flex;
+		flex-direction: column;
+		align-content: center;
+		gap: 30px;
+	}
+
+	#game-add-controls {
+		text-align: center;
+	}
+
+	#game-add-controls h1 {
+		display: inline;
+	}
+
+	#game-add-controls #game-buttons {
+		float: right;
+		display: inline;
+	}
+
+	#game-buttons button {
+		background-color: transparent;
+		border: 0px;
+	}
+
+	#game-buttons img {
+		height: 25px;
+	}
+
+	#game-buttons button:hover {
+		cursor: pointer;
+	}
+
+	#search {
+		background: url('/icons/magnifying-glass.svg') no-repeat scroll 5px;
+		background-size: 20px;
+		padding: 8px;
+		padding-left: 40px;
+		box-shadow: none;
+		outline: none;
+		border: 1px solid var(--black);
+	}
+
+	#search:focus {
+		box-shadow: none;
+		outline: none;
+		border: 1px solid var(--grey-200);
 	}
 </style>
