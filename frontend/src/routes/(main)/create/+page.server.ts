@@ -8,7 +8,7 @@ export const actions = {
         const data = await request.formData();
 
         let gameId = '';
-        const promise = await locals.validateUser()
+        const promise = await locals.auth.validateUser()
         .then(({ user }) => user.userId)
         .then(uid => {
             const gameInfo = createGameInfoObject(data, uid);
