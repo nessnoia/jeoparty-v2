@@ -10,19 +10,19 @@
 		<h1>Login</h1>
 		<form method="POST" action="?/email" use:enhance>
 			<div class="form-item">
-				<label for="email"> Email </label>
-				<input type="email" name="email" />
+				<label for="username"> Username </label>
+				<input type="text" name="username" maxlength="25" required />
 			</div>
 			<div class="form-item">
 				<label for="password"> Password </label>
-				<input type="password" name="password" />
+				<input type="password" name="password" maxlength="25" required />
 			</div>
 
 			<button id="login" formaction="?/email">Login</button>
 		</form>
 
-		<a class="login-link" href="/api/oauth?provider=google" target="_blank">Continue with Google</a>
-		<a class="login-link" href="/api/oauth?provider=github" target="_blank">Continue with Github</a>
+		<!-- <a class="login-link" href="/api/oauth?provider=google" target="_blank">Continue with Google</a>
+		<a class="login-link" href="/api/oauth?provider=github" target="_blank">Continue with Github</a> -->
 		{#if form?.message}
 			<p class="error">{form.message || ''}</p>
 		{/if}

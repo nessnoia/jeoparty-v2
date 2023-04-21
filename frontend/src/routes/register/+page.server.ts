@@ -4,7 +4,7 @@ import { LuciaError } from 'lucia-auth';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	const session = await locals.validate();
+	const session = await locals.auth.validate();
 	if (session) throw redirect(302, '/games');
 	return {};
 };
@@ -12,10 +12,10 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions: Actions = {
 	default: async ({ request, locals }) => {
 		const form = await request.formData();
-		const email = form.get('email');
+		const username = form.get('username');
 		const password = form.get('password');
         const confirmPassword = form.get('confirm-password');
-		if (!email || !password || typeof email !== 'string' || typeof password !== 'string') {
+		if (!username || !password || typeof username !== 'string' || typeof password !== 'string') {
 			return fail(400, {
 				message: 'Invalid input'
 			});
@@ -32,22 +32,22 @@ export const actions: Actions = {
         }
 		try {
 			const user = await auth.createUser({
-				key: {
-					providerId: 'email',
-					providerUserId: email,
+				primaryKey: {
+					providerId: 'username',
+					providerUserId: username,
 					password
 				},
 				attributes: {
-					email
+					username
 				}
 			});
 			const session = await auth.createSession(user.userId);
-			locals.setSession(session);
+			locals.auth.setSession(session);
 		} catch (error) {
             console.error(error);
 			if (error instanceof LuciaError && error.message === 'AUTH_DUPLICATE_KEY_ID') {
 				return fail(400, {
-					message: 'Email already in use'
+					message: 'Username already in use'
 				});
 			}
 			console.error(error);

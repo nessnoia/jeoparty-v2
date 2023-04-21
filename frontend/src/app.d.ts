@@ -4,7 +4,7 @@
 declare namespace Lucia {
 	type Auth = import("$lib/server/lucia").Auth;
 	type UserAttributes = {
-        email: string;
+        username: string;
     };
 }
 
@@ -12,9 +12,7 @@ declare namespace Lucia {
 declare global {
 	namespace App {
         interface Locals {
-            validate: import("@lucia-auth/sveltekit").Validate;
-            validateUser: import("@lucia-auth/sveltekit").ValidateUser;
-            setSession: import("@lucia-auth/sveltekit").SetSession;
+            auth: import("lucia-auth").AuthRequest;
         }
 		// interface Error {}
 		// interface PageData {}

@@ -10,18 +10,18 @@
 		<h1>Create Account</h1>
 		<form method="POST" use:enhance>
 			<div class="form-item">
-				<label for="email"> Email</label>
-				<input type="email" name="email" />
+				<label for="username"> Username</label>
+				<input type="text" name="username" maxlength="25" required />
 			</div>
 
 			<div class="form-item">
 				<label for="password"> Password</label>
-				<input type="password" name="password" />
+				<input type="password" name="password" maxlength="25" required />
 			</div>
 
 			<div class="form-item">
 				<label for="confirm-password"> Confirm Password</label>
-				<input type="password" name="confirm-password" />
+				<input type="password" name="confirm-password" maxlength="25" required />
 			</div>
 
 			<button id="register" type="submit">Create Account</button>

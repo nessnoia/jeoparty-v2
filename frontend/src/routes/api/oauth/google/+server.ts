@@ -5,7 +5,7 @@ import type { RequestHandler } from '../$types';
 export const GET = (async ({ cookies, url, locals }) => {
 	const code = url.searchParams.get('code');
 	const state = url.searchParams.get('state');
-	const storedState = cookies.get('oauth_state');
+	const storedState = cookies.get('google_oauth_state');
 	if (storedState !== state || !code || !state) throw new Response(null, { status: 401 });
 	try {
 		const { existingUser, providerUser, createUser } = await googleAuth.validateCallback(code);
@@ -15,7 +15,7 @@ export const GET = (async ({ cookies, url, locals }) => {
 				email: providerUser.email
 			}));
 		const session = await auth.createSession(user.userId);
-		locals.setSession(session);
+		locals.auth.setSession(session);
 	} catch (e) {
 		return new Response(null, {
 			status: 500

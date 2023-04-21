@@ -1,8 +1,9 @@
 import lucia from "lucia-auth";
+import { sveltekit } from "lucia-auth/middleware";
 import adapter from "@lucia-auth/adapter-mongoose";
 import mongoose from 'mongoose';
 import { dev } from "$app/environment";
-import { google, github } from "@lucia-auth/oauth/providers";
+import { github, google } from "@lucia-auth/oauth/providers";
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI } from "$env/static/private";
 
 const userSchema = new mongoose.Schema({
@@ -45,7 +46,7 @@ const keySchema = new mongoose.Schema({
             required: true
         },
         hashed_password: String,
-        primary: {
+        primary_key: {
             type: Boolean,
             required: true
         },
@@ -54,15 +55,16 @@ const keySchema = new mongoose.Schema({
     { _id: false }
 );
 
-const User = mongoose.models.user || mongoose.model('user', userSchema);
-const Session = mongoose.models.session || mongoose.model('session', sessionSchema);
-const Key = mongoose.models.key || mongoose.model('key', keySchema);
+const User = mongoose.models.user || mongoose.model('auth_user', userSchema);
+const Session = mongoose.models.session || mongoose.model('auth_session', sessionSchema);
+const Key = mongoose.models.key || mongoose.model('auth_key', keySchema);
 
 export const auth = lucia({
     User, Session, Key,
 	adapter: adapter(mongoose),
 	env: dev ? "DEV" : "PROD",
-    transformUserData: (userData: any) => {
+    middleware: sveltekit(),
+    transformDatabaseUser: (userData: any) => {
 		return {
 			userId: userData.id,
 			email: userData.email

@@ -1,13 +1,12 @@
 import { connectToDatabase } from "$lib/server/database";
 import mongoose from "mongoose";
 import { auth } from "$lib/server/lucia";
-import { handleHooks } from "@lucia-auth/sveltekit";
 import { redirect, type Handle } from "@sveltejs/kit";
 import { sequence } from "@sveltejs/kit/hooks";
 import { ATLAS_URI } from "$env/static/private";
 
 const authenticate = (async ({ event, resolve }) => {
-    const session = await event.locals.validate();
+    const session = await event.locals.auth.validate();
     if (!session && (!event.url.pathname.startsWith('/login') 
                  && !event.url.pathname.startsWith('/register') 
                  && !event.url.pathname.startsWith('/api'))) {
@@ -28,7 +27,12 @@ connectToDatabase(ATLAS_URI).then(() => {
 	console.log('Mongo started');
 }).catch(e => {console.error(e)})
 
+export const handleAuth = (async ({ event, resolve }) => {
+    event.locals.auth = auth.handleRequest(event);
+	return await resolve(event);
+}) satisfies Handle;
+
 export const handle = sequence(
-    handleHooks(auth),
+    handleAuth,
     authenticate,
 );
