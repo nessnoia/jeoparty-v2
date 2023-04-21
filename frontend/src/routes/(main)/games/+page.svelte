@@ -13,10 +13,6 @@
 	};
 </script>
 
-<form use:enhance method="post">
-	<input type="submit" class="button" value="Sign out" />
-</form>
-
 <div id="container">
 	<div id="game-add-controls">
 		<h1>Your Games</h1>

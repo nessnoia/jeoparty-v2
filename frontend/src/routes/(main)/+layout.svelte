@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import { page } from '$app/stores';
 
 	$: pathname = $page.url.pathname;
@@ -11,7 +12,9 @@
 		<li class:active={pathname === '/create'}><a href="/create">Create New</a></li>
 		<li class:active={pathname === '/tutorial'}><a href="/tutorial">How to Play</a></li>
 		<li class:active={pathname === '/settings'}>
-			<a href="/settings"><img class="settings" src="/icons/gear.svg" alt="settings" /></a>
+			<form use:enhance method="post" action="/signout">
+				<input type="submit" class="button" value="Sign out" />
+			</form>
 		</li>
 	</ul>
 </nav>
@@ -64,8 +67,13 @@
 		font-weight: bold;
 	}
 
-	.settings {
-		height: 20px;
-		width: auto;
+	.button {
+		background-color: transparent;
+		outline: none;
+		border: none;
+	}
+
+	.button:hover {
+		cursor: pointer;
 	}
 </style>
