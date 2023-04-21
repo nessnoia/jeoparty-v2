@@ -15,14 +15,13 @@
 	} from '$lib/update-models/game-data';
 	import AddRoundModal from '../modals/AddRoundModal.svelte';
 	import GarbageCan from './GarbageCan.svelte';
-	import e from 'cors';
 
 	// TODO: Focus on last used element after form submit
 	export let gameInfo: GameInfo;
 	export let gameData: GameData;
 
 	let roundShownIdx: number = 0;
-	let gameTitle: string = gameData.gameTitle ?? 'Untitled Game';
+	let gameTitle: string = gameData?.gameTitle ?? 'Untitled Game';
 
 	let rounds: RoundUpdater[] = [];
 
@@ -37,8 +36,8 @@
 		| undefined;
 
 	// Fill RoundUpdater array with gameData so we're not trying to update the prop (won't update UI)
-	for (let i = 0; i < gameData.rounds.length; i++) {
-		let round = gameData.rounds[i];
+	for (let i = 0; i < gameData?.rounds.length; i++) {
+		let round = gameData?.rounds[i];
 
 		let roundUpdater = {
 			id: round.id,
@@ -198,12 +197,12 @@
 </script>
 
 <div class="game-title">
+	{#if gameInfo?.boardType === 'custom'}
+		<GarbageCan bind:rounds />
+	{/if}
 	<label for="game-title">Game Title: </label>
 	<input type="text" id="game-title" bind:value={gameTitle} on:input={saveGameTitleUpdate} />
 </div>
-{#if gameInfo.boardType === 'custom'}
-	<GarbageCan bind:rounds />
-{/if}
 
 <!-- Render round toggle buttons before rendering round information -->
 <div class="rounds">
@@ -225,6 +224,20 @@
 			>
 		</DraggableDiv>
 	{/each}
+	{#if rounds.length < 5}
+		<button
+			class="add-round"
+			on:click={() => {
+				addRoundVisible = true;
+			}}
+			><img src="/icons/circle-plus.svg" alt="add round" />
+		</button>
+		<AddRoundModal
+			on:changeRound={(event) => (roundShownIdx = event.detail.showRoundIdx)}
+			bind:isVisible={addRoundVisible}
+			bind:rounds
+		/>
+	{/if}
 </div>
 
 <!-- Render rounds -->
@@ -250,7 +263,7 @@
 					> left for this round.
 				</p>
 			{:else if gameInfo.boardType == 'custom'}
-				<p>
+				<p class="daily-double">
 					You have {round.numDailyDoubles || 0} Daily Double(s) on this round.
 				</p>
 			{/if}
@@ -315,17 +328,29 @@
 									/>
 								</DraggableDiv>
 							{/each}
+							{#if gameInfo.boardType == 'custom'}
+								{#if gameInfo.boardType == 'custom' && round.type == 'normal' && (category.clues || []).length < 10}
+									<button
+										class="add-clue"
+										on:click={() => {
+											addClue(roundShownIdx, categoryIdx, round.id || '', category.id || '');
+										}}
+										><img src="/icons/circle-plus.svg" alt="add clue" />
+									</button>
+								{/if}
+							{/if}
 						</div>
 					</DraggableDiv>
-					{#if gameInfo.boardType == 'custom' && round.type == 'normal' && (category.clues || []).length < 10}
-						<button
-							on:click={() => {
-								addClue(roundShownIdx, categoryIdx, round.id || '', category.id || '');
-							}}
-							><img src="/icons/circle-plus.svg" alt="add category" />
-						</button>
-					{/if}
 				{/each}
+				{#if round.type == 'normal' && (round.categories || []).length < 8}
+					<button
+						class="add-category"
+						on:click={() => {
+							addCategory(roundShownIdx, round.id || '');
+						}}
+						><img src="/icons/circle-plus.svg" alt="add category" />
+					</button>
+				{/if}
 			</div>
 		{:else if round.type == 'final'}
 			<!-- Should only ever be on of each, but need to loop because of the possibly undefined arrays -->
@@ -335,29 +360,6 @@
 					<EditClue {clue} roundType={round.type} boardType={gameInfo.boardType} />
 				{/each}
 			{/each}
-		{/if}
-		{#if gameInfo.boardType == 'custom'}
-			{#if rounds.length < 5}
-				<button
-					on:click={() => {
-						addRoundVisible = true;
-					}}
-					><img src="/icons/circle-plus.svg" alt="add round" />
-				</button>
-				<AddRoundModal
-					on:changeRound={(event) => (roundShownIdx = event.detail.showRoundIdx)}
-					bind:isVisible={addRoundVisible}
-					bind:rounds
-				/>
-			{/if}
-			{#if round.type == 'normal' && (round.categories || []).length < 8}
-				<button
-					on:click={() => {
-						addCategory(roundShownIdx, round.id || '');
-					}}
-					><img src="/icons/circle-plus.svg" alt="add clue" />
-				</button>
-			{/if}
 		{/if}
 	{/if}
 {/each}
@@ -442,5 +444,45 @@
 		align-items: stretch;
 		gap: 0.6em;
 		min-width: 90px;
+		max-width: 400px;
+	}
+
+	button.add-round {
+		background-color: lightgrey;
+		padding: 0;
+	}
+
+	button.add-round:hover,
+	button.add-category:hover,
+	button.add-clue:hover {
+		background-color: darkgrey;
+	}
+
+	.add-round img {
+		width: 100%;
+		padding: 0;
+		min-height: 20px;
+		max-height: 40px;
+	}
+
+	.add-category {
+		background-color: lightgrey;
+		border: none;
+		outline: none;
+		border-left: 1px solid var(--black);
+		border-right: 1px solid var(--black);
+		border-top: none;
+		border-bottom: none;
+		width: 100%;
+		margin-top: 2.5em;
+	}
+
+	button.add-clue {
+		background-color: lightgray;
+		border-top: 1px solid var(--black);
+		border-bottom: 1px solid var(--black);
+		border-left: none;
+		border-right: none;
+		padding: 10% 0;
 	}
 </style>

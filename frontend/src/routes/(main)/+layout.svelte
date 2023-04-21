@@ -7,7 +7,7 @@
 
 <nav>
 	<ul>
-		<li><img class="logo" src="logo.png" alt="logo" /></li>
+		<li><img class="logo" src="/logo.png" alt="logo" /></li>
 		<li class:active={pathname === '/games'}><a href="/games">View Your Games</a></li>
 		<li class:active={pathname === '/create'}><a href="/create">Create New</a></li>
 		<li class:active={pathname === '/tutorial'}><a href="/tutorial">How to Play</a></li>

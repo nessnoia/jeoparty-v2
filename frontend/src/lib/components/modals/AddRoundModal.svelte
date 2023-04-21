@@ -30,15 +30,127 @@
 {#if isVisible}
 	<ModalBase on:close={() => (isVisible = false)}>
 		<h1>Add Round</h1>
-		<label for="round-title">Round Title</label>
-		<input name="round-title" type="text" placeholder="Round Name" bind:value={title} />
-		<label>
-			Type
-			<label for="normal">Normal</label>
-			<input name="type" type="radio" id="normal" value="normal" bind:group={type} checked />
-			<label for="final">Final Jeoparty</label>
-			<input name="type" type="radio" id="final" value="final" bind:group={type} />
-		</label>
-		<button on:click={addRound}>Create Round</button>
+		<div id="form">
+			<div id="title">
+				<label for="round-title">Round Title:</label>
+				<input name="round-title" type="text" placeholder="Round Name" bind:value={title} />
+			</div>
+			<div id="radio-buttons">
+				<label for="radio">Type:</label>
+				<div id="buttons">
+					<div class:active={type === 'normal'} class="radio-option">
+						<label for="normal">Normal</label>
+						<input name="type" type="radio" id="normal" value="normal" bind:group={type} checked />
+					</div>
+					<div class:active={type === 'final'} class="radio-option">
+						<label for="final">Final Jeoparty</label>
+						<input name="type" type="radio" id="final" value="final" bind:group={type} />
+					</div>
+				</div>
+			</div>
+			<button id="create" on:click={addRound}>Create Round</button>
+		</div>
 	</ModalBase>
 {/if}
+
+<style>
+	h1 {
+		text-align: center;
+	}
+
+	#form {
+		display: flex;
+		flex-direction: column;
+		gap: 1em;
+		min-width: 500px;
+	}
+
+	#title {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		gap: 3em;
+		margin: 0 0.5em;
+	}
+
+	#title input {
+		flex-grow: 1;
+	}
+
+	#radio-buttons {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		gap: 5.8em;
+		width: 100%;
+		margin-left: 0.5em;
+	}
+
+	#buttons {
+		flex-grow: 1;
+		display: flex;
+		flex-direction: row;
+		gap: 1em;
+		margin-right: 1em;
+	}
+
+	.radio-option {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		gap: 1em;
+		padding: 0.5em 1em;
+		border: 1px solid var(--black);
+		border-radius: 0.2em;
+		width: 50%;
+	}
+
+	.radio-option input {
+		appearance: none;
+		border: none;
+		background-color: transparent;
+		position: fixed;
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	.radio-option input:checked {
+		background-color: transparent;
+	}
+
+	.radio-option.active {
+		border: 2.2px solid var(--black);
+		border-radius: 0.2em;
+	}
+
+	.radio-option label {
+		color: var(--black);
+		text-transform: uppercase;
+		text-align: center;
+		width: 100%;
+	}
+
+	.radio-option.active label {
+		font-weight: bold;
+	}
+
+	#create {
+		padding: 0.7em 2em;
+		margin: 0.4em auto 1.5em auto;
+		width: 40%;
+		background-color: var(--black);
+		color: var(--white);
+		border: none;
+		border-radius: 0.2em;
+		font-weight: bold;
+		font-size: medium;
+		text-transform: uppercase;
+	}
+
+	#create:hover {
+		cursor: pointer;
+	}
+</style>

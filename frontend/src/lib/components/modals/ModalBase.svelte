@@ -63,11 +63,12 @@
 		left: 50%;
 		top: 50%;
 		width: calc(100vw - 4em);
+		min-width: 500px;
 		max-width: 32em;
 		max-height: calc(100vh - 4em);
 		overflow: auto;
 		transform: translate(-50%, -50%);
-		padding: 1em;
+		padding: 1.5em;
 		border-radius: 0.5em;
 		background: white;
 	}
