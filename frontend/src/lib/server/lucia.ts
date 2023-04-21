@@ -3,8 +3,8 @@ import { sveltekit } from "lucia-auth/middleware";
 import adapter from "@lucia-auth/adapter-mongoose";
 import mongoose from 'mongoose';
 import { dev } from "$app/environment";
-import { github, google } from "@lucia-auth/oauth/providers";
-import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI } from "$env/static/private";
+// import { github, google } from "@lucia-auth/oauth/providers";
+// import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI } from "$env/static/private";
 
 const userSchema = new mongoose.Schema({
         _id: {
@@ -72,15 +72,15 @@ export const auth = lucia({
 	}
 });
 
-export const googleAuth = google(auth, {
-    clientId: GOOGLE_CLIENT_ID,
-    clientSecret: GOOGLE_CLIENT_SECRET,
-    redirectUri: GOOGLE_REDIRECT_URI
-});
+// export const googleAuth = google(auth, {
+//     clientId: GOOGLE_CLIENT_ID,
+//     clientSecret: GOOGLE_CLIENT_SECRET,
+//     redirectUri: GOOGLE_REDIRECT_URI
+// });
 
-export const githubAuth = github(auth, {
-    clientId: GITHUB_CLIENT_ID,
-    clientSecret: GITHUB_CLIENT_SECRET
-})
+// export const githubAuth = github(auth, {
+//     clientId: GITHUB_CLIENT_ID,
+//     clientSecret: GITHUB_CLIENT_SECRET
+// })
 
 export type Auth = typeof auth;

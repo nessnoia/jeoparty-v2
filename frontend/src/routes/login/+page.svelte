@@ -81,7 +81,7 @@
 		font-size: var(--size-10);
 	}
 
-	.login-link {
+	/* .login-link {
 		text-decoration: none;
 		border: 1px black solid;
 		border-radius: 5px;
@@ -92,7 +92,7 @@
 
 	.login-link:visited {
 		color: black;
-	}
+	} */
 
 	.register {
 		margin-top: 5px;
