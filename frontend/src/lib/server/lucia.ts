@@ -55,9 +55,9 @@ const keySchema = new mongoose.Schema({
     { _id: false }
 );
 
-const User = mongoose.models.user || mongoose.model('auth_user', userSchema);
-const Session = mongoose.models.session || mongoose.model('auth_session', sessionSchema);
-const Key = mongoose.models.key || mongoose.model('auth_key', keySchema);
+const User = mongoose.models.auth_user || mongoose.model('auth_user', userSchema);
+const Session = mongoose.models.auth_session || mongoose.model('auth_session', sessionSchema);
+const Key = mongoose.models.auth_key || mongoose.model('auth_key', keySchema);
 
 export const auth = lucia({
     User, Session, Key,
