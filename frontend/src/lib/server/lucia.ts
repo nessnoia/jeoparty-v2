@@ -2,8 +2,7 @@ import lucia from "lucia-auth";
 import adapter from "@lucia-auth/adapter-mongoose";
 import mongoose from 'mongoose';
 import { dev } from "$app/environment";
-import google from "@lucia-auth/oauth/google";
-import github from "@lucia-auth/oauth/github";
+import { google, github } from "@lucia-auth/oauth/providers";
 import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI } from "$env/static/private";
 
 const userSchema = new mongoose.Schema({
@@ -63,7 +62,7 @@ export const auth = lucia({
     User, Session, Key,
 	adapter: adapter(mongoose),
 	env: dev ? "DEV" : "PROD",
-    transformUserData: (userData) => {
+    transformUserData: (userData: any) => {
 		return {
 			userId: userData.id,
 			email: userData.email
