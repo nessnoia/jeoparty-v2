@@ -19,10 +19,15 @@
 	let randomElephantIndexes = data.indexes;
 
 	let nickname = '';
+	let errorName = false;
 	let colourChoice: number = 0;
 	let characterChoice: ComponentType = Elephant;
 	let animalChoiceString: string = 'elephant';
 	let characterChoiceString: string = 'elephant';
+
+	$: if (nickname !== '') {
+		errorName = false;
+	}
 
 	function changeCharaterSelection(selector: ComponentType) {
 		animalChoiceString = characterSelectors.get(selector) || '';
@@ -37,6 +42,10 @@
 	}
 
 	const join = () => {
+		if (nickname === '') {
+			errorName = true;
+			return;
+		}
 		let client = new Colyseus.Client(PUBLIC_COLYSEUS_URL);
 		let joinObj = {
 			gameCode: gameCode,
@@ -56,7 +65,7 @@
 
 <div>
 	<h1>Create Character</h1>
-	<input placeholder="Nickname" type="text" bind:value={nickname} />
+	<input placeholder="Nickname" type="text" bind:value={nickname} class:error={errorName} />
 
 	<div class="charactor">
 		<svelte:component this={characterChoice} {colourChoice} />
@@ -98,6 +107,9 @@
 </div>
 
 <style>
+	.error {
+		border: 2px red solid;
+	}
 	.charactor {
 		width: 300px;
 		height: 300px;
