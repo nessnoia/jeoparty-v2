@@ -24,26 +24,49 @@
 	};
 </script>
 
-{#each Array(numLights) as _}
-	<div class={buzzersActive ? 'active' : ''} />
-{/each}
+<div class="left">
+	{#each Array(numLights) as _}
+		<div class="light" class:active={buzzersActive} />
+	{/each}
+</div>
 
-{#each Array(numLights) as _}
-	<div class={buzzersActive ? 'active' : ''} />
-{/each}
+<div class="right">
+	{#each Array(numLights) as _}
+		<div class="light" class:active={buzzersActive} />
+	{/each}
+</div>
 
 <svelte:window on:keyup|preventDefault={onKeyUp} />
 
 <style>
-	div {
-		height: 50px;
-		width: 100px;
-		background-color: yellow;
+	.light {
+		background-color: var(--white);
+		height: 19.5%;
 	}
 
-	div.active {
-		height: 50px;
-		width: 100px;
+	.light.active {
 		background-color: blue;
+	}
+
+	.left,
+	.right {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		width: 2.5%;
+		height: 100%;
+		top: 0;
+		position: absolute;
+		background-color: var(--black);
+	}
+
+	.left {
+		left: 0;
+		border-right: 3px solid var(--black);
+	}
+
+	.right {
+		right: 0;
+		border-left: 3px solid var(--black);
 	}
 </style>

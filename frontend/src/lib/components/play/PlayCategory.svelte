@@ -7,3 +7,14 @@
 <div>
 	<h3>{category.category}</h3>
 </div>
+
+<style>
+	h3 {
+		color: var(--white);
+		text-align: center;
+		padding: 1.5em 0;
+		background-color: blue;
+		text-transform: uppercase;
+		margin: 0.3em 0 0.4em 0;
+	}
+</style>

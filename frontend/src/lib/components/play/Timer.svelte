@@ -85,22 +85,33 @@
 	};
 </script>
 
-{#each Array(numLights) as _, i}
-	<div class={lightsActive[i] ? 'active' : ''} />
-{/each}
+<div class="timer">
+	{#each Array(numLights) as _, i}
+		<div class="light" class:active={lightsActive[i]} />
+	{/each}
+</div>
 
 <svelte:window on:keyup|preventDefault={onKeyUp} />
 
 <style>
-	div {
-		height: 50px;
-		width: 100px;
-		background-color: yellow;
+	.light {
+		background-color: var(--white);
+		width: 10.9%;
 	}
 
-	div.active {
-		height: 50px;
-		width: 100px;
+	.light.active {
 		background-color: blue;
+	}
+
+	.timer {
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		background-color: var(--black);
+		position: absolute;
+		top: 0;
+		height: 2.5%;
+		border-bottom: 3px solid var(--black);
 	}
 </style>

@@ -140,46 +140,78 @@
 	};
 </script>
 
-<!-- Render categories -->
-{#if round.type == 'normal'}
-	{#if showCategories}
+<div id="board">
+	<!-- Render categories -->
+	{#if round.type == 'normal'}
+		<!-- {#if showCategories}
 		<ShowCategories categories={round.categories} bind:showCategories />
-	{:else}
-		{#each round.categories as category}
-			<PlayCategory {category} />
-			<!-- Render clues -->
-			{#each category.clues.sort(sortClues) as clue}
-				<PlayClue
-					{clue}
-					{dailyDoubleWagerSubmitted}
-					on:clueUsed={clueClosed}
-					on:clueOpen={clueOpen}
-					on:dailyDouble={handleDailyDouble}
-				/>
+	{:else} -->
+		<div class="categories">
+			{#each round.categories as category}
+				<div class="clues">
+					<PlayCategory {category} />
+					<!-- Render clues -->
+					{#each category.clues.sort(sortClues) as clue}
+						<PlayClue
+							{clue}
+							{dailyDoubleWagerSubmitted}
+							on:clueUsed={clueClosed}
+							on:clueOpen={clueOpen}
+							on:dailyDouble={handleDailyDouble}
+						/>
+					{/each}
+				</div>
+			{/each}
+		</div>
+		<!-- {/if} -->
+	{:else if round.type == 'final'}
+		<!-- Should only ever be one of each, but need to loop because of the possibly undefined arrays -->
+		{#each round.categories || [] as category}
+			{#each category.clues || [] as clue}
+				{#if showPlayerAnswers}
+					<FinalJeopartyResponses
+						{clue}
+						responses={finalJeopartyResponses}
+						on:updateScore={updateFinalJeopartyScoreInfo}
+						on:allAnswersShown={() => dispatch('goToNext')}
+					/>
+				{:else}
+					<FinalJeopardyClue
+						{category}
+						{clue}
+						responses={finalJeopartyResponses}
+						on:showPlayerAnswers={() => (showPlayerAnswers = true)}
+					/>
+				{/if}
 			{/each}
 		{/each}
 	{/if}
-{:else if round.type == 'final'}
-	<!-- Should only ever be one of each, but need to loop because of the possibly undefined arrays -->
-	{#each round.categories || [] as category}
-		{#each category.clues || [] as clue}
-			{#if showPlayerAnswers}
-				<FinalJeopartyResponses
-					{clue}
-					responses={finalJeopartyResponses}
-					on:updateScore={updateFinalJeopartyScoreInfo}
-					on:allAnswersShown={() => dispatch('goToNext')}
-				/>
-			{:else}
-				<FinalJeopardyClue
-					{category}
-					{clue}
-					responses={finalJeopartyResponses}
-					on:showPlayerAnswers={() => (showPlayerAnswers = true)}
-				/>
-			{/if}
-		{/each}
-	{/each}
-{/if}
+</div>
 
 <svelte:window on:keyup|preventDefault={onKeyUp} />
+
+<style>
+	#board {
+		box-sizing: border-box;
+		height: 80%;
+		width: 100%;
+		margin-top: 2.5%;
+		padding: 1% 5%;
+	}
+
+	.categories {
+		display: flex;
+		flex-direction: row;
+		align-items: stretch;
+		height: 100%;
+		gap: 0.4em;
+	}
+
+	.clues {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		width: 100%;
+		gap: 0.4em;
+	}
+</style>
