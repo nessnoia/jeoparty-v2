@@ -1,28 +1,30 @@
 import { lucia } from 'lucia';
 import { sveltekit } from 'lucia/middleware';
-import adapter from '@lucia-auth/adapter-mongoose';
-import mongoose from 'mongoose';
+import { mongoose } from '@lucia-auth/adapter-mongoose';
+import mongodb from 'mongoose';
 import { dev } from '$app/environment';
 // import { github, google } from "@lucia-auth/oauth/providers";
 // import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI } from "$env/static/private";
 
-mongoose.model();
-const userSchema = new mongoose.Schema(
+const userSchema = new mongodb.Schema(
 	{
 		_id: {
-			type: String
+			type: String,
+			required: true
 		},
-		email: {
-			type: String
+		username: {
+			type: String,
+			required: true
 		}
-	},
+	} as const,
 	{ _id: false }
 );
 
-const sessionSchema = new mongoose.Schema(
+const sessionSchema = new mongodb.Schema(
 	{
 		_id: {
-			type: String
+			type: String,
+			required: true
 		},
 		user_id: {
 			type: String,
@@ -36,44 +38,36 @@ const sessionSchema = new mongoose.Schema(
 			type: Number,
 			required: true
 		}
-	},
+	} as const,
 	{ _id: false }
 );
 
-const keySchema = new mongoose.Schema(
+const keySchema = new mongodb.Schema(
 	{
 		_id: {
-			type: String
+			type: String,
+			required: true
 		},
 		user_id: {
 			type: String,
 			required: true
 		},
-		hashed_password: String,
-		primary_key: {
-			type: Boolean,
-			required: true
-		},
-		expires: Number
-	},
+		hashed_password: String
+	} as const,
 	{ _id: false }
 );
 
-const User = mongoose.models.auth_user || mongoose.model('auth_user', userSchema);
-const Session = mongoose.models.auth_session || mongoose.model('auth_session', sessionSchema);
-const Key = mongoose.models.auth_key || mongoose.model('auth_key', keySchema);
+const User = mongodb.models.User || mongodb.model('User', userSchema);
+const Session = mongodb.models.Session || mongodb.model('Session', sessionSchema);
+const Key = mongodb.models.Key || mongodb.model('Key', keySchema);
 
 export const auth = lucia({
-	User,
-	Session,
-	Key,
-	adapter: adapter(mongoose),
+	adapter: mongoose({ User, Session, Key }),
 	env: dev ? 'DEV' : 'PROD',
 	middleware: sveltekit(),
-	transformDatabaseUser: (userData: any) => {
+	getUserAttributes: (userData: any) => {
 		return {
-			userId: userData.id,
-			email: userData.email
+			username: userData.username
 		};
 	}
 });

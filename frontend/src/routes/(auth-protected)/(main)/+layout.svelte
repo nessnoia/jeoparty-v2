@@ -12,7 +12,7 @@
 		<li class:active={pathname === '/create'}><a href="/create">Create New</a></li>
 		<li class:active={pathname === '/tutorial'}><a href="/tutorial">How to Play</a></li>
 		<li class:active={pathname === '/settings'}>
-			<form use:enhance method="post" action="/signout">
+			<form use:enhance method="post" action="/?/logout">
 				<input type="submit" class="button" value="Sign out" />
 			</form>
 		</li>
