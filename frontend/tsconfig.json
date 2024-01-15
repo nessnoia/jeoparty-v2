@@ -1,9 +1,9 @@
 {
 	"extends": "./.svelte-kit/tsconfig.json",
 	"compilerOptions": {
-        // "noImplicitAny": true,
-        // "target": "es6",
-        "moduleResolution": "node",
+		// "noImplicitAny": true,
+		// "target": "es6",
+		"moduleResolution": "node",
 		"allowJs": true,
 		"checkJs": true,
 		"esModuleInterop": true,
@@ -12,13 +12,13 @@
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"strict": true,
-        "baseUrl": ".",
-        "outDir": "dist",
-        "paths": {
+		"baseUrl": ".",
+		"outDir": "dist",
+		"paths": {
 			"$lib": ["src/lib"],
 			"$lib/*": ["src/lib/*"],
-            "*": ["node_modules/*"]
-		},
+			"*": ["node_modules/*"]
+		}
 	}
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
 	//

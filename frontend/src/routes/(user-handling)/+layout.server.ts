@@ -1,11 +1,11 @@
-import { auth } from "$lib/server/lucia";
-import { redirect } from "@sveltejs/kit";
+import { auth } from '$lib/server/lucia';
+import { redirect } from '@sveltejs/kit';
 
 export const load = async (event) => {
-    const authRequest = auth.handleRequest(event);
-    const session = await authRequest.validate();
+	const authRequest = auth.handleRequest(event);
+	const session = await authRequest.validate();
 
-    if (session) {
-        throw redirect(303, '/games');
-    }
-}
+	if (session) {
+		throw redirect(303, '/games');
+	}
+};

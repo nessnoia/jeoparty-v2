@@ -1,9 +1,9 @@
-import type * as mongodb from "mongodb";
+import type * as mongodb from 'mongodb';
 
 export interface GameInfo {
-    _id?: mongodb.ObjectId;
+	_id?: mongodb.ObjectId;
 	gameTitle: string;
-	boardType: "custom" | "standard";
+	boardType: 'custom' | 'standard';
 	ownedBy: string;
 	numRounds: number;
 	numQuestionsTotal: number;

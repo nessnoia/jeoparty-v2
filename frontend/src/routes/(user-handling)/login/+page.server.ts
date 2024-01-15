@@ -15,12 +15,7 @@ export const actions: Actions = {
 		const form = await request.formData();
 		const username = form.get('username');
 		const password = form.get('password');
-		if (
-			!username ||
-			!password ||
-			typeof username !== 'string' ||
-			typeof password !== 'string'
-		) {
+		if (!username || !password || typeof username !== 'string' || typeof password !== 'string') {
 			return fail(400, {
 				message: 'Invalid input'
 			});
@@ -32,8 +27,7 @@ export const actions: Actions = {
 		} catch (error) {
 			if (
 				error instanceof LuciaError &&
-				(error.message === 'AUTH_INVALID_KEY_ID' ||
-					error.message === 'AUTH_INVALID_PASSWORD')
+				(error.message === 'AUTH_INVALID_KEY_ID' || error.message === 'AUTH_INVALID_PASSWORD')
 			) {
 				return fail(400, {
 					message: 'Incorrect username or password.'

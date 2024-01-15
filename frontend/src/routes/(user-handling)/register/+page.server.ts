@@ -15,12 +15,7 @@ export const actions: Actions = {
 		const username = form.get('username');
 		const password = form.get('password');
 		const confirmPassword = form.get('confirm-password');
-		if (
-			!username ||
-			!password ||
-			typeof username !== 'string' ||
-			typeof password !== 'string'
-		) {
+		if (!username || !password || typeof username !== 'string' || typeof password !== 'string') {
 			return fail(400, {
 				message: 'Invalid input'
 			});
