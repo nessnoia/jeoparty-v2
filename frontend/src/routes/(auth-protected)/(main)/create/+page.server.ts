@@ -10,7 +10,7 @@ export const actions = {
 		let gameId = '';
 		const promise = await locals.auth
 			.validate()
-			.then(({ session }) => session.user.userId)
+			.then((session) => session.user.userId)
 			.then((uid) => {
 				const gameInfo = createGameInfoObject(data, uid);
 				return fetch('/api/game-info', {
