@@ -2,6 +2,7 @@ import type { Actions } from './$types';
 import type { GameInfo } from '$lib/database-models/game-info';
 import { error, redirect } from '@sveltejs/kit';
 import { generateCustomGameData, generateNormalGameData } from '$lib/defaults/game-data';
+import { isString } from '$lib/util';
 
 export const actions = {
 	default: async ({ fetch, request, locals }) => {
@@ -46,7 +47,10 @@ const createGameInfoObject = (data: FormData, uid: string) => {
 		numQuestionsTotal = 2 * (6 * 5) + 1;
 	}
 	const gameInfo = <GameInfo>{
-		gameTitle: gameTitle && gameTitle.length > 0 ? gameTitle : 'Untitled Game',
+		gameTitle:
+			gameTitle && isString(gameTitle) && String(gameTitle).length > 0
+				? gameTitle
+				: 'Untitled Game',
 		boardType: boardType,
 		ownedBy: uid,
 		numRounds: numRounds,
@@ -63,6 +67,9 @@ const createGameDataObject = (data: FormData) => {
 	} else {
 		gameData = generateCustomGameData();
 	}
-	gameData.gameTitle = gameTitle && gameTitle.length > 0 ? String(gameTitle) : 'Untitled Game';
+	gameData.gameTitle =
+		gameTitle && isString(gameTitle) && String(gameTitle).length > 0
+			? String(gameTitle)
+			: 'Untitled Game';
 	return gameData;
 };

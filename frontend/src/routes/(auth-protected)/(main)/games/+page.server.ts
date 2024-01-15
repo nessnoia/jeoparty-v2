@@ -3,7 +3,8 @@ import type { PageServerLoad } from './$types';
 import { auth } from '$lib/server/lucia';
 
 export const load = (async ({ fetch, parent }) => {
-	const userId = await parent();
-	const res = await fetch(`/api/game-info/user/${userId}`, { method: 'GET' });
+	const res = await parent().then((user: any) => {
+		return fetch(`/api/game-info/user/${user.userId}`, { method: 'GET' });
+	});
 	return await res.json();
 }) satisfies PageServerLoad;
