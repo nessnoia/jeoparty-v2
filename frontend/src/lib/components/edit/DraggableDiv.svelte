@@ -28,9 +28,11 @@
 				if (obj.start < target) {
 					newArrayOrder?.splice(target + 1, 0, newArrayOrder[start]);
 					newArrayOrder?.splice(start, 1);
-				} else {
+				} else if (obj.start > target) {
 					newArrayOrder?.splice(target, 0, newArrayOrder[start]);
 					newArrayOrder?.splice(start + 1, 1);
+				} else {
+					return;
 				}
 				updateArray = newArrayOrder;
 				event.stopPropagation();
@@ -54,7 +56,7 @@
 
 <div
 	on:dragstart
-	on:drop
+	on:drop|preventDefault
 	on:dragover|preventDefault={() => {
 		return false;
 	}}
@@ -66,5 +68,6 @@
 <style>
 	div {
 		width: 100%;
+		padding: 4px;
 	}
 </style>

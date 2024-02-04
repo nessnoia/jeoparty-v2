@@ -31,6 +31,7 @@
 
 	const handleCategoryDelete = (dropItem: CategoryUpdater, deleteIdx: number) => {
 		let categories = rounds.find((val) => val.id === dropItem.roundId)?.categories;
+		console.log(categories);
 
 		if (categories?.length === 1) {
 			alert('Must have at least one category per round.');
@@ -55,6 +56,8 @@
 		let clues = rounds
 			.find((val) => val.id === dropItem.roundId)
 			?.categories?.find((val) => val.id === dropItem.categoryId)?.clues;
+		console.log(dropItem.roundId);
+		console.log(dropItem.categoryId);
 
 		if (clues?.length === 1) {
 			alert('Must have at least one clue per category.');
@@ -81,6 +84,7 @@
 			const obj = JSON.parse(event.dataTransfer.getData('text/plain'));
 			const item = obj.item;
 			const idx = obj.start;
+			console.log(item);
 
 			if (isRoundUpdate(item)) {
 				handleRoundDelete(item, idx);
