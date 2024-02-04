@@ -270,7 +270,7 @@
 				</p>
 			{:else if gameInfo.boardType == 'custom'}
 				<p class="daily-double">
-					You have {round.numDailyDoubles || 0} Daily Double(s) on this round.
+					You have <b>{round.numDailyDoubles || 0}</b> Daily Double(s) on this round.
 				</p>
 			{/if}
 			<div class="categories">
