@@ -2,7 +2,7 @@
 // for information about these interfaces
 /// <reference types="lucia" />
 declare namespace Lucia {
-	type Auth = import('$lib/server/lucia').Auth;
+	type Auth = import('$lib/server/auth').Auth;
 	type DatabaseUserAttributes = {
 		username: string;
 	};
@@ -13,7 +13,8 @@ declare namespace Lucia {
 declare global {
 	namespace App {
 		interface Locals {
-			auth: import('lucia').AuthRequest;
+			user: import('lucia').User | null;
+			session: import('lucia').Session | null;
 		}
 		// interface Error {}
 		// interface PageData {}

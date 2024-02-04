@@ -7,32 +7,30 @@ import { isString } from '$lib/util';
 export const actions = {
 	default: async ({ fetch, request, locals }) => {
 		const data = await request.formData();
+		const user = locals.user;
 
 		let gameId = '';
-		const promise = await locals.auth
-			.validate()
-			.then((session) => session.user.userId)
-			.then((uid) => {
-				const gameInfo = createGameInfoObject(data, uid);
-				return fetch('/api/game-info', {
-					method: 'POST',
-					body: JSON.stringify(gameInfo)
-				});
+		if (user) {
+			const gameInfo = createGameInfoObject(data, user.id);
+			const promise = await fetch('/api/game-info', {
+				method: 'POST',
+				body: JSON.stringify(gameInfo)
 			})
-			.then((res) => res.json())
-			.then((res) => {
-				gameId = res.id;
-				const gameData = createGameDataObject(data);
-				return fetch(`/api/game-data/${gameId}`, {
-					method: 'POST',
-					body: JSON.stringify(gameData)
+				.then((res) => res.json())
+				.then((res) => {
+					gameId = res.id;
+					const gameData = createGameDataObject(data);
+					return fetch(`/api/game-data/${gameId}`, {
+						method: 'POST',
+						body: JSON.stringify(gameData)
+					});
 				});
-			});
 
-		if (promise.ok) {
-			throw redirect(303, '/edit/' + gameId);
-		} else {
-			throw error(promise.status, promise.statusText);
+			if (promise.ok) {
+				throw redirect(303, '/edit/' + gameId);
+			} else {
+				throw error(promise.status, promise.statusText);
+			}
 		}
 	}
 } satisfies Actions;

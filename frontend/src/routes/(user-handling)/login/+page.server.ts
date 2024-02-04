@@ -1,43 +1,66 @@
-import { fail, type Actions } from '@sveltejs/kit';
-import { auth } from '$lib/server/lucia';
-import { redirect } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
-import { LuciaError } from 'lucia';
+import { collections, lucia } from '$lib/server/auth';
+import { fail, redirect } from '@sveltejs/kit';
+import { Argon2id } from 'oslo/password';
+
+import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	const session = await locals.auth.validate();
-	if (session) throw redirect(302, '/games');
+	if (locals.user) throw redirect(302, '/games');
 	return {};
 };
 
 export const actions: Actions = {
-	email: async ({ request, locals }) => {
-		const form = await request.formData();
-		const username = form.get('username');
-		const password = form.get('password');
-		if (!username || !password || typeof username !== 'string' || typeof password !== 'string') {
+	default: async (event) => {
+		const formData = await event.request.formData();
+		const username = formData.get('username');
+		const password = formData.get('password');
+
+		if (
+			typeof username !== 'string' ||
+			username.length < 3 ||
+			username.length > 31 ||
+			!/^[a-z0-9_-]+$/.test(username)
+		) {
 			return fail(400, {
-				message: 'Invalid input'
+				message: 'Invalid username'
 			});
 		}
-		try {
-			const key = await auth.useKey('username', username, password);
-			const session = await auth.createSession({ userId: key.userId, attributes: {} });
-			locals.auth.setSession(session);
-		} catch (error) {
-			if (
-				error instanceof LuciaError &&
-				(error.message === 'AUTH_INVALID_KEY_ID' || error.message === 'AUTH_INVALID_PASSWORD')
-			) {
-				return fail(400, {
-					message: 'Incorrect username or password.'
-				});
-			}
-			// database connection error
-			console.error(error);
-			return fail(500, {
-				message: 'Unknown error occurred'
+		if (typeof password !== 'string' || password.length < 6 || password.length > 255) {
+			return fail(400, {
+				message: 'Invalid password'
 			});
 		}
+
+		const query = { username: username };
+		const existingUser = await collections.users?.findOne(query);
+		if (!existingUser) {
+			// NOTE:
+			// Returning immediately allows malicious actors to figure out valid usernames from response times,
+			// allowing them to only focus on guessing passwords in brute-force attacks.
+			// As a preventive measure, you may want to hash passwords even for invalid usernames.
+			// However, valid usernames can be already be revealed with the signup page among other methods.
+			// It will also be much more resource intensive.
+			// Since protecting against this is none-trivial,
+			// it is crucial your implementation is protected against brute-force attacks with login throttling etc.
+			// If usernames are public, you may outright tell the user that the username is invalid.
+			// TODO: Add login throttling lol
+			return fail(400, {
+				message: 'Incorrect username or password'
+			});
+		}
+
+		const validPassword = await new Argon2id().verify(existingUser.hashed_password, password);
+		if (!validPassword) {
+			return fail(400, {
+				message: 'Incorrect username or password'
+			});
+		}
+
+		const session = await lucia.createSession(existingUser._id, {});
+		const sessionCookie = lucia.createSessionCookie(session.id);
+		event.cookies.set(sessionCookie.name, sessionCookie.value, {
+			path: '.',
+			...sessionCookie.attributes
+		});
 	}
 };

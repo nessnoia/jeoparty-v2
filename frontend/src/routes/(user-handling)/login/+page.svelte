@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
-	import { goto } from '$app/navigation';
 
 	export let form: { message?: string };
 </script>
@@ -8,7 +7,7 @@
 <div id="container">
 	<div id="login-form">
 		<h1>Login</h1>
-		<form method="POST" action="?/email" use:enhance>
+		<form method="POST" use:enhance>
 			<div class="form-item">
 				<label for="username"> Username </label>
 				<input type="text" name="username" maxlength="25" required />
@@ -18,7 +17,7 @@
 				<input type="password" name="password" maxlength="25" required />
 			</div>
 
-			<button id="login" formaction="?/email">Login</button>
+			<button id="login">Login</button>
 		</form>
 
 		<!-- <a class="login-link" href="/api/oauth?provider=google" target="_blank">Continue with Google</a>
