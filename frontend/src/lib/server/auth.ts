@@ -1,9 +1,13 @@
 import { Lucia } from 'lucia';
 import { dev } from '$app/environment';
-import { GitHub } from 'arctic';
-// import { github, google } from "@lucia-auth/oauth/providers";
-// import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI } from "$env/static/private";
-import { GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from '$env/static/private';
+import { GitHub, Google } from 'arctic';
+import {
+	GITHUB_CLIENT_ID,
+	GITHUB_CLIENT_SECRET,
+	GOOGLE_CLIENT_ID,
+	GOOGLE_CLIENT_SECRET,
+	GOOGLE_REDIRECT_URI
+} from '$env/static/private';
 import { MongodbAdapter } from '@lucia-auth/adapter-mongodb';
 import { Collection, MongoClient } from 'mongodb';
 import { ATLAS_URI } from '$env/static/private';
@@ -27,6 +31,7 @@ const adapter = new MongodbAdapter(Session, User);
 interface UserDoc {
 	_id: string;
 	github_id?: string;
+	google_email?: string;
 	username: string;
 	hashed_password?: string;
 }
@@ -47,6 +52,7 @@ export const lucia = new Lucia(adapter, {
 		return {
 			// attributes has the type of DatabaseUserAttributes
 			githubId: attributes.github_id,
+			googleEmail: attributes.google_email,
 			username: attributes.username
 		};
 	}
@@ -61,7 +67,9 @@ declare module 'lucia' {
 
 interface DatabaseUserAttributes {
 	github_id: number;
+	google_email: string;
 	username: string;
 }
 
 export const github = new GitHub(GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET);
+export const google = new Google(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REDIRECT_URI);
