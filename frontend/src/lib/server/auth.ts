@@ -18,7 +18,7 @@ export const collections: {
 } = {};
 
 const client = new MongoClient(ATLAS_URI);
-const db = client.db('jeoparty');
+const db = client.db('auth');
 
 const User = db.collection('users') as Collection<UserDoc>;
 collections.users = User;
