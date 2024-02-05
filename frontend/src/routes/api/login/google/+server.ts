@@ -6,7 +6,7 @@ export const GET = async (event: RequestEvent) => {
 	const state = generateState();
 	const codeVerifier = generateCodeVerifier();
 
-	const url = await google.createAuthorizationURL(state, codeVerifier);
+	const url = await google.createAuthorizationURL(state, codeVerifier, { scopes: ['email'] });
 
 	event.cookies.set('google_oauth_state', state, {
 		path: '/',
@@ -15,7 +15,7 @@ export const GET = async (event: RequestEvent) => {
 		maxAge: 60 * 10
 	});
 
-	event.cookies.set('code_verifier', codeVerifier, {
+	event.cookies.set('google_code_verifier', codeVerifier, {
 		path: '/',
 		secure: import.meta.env.PROD,
 		httpOnly: true,

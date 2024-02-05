@@ -9,7 +9,7 @@ export const GET = async (event: RequestEvent) => {
 	const state = event.url.searchParams.get('state');
 
 	const storedState = event.cookies.get('google_oauth_state') ?? null;
-	const storedCodeVerifier = event.cookies.get('code_verifier') ?? null;
+	const storedCodeVerifier = event.cookies.get('google_code_verifier') ?? null;
 
 	if (!code || !state || !storedState || !storedCodeVerifier || state !== storedState) {
 		return new Response(null, {
