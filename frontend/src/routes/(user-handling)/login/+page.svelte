@@ -20,8 +20,10 @@
 			<button id="login">Login</button>
 		</form>
 
-		<!-- <a class="login-link" href="/api/oauth?provider=google" target="_blank">Continue with Google</a>
-		<a class="login-link" href="/api/oauth?provider=github" target="_blank">Continue with Github</a> -->
+		<!--<a class="login-link" href="/api/oauth?provider=google" target="_blank"
+			>Continue with Google</a
+		>-->
+			<a class="login-link" href="/api/login/github" target="_blank">Continue with Github</a>
 		{#if form?.message}
 			<p class="error">{form.message || ''}</p>
 		{/if}
