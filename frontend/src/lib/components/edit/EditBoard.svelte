@@ -15,6 +15,7 @@
 	} from '$lib/update-models/game-data';
 	import AddRoundModal from '../modals/AddRoundModal.svelte';
 	import GarbageCan from './GarbageCan.svelte';
+	import { cloneDeep } from 'lodash';
 
 	// TODO: Focus on last used element after form submit
 	export let gameInfo: GameInfo;
@@ -125,7 +126,9 @@
 			game.updates.push(newCategoryData);
 			return game;
 		});
-		rounds[roundIdx].categories = [...rounds[roundIdx].categories!, newCategoryData];
+		// Necessary so we don't get double updates in database due to pass by reference objects / arrays.
+		let categoryCopy = cloneDeep(newCategoryData);
+		rounds[roundIdx].categories = [...rounds[roundIdx].categories!, categoryCopy];
 	};
 
 	const addClue = (

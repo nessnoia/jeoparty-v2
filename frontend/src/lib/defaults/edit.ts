@@ -5,6 +5,8 @@ import {
 	type RoundUpdater
 } from '$lib/update-models/game-data';
 
+// RoundId and categoryId are omitted for the embedded catagory/clue to make adding to the database easier (don't have to delete
+// the nested fields).
 const getAddRoundData = (roundNum: number, title: string, type: string) => {
 	let round: RoundUpdater = {
 		id: `round-${generateId(10)}`,
@@ -32,6 +34,8 @@ const getAddRoundData = (roundNum: number, title: string, type: string) => {
 	return round;
 };
 
+// RoundId and categoryId are omitted for the embedded clue to make adding to the database easier (don't have to delete
+// the nested fields).
 const getAddCategoryData = (roundId: string) => {
 	let category: CategoryUpdater = {
 		roundId: roundId,

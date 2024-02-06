@@ -4,6 +4,7 @@
 	import type { RoundUpdater } from '$lib/update-models/game-data';
 	import { unsaved } from '$lib/unsaved';
 	import { createEventDispatcher } from 'svelte';
+	import { cloneDeep } from 'lodash';
 
 	export let isVisible = false;
 	export let rounds: RoundUpdater[];
@@ -21,7 +22,9 @@
 			game.updates.push(newRoundData);
 			return game;
 		});
-		rounds = [...rounds, newRoundData];
+		// Necessary so we don't get double updates in database due to pass by reference objects / arrays.
+		let roundCopy = cloneDeep(newRoundData);
+		rounds = [...rounds, roundCopy];
 		dispatch('changeRound', { showRoundIdx: rounds.length - 1 });
 		isVisible = false;
 	};
@@ -40,11 +43,24 @@
 				<div id="buttons">
 					<div class:active={type === 'normal'} class="radio-option">
 						<label for="normal">Normal</label>
-						<input name="type" type="radio" id="normal" value="normal" bind:group={type} checked />
+						<input
+							name="type"
+							type="radio"
+							id="normal"
+							value="normal"
+							bind:group={type}
+							checked
+						/>
 					</div>
 					<div class:active={type === 'final'} class="radio-option">
 						<label for="final">Final Jeoparty</label>
-						<input name="type" type="radio" id="final" value="final" bind:group={type} />
+						<input
+							name="type"
+							type="radio"
+							id="final"
+							value="final"
+							bind:group={type}
+						/>
 					</div>
 				</div>
 			</div>
