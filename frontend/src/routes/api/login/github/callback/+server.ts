@@ -38,7 +38,7 @@ export const GET = async (event: RequestEvent) => {
 				_id: userId,
 				github_id: githubUser.id,
 				username: githubUser.login
-			})
+			});
 			const session = await lucia.createSession(userId, {});
 			const sessionCookie = lucia.createSessionCookie(session.id);
 			event.cookies.set(sessionCookie.name, sessionCookie.value, {
@@ -64,7 +64,7 @@ export const GET = async (event: RequestEvent) => {
 			status: 500
 		});
 	}
-}
+};
 
 interface GitHubUser {
 	id: string;

@@ -43,24 +43,11 @@
 				<div id="buttons">
 					<div class:active={type === 'normal'} class="radio-option">
 						<label for="normal">Normal</label>
-						<input
-							name="type"
-							type="radio"
-							id="normal"
-							value="normal"
-							bind:group={type}
-							checked
-						/>
+						<input name="type" type="radio" id="normal" value="normal" bind:group={type} checked />
 					</div>
 					<div class:active={type === 'final'} class="radio-option">
 						<label for="final">Final Jeoparty</label>
-						<input
-							name="type"
-							type="radio"
-							id="final"
-							value="final"
-							bind:group={type}
-						/>
+						<input name="type" type="radio" id="final" value="final" bind:group={type} />
 					</div>
 				</div>
 			</div>

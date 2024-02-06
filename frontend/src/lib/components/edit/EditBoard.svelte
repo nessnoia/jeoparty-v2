@@ -131,12 +131,7 @@
 		rounds[roundIdx].categories = [...rounds[roundIdx].categories!, categoryCopy];
 	};
 
-	const addClue = (
-		roundIdx: number,
-		categoryIdx: number,
-		roundId: string,
-		categoryId: string
-	) => {
+	const addClue = (roundIdx: number, categoryIdx: number, roundId: string, categoryId: string) => {
 		let newClueData = getAddClueData(roundId, categoryId);
 		unsaved.update((game) => {
 			if (!game.updates) game.updates = [];
@@ -227,9 +222,8 @@
 				event.preventDefault();
 			}}
 		>
-			<button
-				class:active={roundIdx == roundShownIdx}
-				on:click={() => (roundShownIdx = roundIdx)}>{rounds[roundIdx].title}</button
+			<button class:active={roundIdx == roundShownIdx} on:click={() => (roundShownIdx = roundIdx)}
+				>{rounds[roundIdx].title}</button
 			>
 		</DraggableDiv>
 	{/each}
@@ -342,12 +336,7 @@
 								<button
 									class="add-clue"
 									on:click={() => {
-										addClue(
-											roundShownIdx,
-											categoryIdx,
-											round.id || '',
-											category.id || ''
-										);
+										addClue(roundShownIdx, categoryIdx, round.id || '', category.id || '');
 									}}
 									><img src="/icons/circle-plus.svg" alt="add clue" />
 								</button>

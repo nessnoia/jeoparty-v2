@@ -103,8 +103,7 @@ async function applySchemaValidation(db: mongodb.Db) {
 							type: {
 								bsonType: 'string',
 								enum: ['normal', 'final'],
-								description:
-									"'type' is required and has value of 'normal' or 'final'"
+								description: "'type' is required and has value of 'normal' or 'final'"
 							},
 							maxDailyDoubles: {
 								bsonType: 'int',
@@ -126,8 +125,7 @@ async function applySchemaValidation(db: mongodb.Db) {
 										},
 										category: {
 											bsonType: 'string',
-											description:
-												"'category' is required and is of string type"
+											description: "'category' is required and is of string type"
 										},
 										clues: {
 											bsonType: ['array'],
@@ -137,38 +135,31 @@ async function applySchemaValidation(db: mongodb.Db) {
 												bsonType: ['object'],
 												required: ['id', 'clue', 'answer'],
 												additionalProperties: false,
-												description:
-													"'clues' must contain the stated fields.",
+												description: "'clues' must contain the stated fields.",
 												properties: {
 													id: {
 														bsonType: 'string',
-														description:
-															"'id' is required and is of string type"
+														description: "'id' is required and is of string type"
 													},
 													value: {
 														bsonType: 'int',
-														description:
-															"'value' is optional and is of int type"
+														description: "'value' is optional and is of int type"
 													},
 													clue: {
 														bsonType: 'string',
-														description:
-															"'clue' is required and is of string type"
+														description: "'clue' is required and is of string type"
 													},
 													clueImage: {
 														bsonType: 'string',
-														description:
-															"'clueImage' is an optional field and should be a url"
+														description: "'clueImage' is an optional field and should be a url"
 													},
 													answer: {
 														bsonType: 'string',
-														description:
-															"'answer' is required and is of string type"
+														description: "'answer' is required and is of string type"
 													},
 													isDailyDouble: {
 														bsonType: 'boolean',
-														description:
-															"'isDailyDouble' is optional and is of boolean type"
+														description: "'isDailyDouble' is optional and is of boolean type"
 													}
 												}
 											}
