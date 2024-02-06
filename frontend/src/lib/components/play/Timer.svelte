@@ -95,12 +95,12 @@
 
 <style>
 	.light {
-		background-color: var(--white);
+		background-color: var(--grey-700);
 		width: 10.9%;
 	}
 
 	.light.active {
-		background-color: blue;
+		background-color: var(--white);
 	}
 
 	.timer {

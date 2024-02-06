@@ -40,12 +40,12 @@
 
 <style>
 	.light {
-		background-color: var(--white);
+		background-color: var(--grey-700);
 		height: 19.5%;
 	}
 
 	.light.active {
-		background-color: blue;
+		background-color: var(--white);
 	}
 
 	.left,

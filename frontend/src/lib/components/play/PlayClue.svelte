@@ -63,12 +63,13 @@
 			return;
 		}
 	};
+	// TODO: Make iPad friendly with touch gestures
 </script>
 
 {#if !clueUsed}
 	<button class="clue-button" on:click={displayClueCard}>${clue.value}</button>
 {:else}
-	<div />
+	<div class="used-clue" />
 {/if}
 
 {#if clueOpened}
@@ -96,22 +97,48 @@
 <svelte:window on:keyup|preventDefault={onKeyUp} />
 
 <style>
-	.clue-button {
+	.clue-button,
+	.used-clue {
 		width: 100%;
 		height: 100%;
 		border: none;
 		outline: none;
-		background-color: blue;
+	}
+
+	.clue-button {
+		background-color: var(--primary-500);
+		color: var(--secondary-500);
+		font-size: var(--size-2);
+		font-weight: bold;
+		font-family: fantasy;
+		text-shadow: 3px 3px 4px var(--black);
+	}
+
+	.used-clue {
+		background-color: transparent;
 	}
 
 	.clue-showing {
 		position: absolute;
+		display: flex;
+		justify-content: center;
+		align-content: center;
+		flex-direction: column;
 		top: 0;
 		left: 0;
-		height: 80%;
-		width: 95%;
-		margin-top: 2.5%;
+		height: 76%;
+		width: 80%;
+		margin-top: 3%;
+		margin-left: 5%;
 		padding: 1% 5%;
-		background-color: blue;
+		background-color: var(--primary-500);
+		color: var(--white);
+		font-size: 4.3vw;
+		text-transform: uppercase;
+		font-weight: bold;
+	}
+
+	.clue-showing p {
+		text-align: center;
 	}
 </style>

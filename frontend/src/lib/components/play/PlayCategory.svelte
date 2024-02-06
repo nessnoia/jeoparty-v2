@@ -13,8 +13,11 @@
 		color: var(--white);
 		text-align: center;
 		padding: 1.5em 0;
-		background-color: blue;
+		background-color: var(--primary-500);
 		text-transform: uppercase;
 		margin: 0.3em 0 0.4em 0;
+		font-family: sans-serif;
+		font-weight: bolder;
+		font-size: var(--size-7);
 	}
 </style>

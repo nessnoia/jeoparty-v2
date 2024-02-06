@@ -78,7 +78,7 @@
 	{/if}
 </div>
 <div id="button-centre">
-	{#if Object.keys(playerList).length >= 3}
+	{#if Object.keys(playerList).length >= 0}
 		<button id="start" on:click={startGame}>Start Game</button>
 	{/if}
 </div>
