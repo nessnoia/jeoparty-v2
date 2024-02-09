@@ -152,16 +152,27 @@
 	{#if roundType == 'normal'}
 		<BuzzersActiveLights bind:buzzersActive {dailyDoubleOpen} />
 	{/if}
-	<Timer length={timerLength} bind:buzzersActive {startTimer} {roundType} />
-	<PlayBoard
-		{round}
-		bind:buzzerWinnerId
-		bind:dailyDoubleOpen
-		bind:dailyDoubleWager
-		firstPlayer={(Array.from(players.keys()) ?? [''])[0]}
-		on:goToNext={goToNext}
-	/>
-	<PlayerDock players={Array.from(players.values())} buzzerWinner={players.get(buzzerWinnerId)} />
+	<div id="timer-container">
+		<Timer length={timerLength} bind:buzzersActive {startTimer} {roundType} />
+	</div>
+	<div id="board-container" style="height:{roundType == 'final' ? '97.5%' : '82.5%'}">
+		<PlayBoard
+			{round}
+			bind:buzzerWinnerId
+			bind:dailyDoubleOpen
+			bind:dailyDoubleWager
+			firstPlayer={(Array.from(players.keys()) ?? [''])[0]}
+			on:goToNext={goToNext}
+		/>
+	</div>
+	{#if roundType != 'final'}
+		<div id="player-dock-container">
+			<PlayerDock
+				players={Array.from(players.values())}
+				buzzerWinner={players.get(buzzerWinnerId)}
+			/>
+		</div>
+	{/if}
 	{#if dailyDoubleOpen}
 		<span>Wager: </span>
 		{#if dailyDoubleWager !== undefined}
@@ -176,5 +187,19 @@
 		height: 100%;
 		overflow: hidden;
 		background-color: var(--black);
+	}
+
+	#timer-container {
+		width: 100%;
+		height: 2.5%;
+	}
+
+	#board-container {
+		width: 100%;
+	}
+
+	#player-dock-container {
+		width: 100%;
+		height: 15%;
 	}
 </style>

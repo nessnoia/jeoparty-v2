@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { roomStore } from '$lib/colyseus-client';
 	import type { Player } from '$lib/player';
-	import type { Room } from 'colyseus.js';
 	import PlayerScore from './PlayerScore.svelte';
 
 	export let players: Player[];
@@ -25,7 +23,7 @@
 <style>
 	#player-dock {
 		border: 1px solid black;
-		height: 5%;
+		height: 100%;
 		margin-bottom: 1%;
 	}
 </style>

@@ -109,9 +109,7 @@
 		flex-direction: row;
 		justify-content: space-between;
 		background-color: var(--black);
-		position: absolute;
-		top: 0;
-		height: 2.5%;
+		height: 100%;
 		border-bottom: 3px solid var(--black);
 	}
 </style>

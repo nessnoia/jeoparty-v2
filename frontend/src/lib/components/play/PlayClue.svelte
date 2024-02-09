@@ -22,7 +22,7 @@
 			dispatch('dailyDouble');
 		} else {
 			displayClue = true;
-			dispatch('clueOpen', { value: clue.value ?? 0 });
+			dispatch('clueOpened', { value: clue.value ?? 0 });
 		}
 	};
 
@@ -126,11 +126,10 @@
 		flex-direction: column;
 		top: 0;
 		left: 0;
-		height: 76%;
-		width: 80%;
-		margin-top: 3%;
+		height: 73.7%;
+		width: 90%;
+		margin-top: 4.7%;
 		margin-left: 5%;
-		padding: 1% 5%;
 		background-color: var(--primary-500);
 		color: var(--white);
 		font-size: 4.3vw;

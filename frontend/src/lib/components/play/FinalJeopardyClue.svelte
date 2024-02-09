@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { roomStore } from '$lib/colyseus-client';
 	import type { Category, Clue } from '$lib/database-models/game-data';
 	import type { PlayerFinalJeoparty } from '$lib/player';
@@ -92,3 +91,23 @@
 {/if}
 
 <svelte:window on:keyup={handleKeyUp} />
+
+<style>
+	div {
+		display: flex;
+		justify-content: center;
+		align-content: center;
+		flex-direction: column;
+		height: 100%;
+		width: 100%;
+		background-color: var(--primary-500);
+		color: var(--white);
+		font-size: 4.3vw;
+		text-transform: uppercase;
+		font-weight: bold;
+	}
+
+	div p {
+		text-align: center;
+	}
+</style>

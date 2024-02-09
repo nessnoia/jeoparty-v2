@@ -4,7 +4,6 @@
 	import { createEventDispatcher } from 'svelte';
 	import PlayCategory from './PlayCategory.svelte';
 	import PlayClue from './PlayClue.svelte';
-	import ShowCategories from './ShowCategories.svelte';
 	import type { Room } from 'colyseus.js';
 	import FinalJeopardyClue from './FinalJeopardyClue.svelte';
 	import FinalJeopartyResponses from './FinalJeopartyResponses.svelte';
@@ -74,7 +73,6 @@
 
 		room.state.finalJeoparty.onChange = () => {
 			finalJeopartyResponses = new Map(room?.state.finalJeoparty);
-			// console.log(finalJeopartyResponses);
 			for (let [key, response] of finalJeopartyResponses) {
 				let player = room?.state.players.get(key);
 				response.name = player.name;
@@ -82,7 +80,7 @@
 		};
 	}
 
-	const clueClosed = () => {
+	const onClueUsed = () => {
 		room?.send('updateGameState', {
 			state: 'buzzer'
 		});
@@ -92,7 +90,7 @@
 		dailyDoubleWagerSubmitted = false;
 	};
 
-	const clueOpen = (e: CustomEvent<{ value: number }>) => {
+	const onClueOpened = (e: CustomEvent<{ value: number }>) => {
 		room?.send('updateGameState', {
 			state: 'clueOpen'
 		});
@@ -112,11 +110,22 @@
 		buzzerWinnerId = mostRecentWinner;
 	};
 
-	const updateFinalJeopartyScoreInfo = (e: CustomEvent<{ playerId: string; amount: number }>) => {
-		// TODO: maybe change these variable names to be more generic, so it makes more sense
-		// to be using them here
-		buzzerWinnerId = e.detail.playerId;
-		lastClueValue = e.detail.amount;
+	const onAllAnswersShown = (clueAnswer: string) => {
+		let clueAnswerBareBones = clueAnswer.toLowerCase().replace(/\s/g, '');
+		for (let [id, response] of finalJeopartyResponses) {
+			let playerAnswerBareBones = response.answer.toLowerCase().replace(/\s/g, '');
+			let playerScoreUpdateValue = 0;
+			if (clueAnswerBareBones === playerAnswerBareBones) {
+				playerScoreUpdateValue = response.wager;
+			} else {
+				playerScoreUpdateValue = -response.wager;
+			}
+			room?.send('updatePlayerScore', {
+				id: id,
+				clueValue: playerScoreUpdateValue
+			});
+		}
+		dispatch('goToNext');
 	};
 
 	const onKeyUp = (e: KeyboardEvent) => {
@@ -140,63 +149,72 @@
 	};
 </script>
 
-<div id="board">
-	<!-- Render categories -->
-	{#if round.type == 'normal'}
-		<!-- {#if showCategories}
+<div id="board-flexbox">
+	<div id="board">
+		<!-- Render categories -->
+		{#if round.type == 'normal'}
+			<!-- {#if showCategories}
 		<ShowCategories categories={round.categories} bind:showCategories />
 	{:else} -->
-		<div class="categories">
-			{#each round.categories as category}
-				<div class="clues">
-					<PlayCategory {category} />
-					<!-- Render clues -->
-					{#each category.clues.sort(sortClues) as clue}
-						<PlayClue
+			<div class="categories">
+				{#each round.categories as category}
+					<div class="clues">
+						<PlayCategory {category} />
+						<!-- Render clues -->
+						{#each category.clues.sort(sortClues) as clue}
+							<PlayClue
+								{clue}
+								{dailyDoubleWagerSubmitted}
+								on:clueUsed={onClueUsed}
+								on:clueOpened={onClueOpened}
+								on:dailyDouble={handleDailyDouble}
+							/>
+						{/each}
+					</div>
+				{/each}
+			</div>
+			<!-- {/if} -->
+		{:else if round.type == 'final'}
+			<!-- Should only ever be one of each, but need to loop because of the possibly undefined arrays -->
+			{#each round.categories || [] as category}
+				{#each category.clues || [] as clue}
+					{#if showPlayerAnswers}
+						<FinalJeopartyResponses
 							{clue}
-							{dailyDoubleWagerSubmitted}
-							on:clueUsed={clueClosed}
-							on:clueOpen={clueOpen}
-							on:dailyDouble={handleDailyDouble}
+							responses={finalJeopartyResponses.values()}
+							on:allAnswersShown={() => onAllAnswersShown(clue.answer)}
 						/>
-					{/each}
-				</div>
+					{:else}
+						<FinalJeopardyClue
+							{category}
+							{clue}
+							responses={finalJeopartyResponses}
+							on:showPlayerAnswers={() => (showPlayerAnswers = true)}
+						/>
+					{/if}
+				{/each}
 			{/each}
-		</div>
-		<!-- {/if} -->
-	{:else if round.type == 'final'}
-		<!-- Should only ever be one of each, but need to loop because of the possibly undefined arrays -->
-		{#each round.categories || [] as category}
-			{#each category.clues || [] as clue}
-				{#if showPlayerAnswers}
-					<FinalJeopartyResponses
-						{clue}
-						responses={finalJeopartyResponses}
-						on:updateScore={updateFinalJeopartyScoreInfo}
-						on:allAnswersShown={() => dispatch('goToNext')}
-					/>
-				{:else}
-					<FinalJeopardyClue
-						{category}
-						{clue}
-						responses={finalJeopartyResponses}
-						on:showPlayerAnswers={() => (showPlayerAnswers = true)}
-					/>
-				{/if}
-			{/each}
-		{/each}
-	{/if}
+		{/if}
+	</div>
 </div>
 
 <svelte:window on:keyup|preventDefault={onKeyUp} />
 
 <style>
+	#board-flexbox {
+		height: 100%;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+
 	#board {
 		box-sizing: border-box;
-		height: 80%;
-		width: 100%;
-		margin-top: 2.5%;
-		padding: 1% 5%;
+		height: 90%;
+		width: 90%;
+		min-width: 1300px;
 	}
 
 	.categories {
