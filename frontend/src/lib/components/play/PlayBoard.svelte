@@ -181,7 +181,7 @@
 					{#if showPlayerAnswers}
 						<FinalJeopartyResponses
 							{clue}
-							responses={finalJeopartyResponses.values()}
+							responses={Array.from(finalJeopartyResponses.values())}
 							on:allAnswersShown={() => onAllAnswersShown(clue.answer)}
 						/>
 					{:else}
