@@ -26,6 +26,10 @@
 				goto('/categories');
 			}
 
+			if (change == 'buzzer') {
+				goto('/buzzer');
+			}
+
 			if (change == 'finalJeoparty') {
 				goto('/finaljeopartywait');
 			}
