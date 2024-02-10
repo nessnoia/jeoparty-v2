@@ -124,33 +124,142 @@
 	};
 </script>
 
-<div class:active={buzzersActive} class:winner={wonBuzz} class:loser={lostBuzz}>
-	<h3>Your score</h3>
-	<span>${score}</span>
+<div id="background" class:active={buzzersActive} class:winner={wonBuzz} class:loser={lostBuzz}>
+	<div id="container">
+		<h1>Your score</h1>
+		<div id="score"><span id="dollar-sign">$</span><span id="score-val">{score}</span></div>
 
-	<button on:click={buzz} />
+		<button id="buzzer" on:click={buzz} />
 
-	{#if place != -1}
-		<p>You are in {place} place.</p>
-		{#if pointsBehind !== undefined}
-			<p>You are ${pointsBehind} behind {playerAhead}.</p>
-		{/if}
-		{#if pointsAhead !== undefined}
-			<p>You are ${pointsAhead} ahead of {playerBehind}.</p>
-		{/if}
-	{/if}
+		<div id="stats">
+			{#if place !== undefined && place != -1}
+				<p>You are in {place} place.</p>
+				{#if pointsBehind !== undefined}
+					<p>You are ${pointsBehind} behind {playerAhead}.</p>
+				{/if}
+				{#if pointsAhead !== undefined}
+					<p>You are ${pointsAhead} ahead of {playerBehind}.</p>
+				{/if}
+			{/if}
+		</div>
+	</div>
 </div>
 
 <style>
-	.active {
-		background-color: blue;
+	h1 {
+		text-transform: uppercase;
+		font-size: var(--size-6);
+		margin: 10% 0 2% 0;
+		color: var(--white);
 	}
 
-	.winner {
+	#background {
+		width: 100%;
+		height: 100%;
+		background-color: var(--primary-700);
+		overflow: hidden;
+	}
+
+	#container {
+		height: 80%;
+		padding: 5%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		align-content: center;
+		justify-content: space-between;
+	}
+
+	#score {
+		background-color: var(--white);
+		padding: 2.5%;
+		width: 50%;
+		font-weight: bold;
+		display: flex;
+		align-items: center;
+	}
+
+	#dollar-sign {
+		font-size: var(--size-7);
+	}
+
+	#score-val {
+		text-align: center;
+		flex-grow: 2;
+		font-size: var(--size-6);
+	}
+
+	#buzzer {
+		margin: 80px;
+		flex-grow: 2;
+		aspect-ratio: 1 / 1;
+		border: 15px var(--primary-200) outset;
+		background-color: var(--primary-100);
+	}
+
+	#buzzer:active {
+		border-color: var(--primary-300);
+	}
+
+	#stats {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		text-align: center;
+		height: 15%;
+		font-size: var(--size-8);
+		font-weight: bold;
+		color: var(--white);
+	}
+
+	#stats p {
+		margin: 0;
+	}
+
+	#background.active {
+		background-color: var(--secondary-100);
+	}
+
+	.active h1 {
+		color: var(--black);
+	}
+
+	.active #buzzer {
+		border-color: var(--secondary-300);
+		background-color: var(--secondary-200);
+	}
+
+	.active #buzzer:active {
+		border-color: var(--secondary-400);
+	}
+
+	.active #stats {
+		color: var(--black);
+	}
+
+	#background.winner {
 		background-color: green;
 	}
 
-	.loser {
+	.winner #buzzer {
+		border-color: forestgreen;
+		background-color: darkseagreen;
+	}
+
+	.winner #buzzer:active {
+		border-color: darkgreen;
+	}
+
+	#background.loser {
 		background-color: red;
+	}
+
+	.loser #buzzer {
+		border-color: firebrick;
+		background-color: tomato;
+	}
+
+	.loser #buzzer:active {
+		border-color: darkred;
 	}
 </style>
