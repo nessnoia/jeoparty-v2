@@ -6,7 +6,7 @@
 	import { PUBLIC_COLYSEUS_URL } from '$env/static/public';
 	import PlayerDetailed from '$lib/components/play/PlayerDetailed.svelte';
 	import { roomStore } from '$lib/colyseus-client';
-	import { Circle3 } from 'svelte-loading-spinners';
+	import Waiting from '$lib/components/play/client/Waiting.svelte';
 
 	export let data: PageData;
 
@@ -53,16 +53,9 @@
 
 	{#if Object.keys(playerList).length === 0}
 		<div id="waiting-message">
-			<p>Waiting for players to join...</p>
-			<Circle3
-				size="40"
-				ballTopLeft="#000000"
-				ballTopRight="red"
-				ballBottomLeft="blue"
-				ballBottomRight="green"
-				unit="px"
-				duration="2s"
-			/>
+			<Waiting>
+				<p>Waiting for players to join...</p>
+			</Waiting>
 		</div>
 	{:else}
 		<div id="players">
