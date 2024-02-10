@@ -112,6 +112,8 @@
 		height: auto;
 		max-height: 150px;
 		min-height: 120px;
+		filter: brightness(0) saturate(100%) invert(15%) sepia(69%) saturate(4444%)
+			hue-rotate(245deg) brightness(78%) contrast(116%);
 	}
 
 	#join-code-label {
