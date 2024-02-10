@@ -62,6 +62,7 @@
 		padding: 2%;
 		font-size: var(--size-8);
 		border-radius: 5px;
+		border: none;
 	}
 
 	/* Chrome, Safari, Edge, Opera */

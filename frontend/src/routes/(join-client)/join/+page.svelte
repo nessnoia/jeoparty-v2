@@ -16,13 +16,55 @@
 	};
 </script>
 
-<div>
+<div id="background">
 	<form on:submit|preventDefault={join}>
-		<label
-			>Game Code
-			<input placeholder="Game Code" type="text" bind:value={gameCode} />
-		</label>
-		<button type="submit">Join</button>
+		<h1>Join Game</h1>
+		<input placeholder="Enter Game Code..." type="text" bind:value={gameCode} />
+		<button type="submit">Join Game</button>
 	</form>
 	<span>{errorMessage}</span>
 </div>
+
+<style>
+	h1 {
+		margin: 0;
+		text-align: center;
+		padding: 5%;
+		font-size: var(--size-5);
+		text-transform: uppercase;
+	}
+
+	form {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-evenly;
+		height: 30%;
+		padding: 10%;
+		gap: 5%;
+	}
+
+	button {
+		padding: 5%;
+		font-size: var(--size-8);
+		background-color: var(--primary-500);
+		border: none;
+		border-radius: 5px;
+		color: var(--white);
+		margin-top: 5%;
+	}
+
+	input {
+		padding: 4%;
+		font-size: var(--size-8);
+		border-radius: 5px;
+		border: none;
+	}
+
+	#background {
+		width: 100%;
+		height: 100%;
+		background-color: var(--black);
+		color: var(--white);
+		font-size: var(--size-7);
+	}
+</style>
