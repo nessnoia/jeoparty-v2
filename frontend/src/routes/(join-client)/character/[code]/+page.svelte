@@ -162,6 +162,7 @@
 		aspect-ratio: 1/1;
 		padding: 2%;
 		max-width: 100px;
+		max-height: 100px;
 		background-color: var(--grey-100);
 		border: none;
 		border-radius: 5px;
