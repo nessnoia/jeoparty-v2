@@ -24,28 +24,23 @@
 	let characterChoice: ComponentType = Elephant;
 	let animalChoiceString: string = 'elephant';
 	let characterChoiceString: string = 'elephant';
-
-	$: if (nickname !== '') {
-		errorName = false;
-	}
+	let activityChoiceString: string = '';
 
 	function changeCharaterSelection(selector: ComponentType) {
 		animalChoiceString = characterSelectors.get(selector) || '';
 		characterChoiceString = animalChoiceString;
 		characterChoice = characters[animalChoiceString];
+		activityChoiceString = '';
 	}
 
 	function changeActivitySelection(selector: ComponentType) {
 		let choice = activitySelectors.get(selector) || '';
 		characterChoiceString = animalChoiceString + choice;
 		characterChoice = characters[characterChoiceString];
+		activityChoiceString = choice;
 	}
 
 	const join = () => {
-		if (nickname === '') {
-			errorName = true;
-			return;
-		}
 		let client = new Colyseus.Client(PUBLIC_COLYSEUS_URL);
 		let joinObj = {
 			gameCode: gameCode,
@@ -80,8 +75,12 @@
 	<h2>Select Character</h2>
 
 	<div class="selectors">
-		{#each [...characterSelectors] as [selector, i]}
-			<button class="char-selector" on:click={() => changeCharaterSelection(selector)}>
+		{#each [...characterSelectors] as [selector, selectorString]}
+			<button
+				class="char-selector"
+				class:is-selected={animalChoiceString === selectorString}
+				on:click={() => changeCharaterSelection(selector)}
+			>
 				<svelte:component this={selector} />
 			</button>
 		{/each}
@@ -90,28 +89,24 @@
 	<h2>Select Activity</h2>
 
 	<div class="selectors">
-		{#if animalChoiceString == 'elephant'}
-			{#each animalToActivities[animalChoiceString] as selector, i}
-				{#if i == 0 || i == 1 || i == 2 || randomElephantIndexes.has(i)}
-					<button class="act-selector" on:click={() => changeActivitySelection(selector)}>
-						<svelte:component this={selector} />
-					</button>
-				{/if}
-			{/each}
-		{:else}
-			{#each animalToActivities[animalChoiceString] as selector}
-				<button class="act-selector" on:click={() => changeActivitySelection(selector)}>
+		{#each animalToActivities[animalChoiceString] as selector, i}
+			{#if (animalChoiceString === 'elephant' && (i == 0 || i == 1 || i == 2 || randomElephantIndexes.has(i))) || animalChoiceString !== 'elephant'}
+				<button
+					class="act-selector"
+					class:is-selected={activityChoiceString === activitySelectors.get(selector)}
+					on:click={() => changeActivitySelection(selector)}
+				>
 					<svelte:component this={selector} />
 				</button>
-			{/each}
-		{/if}
+			{/if}
+		{/each}
 	</div>
 
 	<h2>Colour</h2>
 	<input id="colour-selector" type="range" min="0" max="360" bind:value={colourChoice} />
 	<div class="colour" />
 
-	<button id="join-game" on:click={join}>Join Game</button>
+	<button id="join-game" class:hidden={nickname === ''} on:click={join}>Join Game</button>
 </div>
 
 <style>
@@ -166,10 +161,18 @@
 		aspect-ratio: 1/1;
 		padding: 2%;
 		max-width: 100px;
+		background-color: var(--grey-100);
+		border: none;
+		border-radius: 5px;
 	}
 
 	.selectors {
 		display: flex;
+		gap: 2px;
+	}
+
+	.is-selected {
+		background-color: var(--secondary-500);
 	}
 
 	/** Chrome*/
@@ -193,14 +196,25 @@
 	}
 
 	input[type='range']::-webkit-slider-thumb {
-		width: 15px;
 		-webkit-appearance: none;
-		height: 15px;
+		background: var(--white);
+		border: 2px solid var(--tertiary-500);
+		width: 20px;
+		height: 20px;
 		border-radius: 50%;
-		background: #434343;
+		cursor: pointer;
 	}
 
 	/** FF*/
+	input[type='range']::-moz-range-thumb {
+		background: var(--white);
+		border: 2px solid var(--tertiary-500);
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		cursor: pointer;
+	}
+
 	input[type='range']::-moz-range-track {
 		background-color: linear-gradient(
 			to right,
@@ -228,6 +242,15 @@
 		);
 	}
 
+	input[type='range']::-ms-thumb {
+		background: var(--white);
+		border: 2px solid var(--tertiary-500);
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		cursor: pointer;
+	}
+
 	#join-game {
 		padding: 2% 4%;
 		width: 100%;
@@ -236,5 +259,9 @@
 		background-color: var(--primary-500);
 		color: var(--white);
 		font-size: var(--size-8);
+	}
+
+	.hidden {
+		display: none;
 	}
 </style>
