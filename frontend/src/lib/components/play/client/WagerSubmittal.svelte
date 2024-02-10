@@ -42,10 +42,10 @@
 	form {
 		display: flex;
 		flex-direction: column;
-		justify-content: space-evenly;
-		height: 40%;
+		justify-content: flex-start;
+		height: 100%;
 		padding: 10%;
-		gap: 5%;
+		gap: 2%;
 	}
 
 	button {

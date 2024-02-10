@@ -61,10 +61,10 @@
 	form {
 		display: flex;
 		flex-direction: column;
-		justify-content: space-evenly;
-		height: 40%;
+		justify-content: flex-start;
 		padding: 10%;
-		gap: 5%;
+		gap: 2%;
+		height: 100%;
 	}
 
 	button {
