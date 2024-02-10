@@ -78,15 +78,50 @@
 	}
 </script>
 
-<Waiting>
-	<h1>Waiting for next round</h1>
-</Waiting>
+<div id="background">
+	<Waiting size={80}>
+		<h1>Waiting for next round to start</h1>
+	</Waiting>
 
-<p>Your score: ${score}</p>
-<p>You are in {place} place.</p>
-{#if place > 1 && pointsBehind !== undefined}
-	<p>You are ${pointsBehind} behind {playerAhead}.</p>
-{/if}
-{#if place < playerList.length - 1 && pointsAhead !== undefined}
-	<p>You are ${pointsAhead} behind {playerBehind}.</p>
-{/if}
+	<div id="stats">
+		<p>Your score: ${score}</p>
+		<p>You are in {place} place.</p>
+		{#if place > 1 && pointsBehind !== undefined}
+			<p>You are ${pointsBehind} behind {playerAhead}.</p>
+		{/if}
+		{#if place < playerList.length - 1 && pointsAhead !== undefined}
+			<p>You are ${pointsAhead} behind {playerBehind}.</p>
+		{/if}
+	</div>
+</div>
+
+<style>
+	#background {
+		width: 100%;
+		height: 100%;
+		color: var(--white);
+		background-color: var(--black);
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 5%;
+		padding: 0 8%;
+	}
+
+	#stats {
+		line-height: 1.6;
+	}
+
+	h1 {
+		margin: 0;
+		font-size: var(--size-5);
+		text-transform: uppercase;
+	}
+
+	p {
+		margin: 0;
+		font-size: var(--size-7);
+	}
+</style>
