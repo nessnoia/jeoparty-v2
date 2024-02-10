@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { roomStore } from '$lib/colyseus-client';
-	import BuzzersActiveLights from '$lib/components/play/BuzzersActiveLights.svelte';
-	import PlayBoard from '$lib/components/play/PlayBoard.svelte';
-	import PlayerDock from '$lib/components/play/PlayerDock.svelte';
-	import Timer from '$lib/components/play/Timer.svelte';
+	import BuzzersActiveLights from '$lib/components/play/host/BuzzersActiveLights.svelte';
+	import PlayBoard from '$lib/components/play/host/PlayBoard.svelte';
+	import PlayerDock from '$lib/components/play/host/PlayerDock.svelte';
+	import Timer from '$lib/components/play/host/Timer.svelte';
 	import type { GameData } from '$lib/database-models/game-data';
 	import type { Player } from '$lib/player';
 	import type { Room } from 'colyseus.js';

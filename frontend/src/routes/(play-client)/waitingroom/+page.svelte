@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { roomStore } from '$lib/colyseus-client';
-	import Waiting from '$lib/components/play/client/Waiting.svelte';
+	import Waiting from '$lib/components/play/Waiting.svelte';
 	import type { Room } from 'colyseus.js';
 
 	$: room = $roomStore as Room | undefined;

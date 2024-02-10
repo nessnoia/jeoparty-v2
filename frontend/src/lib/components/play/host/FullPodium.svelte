@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { roomStore } from '$lib/colyseus-client';
-	import Podium from '$lib/components/play/Podium.svelte';
+	import Podium from '$lib/components/play/host/Podium.svelte';
 	import type { Player } from '$lib/player';
 	import type { Room } from 'colyseus.js';
 
