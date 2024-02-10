@@ -140,6 +140,7 @@
 		padding: 2%;
 		border: none;
 		border-radius: 5px;
+		font-size: var(--size-9);
 	}
 
 	#nickname.error {
