@@ -166,6 +166,7 @@
 		background-color: var(--grey-100);
 		border: none;
 		border-radius: 5px;
+		overflow: visible;
 	}
 
 	.selectors {
