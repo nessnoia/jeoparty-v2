@@ -63,69 +63,120 @@
 	};
 </script>
 
-<div>
+<div id="container">
 	<h1>Create Character</h1>
-	<input placeholder="Nickname" type="text" bind:value={nickname} class:error={errorName} />
+	<input
+		id="nickname"
+		placeholder="Nickname"
+		type="text"
+		bind:value={nickname}
+		class:error={errorName}
+	/>
 
-	<div class="charactor">
+	<div class="character">
 		<svelte:component this={characterChoice} {colourChoice} />
 	</div>
 
 	<h2>Select Character</h2>
 
-	{#each [...characterSelectors] as [selector, i]}
-		<button class="char-selector" on:click={() => changeCharaterSelection(selector)}>
-			<svelte:component this={selector} />
-		</button>
-	{/each}
-
-	<h2>Select Activity</h2>
-
-	{#if animalChoiceString == 'elephant'}
-		{#each animalToActivities[animalChoiceString] as selector, i}
-			{#if i == 0 || i == 1 || i == 2 || randomElephantIndexes.has(i)}
-				<button class="act-selector" on:click={() => changeActivitySelection(selector)}>
-					<svelte:component this={selector} />
-				</button>
-			{/if}
-		{/each}
-	{:else}
-		{#each animalToActivities[animalChoiceString] as selector}
-			<button class="act-selector" on:click={() => changeActivitySelection(selector)}>
+	<div class="selectors">
+		{#each [...characterSelectors] as [selector, i]}
+			<button class="char-selector" on:click={() => changeCharaterSelection(selector)}>
 				<svelte:component this={selector} />
 			</button>
 		{/each}
-	{/if}
-
-	<div>
-		<h2>Colour</h2>
-		<input id="colour-selector" type="range" min="0" max="360" bind:value={colourChoice} />
-		<div class="colour" />
 	</div>
 
-	<button on:click={join}>Join Game</button>
+	<h2>Select Activity</h2>
+
+	<div class="selectors">
+		{#if animalChoiceString == 'elephant'}
+			{#each animalToActivities[animalChoiceString] as selector, i}
+				{#if i == 0 || i == 1 || i == 2 || randomElephantIndexes.has(i)}
+					<button class="act-selector" on:click={() => changeActivitySelection(selector)}>
+						<svelte:component this={selector} />
+					</button>
+				{/if}
+			{/each}
+		{:else}
+			{#each animalToActivities[animalChoiceString] as selector}
+				<button class="act-selector" on:click={() => changeActivitySelection(selector)}>
+					<svelte:component this={selector} />
+				</button>
+			{/each}
+		{/if}
+	</div>
+
+	<h2>Colour</h2>
+	<input id="colour-selector" type="range" min="0" max="360" bind:value={colourChoice} />
+	<div class="colour" />
+
+	<button id="join-game" on:click={join}>Join Game</button>
 </div>
 
 <style>
-	.error {
+	/* TODO: make look nice in landscape mode just in case */
+	#container {
+		width: 100%;
+		height: 100%;
+		background-color: var(--black);
+		color: var(--white);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: space-evenly;
+		padding: 8% 10%;
+	}
+
+	h1 {
+		margin: 0;
+		text-transform: uppercase;
+		font-size: var(--size-6);
+	}
+
+	h2 {
+		margin: 0;
+		text-transform: uppercase;
+		font-size: var(--size-7);
+	}
+
+	#nickname {
+		width: 100%;
+		padding: 2%;
+		border: none;
+		border-radius: 5px;
+	}
+
+	#nickname.error {
 		border: 2px red solid;
 	}
-	.charactor {
-		width: 300px;
-		height: 300px;
+
+	.character {
+		background-image: radial-gradient(var(--white), var(--grey-100), var(--grey-300));
+		padding: 30px;
+		border-radius: 10px;
+		height: 30%;
+		width: 100%;
+		max-height: 400px;
+		max-width: 400px;
 	}
 
 	.char-selector,
 	.act-selector {
-		height: 50px;
-		width: 50px;
+		aspect-ratio: 1/1;
+		padding: 2%;
+		max-width: 100px;
+	}
+
+	.selectors {
+		display: flex;
 	}
 
 	/** Chrome*/
 	input[type='range'] {
 		overflow: hidden;
-		width: 80%;
-		height: 15px;
+		width: 95%;
+		height: 3%;
 		border-radius: 15px;
 		-webkit-appearance: none;
 		appearance: none;
@@ -140,20 +191,12 @@
 			#ff0000 100%
 		);
 	}
-	/* input[type='range']::-webkit-slider-runnable-track {
-		height: 10px;
-		-webkit-appearance: none;
-		color: #13bba4;
-		margin-top: -1px;
-	} */
+
 	input[type='range']::-webkit-slider-thumb {
 		width: 15px;
 		-webkit-appearance: none;
 		height: 15px;
-		/* box-shadow: ; */
 		border-radius: 50%;
-		/* border-width: 2px;
-		border-color: white; */
 		background: #434343;
 	}
 
@@ -172,9 +215,6 @@
 	}
 
 	/* IE*/
-	/* input[type='range']::-ms-fill-lower {
-		background-color: #43e5f7;
-	} */
 	input[type='range']::-ms-fill {
 		background-color: linear-gradient(
 			to right,
@@ -188,7 +228,13 @@
 		);
 	}
 
-	/* #colour-selector {
-		background: 
-	} */
+	#join-game {
+		padding: 2% 4%;
+		width: 100%;
+		border-radius: 5px;
+		border: none;
+		background-color: var(--primary-500);
+		color: var(--white);
+		font-size: var(--size-8);
+	}
 </style>
