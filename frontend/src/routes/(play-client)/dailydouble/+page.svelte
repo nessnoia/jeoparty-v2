@@ -32,4 +32,18 @@
 	};
 </script>
 
-<WagerSubmittal {maxWager} {score} on:submitWager={submitDailyDouble} />
+<div id="background">
+	<WagerSubmittal {maxWager} {score} on:submitWager={submitDailyDouble}
+		>Daily Double</WagerSubmittal
+	>
+</div>
+
+<style>
+	#background {
+		width: 100%;
+		height: 100%;
+		background-color: var(--black);
+		color: var(--white);
+		font-size: var(--size-7);
+	}
+</style>
