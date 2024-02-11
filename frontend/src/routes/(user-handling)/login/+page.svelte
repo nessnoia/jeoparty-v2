@@ -40,14 +40,10 @@
 
 	#container {
 		display: flex;
-		height: 100%;
-		width: 100%;
 		justify-content: center;
 		align-items: center;
 		text-align: center;
 		flex-direction: column;
-		color: var(--black);
-		background-color: var(--white);
 	}
 
 	#login-form {
@@ -75,27 +71,14 @@
 		justify-content: space-between;
 		align-items: center;
 		gap: 2%;
-		font-size: var(--size-9);
 	}
 
 	.form-item input {
-		background-color: transparent;
-		padding: 1% 3%;
-		border-radius: 5px;
-		border: 1px solid var(--black);
 		width: 70%;
-		font-size: var(--size-8);
 	}
 
 	#login {
-		padding: 3%;
 		margin: 3% 0 4% 0;
-		font-size: var(--size-8);
-		font-weight: bold;
-		border: none;
-		color: var(--white);
-		background-color: var(--primary-600);
-		border-radius: 5px;
 	}
 
 	.login-link {

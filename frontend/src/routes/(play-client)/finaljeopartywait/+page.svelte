@@ -29,16 +29,14 @@
 	}
 </script>
 
-<div id="background">
+<div id="container">
 	<Waiting size={100}>
 		<h1>Waiting for final jeoparty</h1>
 	</Waiting>
 </div>
 
 <style>
-	#background {
-		width: 100%;
-		height: 100%;
+	#container {
 		color: var(--white);
 		background-color: var(--black);
 		text-align: center;
@@ -52,7 +50,6 @@
 
 	h1 {
 		margin: 0;
-		font-size: var(--size-4);
 		text-transform: uppercase;
 	}
 </style>

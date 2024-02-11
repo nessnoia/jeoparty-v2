@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import { roomStore } from '$lib/colyseus';
+	import { roomStore, events } from '$lib/colyseus';
 	import WagerSubmittal from '$lib/components/play/client/WagerSubmittal.svelte';
 	import type { Room } from 'colyseus.js';
 
@@ -32,18 +32,16 @@
 	};
 </script>
 
-<div id="background">
+<div id="container">
 	<WagerSubmittal {maxWager} {score} on:submitWager={submitDailyDouble}
 		>Daily Double</WagerSubmittal
 	>
 </div>
 
 <style>
-	#background {
-		width: 100%;
-		height: 100%;
+	#container {
 		background-color: var(--black);
 		color: var(--white);
-		font-size: var(--size-7);
+		/* font-size: var(--size-7); */
 	}
 </style>

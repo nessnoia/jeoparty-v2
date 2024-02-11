@@ -16,7 +16,7 @@
 	};
 </script>
 
-<div id="background">
+<div id="container">
 	<form on:submit|preventDefault={join}>
 		<h1>Join Game</h1>
 		<input placeholder="Enter Game Code..." type="text" bind:value={gameCode} />
@@ -45,26 +45,17 @@
 
 	button {
 		padding: 5%;
-		font-size: var(--size-8);
 		background-color: var(--primary-500);
 		border: none;
-		border-radius: 5px;
-		color: var(--white);
 		margin-top: 5%;
 	}
 
 	input {
 		padding: 4%;
-		font-size: var(--size-8);
-		border-radius: 5px;
 		border: none;
 	}
 
-	#background {
-		width: 100%;
-		height: 100%;
-		background-color: var(--black);
-		color: var(--white);
+	#container {
 		font-size: var(--size-7);
 	}
 </style>

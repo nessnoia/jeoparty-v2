@@ -124,24 +124,22 @@
 	};
 </script>
 
-<div id="background" class:active={buzzersActive} class:winner={wonBuzz} class:loser={lostBuzz}>
-	<div id="container">
-		<h1>Your score</h1>
-		<div id="score"><span id="dollar-sign">$</span><span id="score-val">{score}</span></div>
+<div id="container" class:active={buzzersActive} class:winner={wonBuzz} class:loser={lostBuzz}>
+	<h1>Your score</h1>
+	<div id="score"><span id="dollar-sign">$</span><span id="score-val">{score}</span></div>
 
-		<button id="buzzer" on:click={buzz} />
+	<button id="buzzer" on:click={buzz} />
 
-		<div id="stats">
-			{#if place !== undefined && place != -1}
-				<p>You are in {place} place.</p>
-				{#if pointsBehind !== undefined}
-					<p>You are ${pointsBehind} behind {playerAhead}.</p>
-				{/if}
-				{#if pointsAhead !== undefined}
-					<p>You are ${pointsAhead} ahead of {playerBehind}.</p>
-				{/if}
+	<div id="stats">
+		{#if place !== undefined && place != -1}
+			<p>You are in {place} place.</p>
+			{#if pointsBehind !== undefined}
+				<p>You are ${pointsBehind} behind {playerAhead}.</p>
 			{/if}
-		</div>
+			{#if pointsAhead !== undefined}
+				<p>You are ${pointsAhead} ahead of {playerBehind}.</p>
+			{/if}
+		{/if}
 	</div>
 </div>
 
@@ -149,19 +147,12 @@
 	h1 {
 		text-transform: uppercase;
 		font-size: var(--size-6);
-		margin: 10% 0 2% 0;
+		margin: 8vh 0 2% 0;
 		color: var(--white);
 	}
 
-	#background {
-		width: 100%;
-		height: 100%;
-		background-color: var(--primary-700);
-		overflow: hidden;
-	}
-
 	#container {
-		height: 80%;
+		background-color: var(--primary-700);
 		padding: 5%;
 		display: flex;
 		flex-direction: column;
@@ -172,7 +163,7 @@
 
 	#score {
 		background-color: var(--white);
-		padding: 2.5%;
+		padding: 1.5vh 2.5%;
 		width: 50%;
 		font-weight: bold;
 		display: flex;
@@ -190,7 +181,8 @@
 	}
 
 	#buzzer {
-		margin: 80px;
+		margin: 5vh 0;
+		max-height: 80vw;
 		flex-grow: 2;
 		aspect-ratio: 1 / 1;
 		border: 15px var(--primary-200) outset;
@@ -216,7 +208,7 @@
 		margin: 0;
 	}
 
-	#background.active {
+	#container.active {
 		background-color: var(--secondary-100);
 	}
 
@@ -237,7 +229,7 @@
 		color: var(--black);
 	}
 
-	#background.winner {
+	#container.winner {
 		background-color: green;
 	}
 
@@ -250,7 +242,7 @@
 		border-color: darkgreen;
 	}
 
-	#background.loser {
+	#container.loser {
 		background-color: red;
 	}
 

@@ -78,7 +78,7 @@
 	}
 </script>
 
-<div id="background">
+<div id="container">
 	<Waiting size={80}>
 		<h1>Waiting for next round to start</h1>
 	</Waiting>
@@ -96,9 +96,7 @@
 </div>
 
 <style>
-	#background {
-		width: 100%;
-		height: 100%;
+	#container {
 		color: var(--white);
 		background-color: var(--black);
 		text-align: center;
@@ -116,12 +114,10 @@
 
 	h1 {
 		margin: 0;
-		font-size: var(--size-5);
 		text-transform: uppercase;
 	}
 
 	p {
 		margin: 0;
-		font-size: var(--size-7);
 	}
 </style>

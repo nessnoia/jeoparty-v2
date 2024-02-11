@@ -27,21 +27,19 @@
 	}
 </script>
 
-<div id="background">
+<div id="container">
 	<h1>Thanks for playing!</h1>
-	<h2>Final score: ${player?.score ?? ''}</h2>
+	<h3>Final score: ${player?.score ?? ''}</h3>
 	<!-- If a player finishes in the top half -->
 	{#if player?.place < numPlayers / 2}
-		<h2>Congratulations! Your final standing: #{player?.place ?? ''}</h2>
+		<h3>Congratulations! Your final standing: #{player?.place ?? ''}</h3>
 	{:else}
-		<h2>Your final standing: #{player?.place ?? ''}. Better luck next time!</h2>
+		<h3>Your final standing: #{player?.place ?? ''}. Better luck next time!</h3>
 	{/if}
 </div>
 
 <style>
-	#background {
-		width: 100%;
-		height: 100%;
+	#container {
 		color: var(--white);
 		background-color: var(--black);
 		text-align: center;
@@ -55,12 +53,10 @@
 
 	h1 {
 		margin: 0 0 15% 0;
-		font-size: var(--size-4);
 		text-transform: uppercase;
 	}
 
-	h2 {
+	h3 {
 		margin: 0;
-		font-size: var(--size-6);
 	}
 </style>

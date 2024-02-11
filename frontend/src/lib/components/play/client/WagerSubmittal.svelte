@@ -35,7 +35,6 @@
 		margin: 0;
 		text-align: center;
 		padding: 5%;
-		font-size: var(--size-5);
 		text-transform: uppercase;
 	}
 
@@ -49,20 +48,12 @@
 	}
 
 	button {
-		padding: 5%;
-		font-size: var(--size-8);
-		background-color: var(--primary-500);
-		border: none;
-		border-radius: 5px;
-		color: var(--white);
 		margin-top: 8%;
 	}
 
 	input {
-		padding: 2%;
-		font-size: var(--size-8);
-		border-radius: 5px;
 		border: none;
+		background-color: var(--white);
 	}
 
 	/* Chrome, Safari, Edge, Opera */

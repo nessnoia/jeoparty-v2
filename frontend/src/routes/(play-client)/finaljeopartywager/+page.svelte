@@ -29,18 +29,13 @@
 	};
 </script>
 
-<div id="background">
-	<WagerSubmittal maxWager={score} {score} on:submitWager={submitWager}
-		>Final Jeoparty</WagerSubmittal
-	>
+<div id="container">
+	<WagerSubmittal maxWager={score} {score} on:submitWager={submitWager}>Wager</WagerSubmittal>
 </div>
 
 <style>
-	#background {
-		width: 100%;
-		height: 100%;
+	#container {
 		background-color: var(--black);
 		color: var(--white);
-		font-size: var(--size-7);
 	}
 </style>
