@@ -30,7 +30,6 @@
 		margin: 0;
 		text-align: center;
 		padding: 5%;
-		font-size: var(--size-5);
 		text-transform: uppercase;
 	}
 
@@ -44,18 +43,17 @@
 	}
 
 	button {
-		padding: 5%;
-		background-color: var(--primary-500);
-		border: none;
 		margin-top: 5%;
 	}
 
 	input {
-		padding: 4%;
+		padding: 2% 4%;
 		border: none;
+		background-color: var(--white);
 	}
 
 	#container {
-		font-size: var(--size-7);
+		background-color: var(--black);
+		color: var(--white);
 	}
 </style>
