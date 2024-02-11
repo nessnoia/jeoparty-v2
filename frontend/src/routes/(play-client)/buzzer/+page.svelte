@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import { roomStore } from '$lib/colyseus';
+	import { roomStore, states } from '$lib/colyseus';
 	import type { Player } from '$lib/player';
 	import type { Room } from 'colyseus.js';
 
@@ -29,11 +29,11 @@
 	$: if (room !== undefined) {
 		updatePlayerInfo(room.state.players);
 		room.state.listen('gameState', (change: string) => {
-			if (change == 'podium') {
+			if (change == states.RoundPodium) {
 				goto('/podium');
 			}
 
-			if (change == 'finalPodium') {
+			if (change == states.FinalPodium) {
 				goto('/finalpodium');
 			}
 
@@ -44,20 +44,20 @@
 				clueOpen = false;
 			}
 
-			if (change == 'clueOpen') {
+			if (change == states.ClueOpen) {
 				clueOpen = true;
 				wonBuzz = false;
 				lostBuzz = false;
 			}
 
-			if (change == 'timesUp') {
+			if (change == states.TimesUp) {
 				// Need this so if someone wins the buzz, when the timer runs out their screen stays green.
 				if (!wonBuzz) {
 					lostBuzz = true;
 				}
 			}
 
-			if (change == 'dailyDouble') {
+			if (change == states.DailyDouble) {
 				if (room?.state.dailyDouble.playerId == sessionId) {
 					goto('/dailydouble');
 				}

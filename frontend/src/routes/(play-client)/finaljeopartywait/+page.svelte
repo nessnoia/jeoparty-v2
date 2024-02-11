@@ -1,15 +1,15 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { roomStore } from '$lib/colyseus';
+	import { roomStore, states } from '$lib/colyseus';
 	import Waiting from '$lib/components/play/Waiting.svelte';
 	import type { Room } from 'colyseus.js';
 
 	let timerActive = false;
 	let lastGameStateChange = '';
 
-	$: if (lastGameStateChange == 'finalJeopartyCategory') {
+	$: if (lastGameStateChange == states.FinalJeopartyCategory) {
 		goto('/finaljeopartywager');
-	} else if (lastGameStateChange == 'finalJeopartyAnswer' && timerActive) {
+	} else if (lastGameStateChange == states.FinalJeopartyAnswer && timerActive) {
 		goto('/finaljeopartyanswer');
 	}
 
@@ -21,7 +21,7 @@
 		});
 
 		room.state.listen('gameState', (change: any) => {
-			if (change == 'finalPodium') {
+			if (change == states.FinalPodium) {
 				goto('/finalpodium');
 			}
 			lastGameStateChange = change;

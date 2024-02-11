@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import { attemptReconnect, roomStore } from '$lib/colyseus';
+	import { attemptReconnect, roomStore, states } from '$lib/colyseus';
 	import Waiting from '$lib/components/play/Waiting.svelte';
 	import type { Player } from '$lib/player';
 	import type { Room } from 'colyseus.js';
@@ -22,7 +22,7 @@
 	$: if (room !== undefined) {
 		updatePlayerInfo(room.state.players);
 		room.state.listen('gameState', (change: string) => {
-			if (change == 'showCategories') {
+			if (change == states.ShowCategories) {
 				goto('/categories');
 			}
 
@@ -30,7 +30,7 @@
 				goto('/buzzer');
 			}
 
-			if (change == 'finalJeoparty') {
+			if (change == states.FinalJeoparty) {
 				goto('/finaljeopartywait');
 			}
 		});

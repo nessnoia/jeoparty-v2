@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { roomStore } from '$lib/colyseus';
+	import { roomStore, states } from '$lib/colyseus';
 	import type { Category, Clue } from '$lib/database-models/game-data';
 	import type { PlayerFinalJeoparty } from '$lib/player';
 	import type { Room } from 'colyseus.js';
@@ -19,11 +19,11 @@
 
 	$: if (room !== undefined) {
 		if (displayTitle) {
-			room.send('updateGameState', { state: 'finalJeoparty' });
+			room.send('updateGameState', { state: states.FinalJeoparty });
 		}
 
 		room.state.listen('gameState', (change: string) => {
-			if (displayClue && change == 'timesUp') {
+			if (displayClue && change == states.TimesUp) {
 				dispatch('showPlayerAnswers');
 			}
 		});
@@ -62,13 +62,13 @@
 	const showCategory = () => {
 		displayCategory = true;
 		displayTitle = false;
-		room?.send('updateGameState', { state: 'finalJeopartyCategory' });
+		room?.send('updateGameState', { state: states.FinalJeopartyCategory });
 	};
 
 	const showClue = () => {
 		displayCategory = false;
 		displayClue = true;
-		room?.send('updateGameState', { state: 'finalJeopartyAnswer' });
+		room?.send('updateGameState', { state: states.FinalJeopartyAnswer });
 	};
 </script>
 

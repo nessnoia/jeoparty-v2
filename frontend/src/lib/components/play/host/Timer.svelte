@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { roomStore } from '$lib/colyseus';
+	import { roomStore, states } from '$lib/colyseus';
 	import type { Room } from 'colyseus.js';
 
 	export let buzzersActive: boolean;
@@ -38,7 +38,7 @@
 			window.clearInterval(timer);
 			timer = undefined;
 			buzzersActive = false;
-			room?.send('updateGameState', { state: 'timesUp' });
+			room?.send('updateGameState', { state: states.TimesUp });
 			room?.send('deactivateFJTimer');
 		}
 	};
