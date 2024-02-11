@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import { roomStore, states } from '$lib/colyseus';
+	import { roomStore,  states, events } from '$lib/colyseus';
 	import type { Room } from 'colyseus.js';
 
 	let score: number;
@@ -34,7 +34,7 @@
 
 	const submitAnswer = (e: SubmitEvent) => {
 		let answer = new FormData(e.target as HTMLFormElement).get('answer');
-		room?.send(states.FinalJeopartyAnswer, { answer: answer });
+		room?.send(events.FinalJeopartyAnswer, { answer: answer });
 		goto('/finaljeopartywait');
 	};
 </script>

@@ -10,9 +10,9 @@
 
 	$: if (room !== undefined) {
 		if (buzzersActive) {
-			room.send('activateBuzzers');
+			room.send(events.ActivateBuzzers);
 		} else {
-			room.send('deactivateBuzzers');
+			room.send(events.DeactivateBuzzers);
 		}
 	}
 

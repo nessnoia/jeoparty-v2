@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { roomStore, states } from '$lib/colyseus';
+	import { roomStore,  states, events } from '$lib/colyseus';
 	import { type Round, sortClues } from '$lib/database-models/game-data';
 	import { createEventDispatcher } from 'svelte';
 	import PlayCategory from './PlayCategory.svelte';
@@ -46,11 +46,11 @@
 	}
 
 	$: if (showCategories && round.type === 'normal') {
-		room?.send('updateGameState', {
+		room?.send(events.UpdateGameState, {
 			state: states.ShowCategories
 		});
 	} else if (!showCategories && round.type === 'normal' && !dailyDoubleOpen) {
-		room?.send('updateGameState', {
+		room?.send(events.UpdateGameState, {
 			state: states.Buzzer
 		});
 	}
@@ -81,7 +81,7 @@
 	}
 
 	const onClueUsed = () => {
-		room?.send('updateGameState', {
+		room?.send(events.UpdateGameState, {
 			state: states.Buzzer
 		});
 		numCluesPlayed++;
@@ -91,7 +91,7 @@
 	};
 
 	const onClueOpened = (e: CustomEvent<{ value: number }>) => {
-		room?.send('updateGameState', {
+		room?.send(events.UpdateGameState, {
 			state: states.ClueOpen
 		});
 		lastClueValue = e.detail.value;
@@ -100,11 +100,11 @@
 
 	const handleDailyDouble = () => {
 		dailyDoubleOpen = true;
-		room?.send('updateDailyDoubleInfo', {
+		room?.send(events.UpdateDailyDoubleInfo, {
 			playerId: mostRecentWinner,
 			clueValue: maxRoundClueValue
 		});
-		room?.send('updateGameState', {
+		room?.send(events.UpdateGameState, {
 			state: states.DailyDouble
 		});
 		buzzerWinnerId = mostRecentWinner;
@@ -120,7 +120,7 @@
 			} else {
 				playerScoreUpdateValue = -response.wager;
 			}
-			room?.send('updatePlayerScore', {
+			room?.send(events.UpdatePlayerScore, {
 				id: id,
 				clueValue: playerScoreUpdateValue
 			});
@@ -132,14 +132,14 @@
 		const key = e.key;
 		if (buzzerWinnerId !== '') {
 			if (key === 'ArrowUp' || key === '+' || key === 'w') {
-				room?.send('updatePlayerScore', {
+				room?.send(events.UpdatePlayerScore, {
 					id: buzzerWinnerId,
 					clueValue: lastClueValue
 				});
 				secondMostRecentWinner = mostRecentWinner;
 				mostRecentWinner = buzzerWinnerId;
 			} else if (key === 'ArrowDown' || key === '-' || key === 's') {
-				room?.send('updatePlayerScore', {
+				room?.send(events.UpdatePlayerScore, {
 					id: buzzerWinnerId,
 					clueValue: -lastClueValue
 				});

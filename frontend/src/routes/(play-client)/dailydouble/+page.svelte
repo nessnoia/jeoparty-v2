@@ -25,7 +25,7 @@
 	}
 
 	const submitDailyDouble = (e: CustomEvent<{ wager: number }>) => {
-		room?.send('updateDailyDoubleWager', {
+		room?.send(events.UpdateDailyDoubleWager, {
 			wager: e.detail.wager
 		});
 		goto('/buzzer');

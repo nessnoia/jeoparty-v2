@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { roomStore, states } from '$lib/colyseus';
+	import { roomStore,  states, events } from '$lib/colyseus';
 	import type { Room } from 'colyseus.js';
 
 	export let buzzersActive: boolean;
@@ -38,8 +38,8 @@
 			window.clearInterval(timer);
 			timer = undefined;
 			buzzersActive = false;
-			room?.send('updateGameState', { state: states.TimesUp });
-			room?.send('deactivateFJTimer');
+			room?.send(events.UpdateGameState, { state: states.TimesUp });
+			room?.send(events.DeactivateFJTimer);
 		}
 	};
 
@@ -75,10 +75,10 @@
 			if (roundType == 'final') {
 				if (timer === undefined) {
 					handleTimerStart();
-					room?.send('activateFJTimer');
+					room?.send(events.ActivateFJTimer);
 				} else {
 					handleTimerCancel();
-					room?.send('deactivateFJTimer');
+					room?.send(events.DeactivateFJTimer);
 				}
 			}
 		}

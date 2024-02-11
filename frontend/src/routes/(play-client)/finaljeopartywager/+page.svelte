@@ -22,7 +22,7 @@
 	}
 
 	const submitWager = (e: CustomEvent<{ wager: number }>) => {
-		room?.send('finalJeopartyWager', {
+		room?.send(events.FinalJeopartyWager, {
 			wager: e.detail.wager
 		});
 		goto('/finaljeopartywait');
