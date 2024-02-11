@@ -4,7 +4,7 @@
 	let gameType = 'standard';
 </script>
 
-<div id="content">
+<div id="container">
 	<h1>Create New Game</h1>
 	<form method="POST" use:enhance>
 		<div id="create-form">
@@ -31,7 +31,13 @@
 
 					<div class:active={gameType === 'custom'} class="radio-option">
 						<label for="custom">Custom</label>
-						<input bind:group={gameType} name="type" type="radio" id="custom" value="custom" />
+						<input
+							bind:group={gameType}
+							name="type"
+							type="radio"
+							id="custom"
+							value="custom"
+						/>
 					</div>
 				</div>
 			</div>
@@ -47,25 +53,31 @@
 <style>
 	h1 {
 		text-align: center;
-		margin: 8% 0 1.5em 0;
+		margin: 0;
 	}
 
-	#content {
-		padding: 0 var(--gutter-size-other);
+	#container {
+		padding: 10% var(--gutter-size-other);
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
+		justify-content: flex-start;
 		align-items: center;
-		margin: 0 auto;
+		height: 92%;
+		gap: 7%;
+	}
+
+	form {
+		height: 32%;
+		width: 60%;
 	}
 
 	#create-form {
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
+		justify-content: space-between;
 		align-items: start;
-		gap: 1em;
-		min-width: var(--min-width);
+		height: 100%;
+		gap: 10px;
 	}
 
 	#title {
@@ -79,7 +91,6 @@
 
 	#title input {
 		flex-grow: 1;
-		margin-right: 5%;
 	}
 
 	#radio-buttons {
@@ -100,7 +111,6 @@
 		display: flex;
 		flex-direction: row;
 		gap: 1em;
-		margin-right: 5%;
 	}
 
 	.radio-option {
@@ -109,7 +119,7 @@
 		align-items: center;
 		justify-content: center;
 		gap: 1em;
-		padding: 0.5em 1em;
+		padding: 2% 3%;
 		border: 1px solid var(--black);
 		border-radius: 0.2em;
 		width: 50%;
@@ -129,7 +139,7 @@
 	}
 
 	.radio-option.active {
-		border: 2.2px solid var(--black);
+		border: 3px solid var(--black);
 		border-radius: 0.2em;
 	}
 
@@ -145,16 +155,7 @@
 	}
 
 	#create {
-		padding: 0.7em 2em;
-		margin: 1.5em auto;
-		width: 40%;
-		background-color: var(--black);
-		color: var(--white);
-		border: none;
-		border-radius: 0.2em;
-		font-weight: bold;
-		font-size: medium;
-		text-transform: uppercase;
+		width: 100%;
 	}
 
 	#create:hover {

@@ -22,7 +22,7 @@
 		background-color: transparent;
 		background-color: var(--primary-500);
 		border-radius: 10px;
-		color: var(--secondary-500);
+		color: var(--white);
 		font-size: var(--size-9);
 	}
 
