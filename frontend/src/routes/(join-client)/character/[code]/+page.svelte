@@ -59,86 +59,79 @@
 </script>
 
 <div id="container">
-	<div id="character-select-container">
-		<h1>Create Character</h1>
-		<input
-			id="nickname"
-			placeholder="Nickname"
-			type="text"
-			bind:value={nickname}
-			class:error={errorName}
-		/>
+	<h1>Create Character</h1>
+	<input
+		id="nickname"
+		placeholder="Nickname"
+		type="text"
+		bind:value={nickname}
+		class:error={errorName}
+	/>
 
-		<div class="character">
-			<svelte:component this={characterChoice} {colourChoice} />
-		</div>
+	<div class="character">
+		<svelte:component this={characterChoice} {colourChoice} />
+	</div>
 
-		<h2>Select Character</h2>
+	<h2>Select Character</h2>
 
-		<div class="selectors">
-			{#each [...characterSelectors] as [selector, selectorString]}
+	<div class="selectors">
+		{#each [...characterSelectors] as [selector, selectorString]}
+			<button
+				class="char-selector"
+				class:is-selected={animalChoiceString === selectorString}
+				on:click={() => changeCharaterSelection(selector)}
+			>
+				<svelte:component this={selector} />
+			</button>
+		{/each}
+	</div>
+
+	<h2>Select Activity</h2>
+
+	<div class="selectors">
+		{#each animalToActivities[animalChoiceString] as selector, i}
+			{#if (animalChoiceString === 'elephant' && (i == 0 || i == 1 || i == 2 || randomElephantIndexes.has(i))) || animalChoiceString !== 'elephant'}
 				<button
-					class="char-selector"
-					class:is-selected={animalChoiceString === selectorString}
-					on:click={() => changeCharaterSelection(selector)}
+					class="act-selector"
+					class:is-selected={activityChoiceString === activitySelectors.get(selector)}
+					on:click={() => changeActivitySelection(selector)}
 				>
 					<svelte:component this={selector} />
 				</button>
-			{/each}
-		</div>
-
-		<h2>Select Activity</h2>
-
-		<div class="selectors">
-			{#each animalToActivities[animalChoiceString] as selector, i}
-				{#if (animalChoiceString === 'elephant' && (i == 0 || i == 1 || i == 2 || randomElephantIndexes.has(i))) || animalChoiceString !== 'elephant'}
-					<button
-						class="act-selector"
-						class:is-selected={activityChoiceString === activitySelectors.get(selector)}
-						on:click={() => changeActivitySelection(selector)}
-					>
-						<svelte:component this={selector} />
-					</button>
-				{/if}
-			{/each}
-		</div>
-
-		<h2>Colour</h2>
-		<input id="colour-selector" type="range" min="0" max="360" bind:value={colourChoice} />
-		<div class="colour" />
-
-		<button id="join-game" class:hidden={nickname === ''} on:click={join}>Join Game</button>
+			{/if}
+		{/each}
 	</div>
+
+	<h2>Colour</h2>
+	<input id="colour-selector" type="range" min="0" max="360" bind:value={colourChoice} />
+	<div class="colour" />
+
+	<button id="join-game" class:hidden={nickname === ''} on:click={join}>Join Game</button>
 </div>
 
 <style>
-	/* TODO: make look nice in landscape mode just in case */
 	#container {
 		background-color: var(--black);
 		color: var(--white);
-	}
-
-	#character-select-container {
-		height: 100%;
 		width: 100%;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: space-evenly;
 		padding: 8% 10%;
-		/* gap: min(10px, 5vh); */
+		gap: 5px;
 	}
 
 	h1 {
 		margin: 0;
 		text-transform: uppercase;
-		font-size: var(--size-4);
+		font-size: var(--size-5);
 	}
 
 	h2 {
 		margin: 0;
 		text-transform: uppercase;
-		font-size: var(--size-5);
+		font-size: var(--size-6);
 	}
 
 	#nickname {
@@ -156,7 +149,7 @@
 		background-image: radial-gradient(var(--white), var(--grey-100), var(--grey-300));
 		padding: 30px;
 		border-radius: 10px;
-		height: max(30%, 200px);
+		height: max(30vh, 230px);
 		width: 100%;
 		max-height: max(30%, 100vw);
 		max-width: 400px;
@@ -186,6 +179,7 @@
 	/** Chrome*/
 	input[type='range'] {
 		overflow: hidden;
+		padding: 0;
 		width: 95%;
 		height: 3%;
 		border-radius: 15px;

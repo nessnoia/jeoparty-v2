@@ -47,6 +47,7 @@
 	}
 
 	#login-form {
+		padding: 5% 0;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
