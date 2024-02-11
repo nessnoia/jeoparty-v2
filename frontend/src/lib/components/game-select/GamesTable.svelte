@@ -14,8 +14,9 @@
 <style>
 	#games {
 		display: grid;
-		grid-template-columns: 22% 22% 22% 22%;
-		grid-gap: 20px 3%;
-		margin: 20px 0;
+		width: 100%;
+		grid-template-columns: repeat(4, 1fr);
+		grid-gap: 20px 10%;
+		padding-top: 2%;
 	}
 </style>

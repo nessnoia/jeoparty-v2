@@ -17,10 +17,10 @@
 	<div id="game-add-controls">
 		<h1>Your Games</h1>
 
-		<div id="game-buttons">
-			<button><img src="/icons/circle-minus.svg" alt="delete games" /></button>
-			<button on:click={goToCreatePage}><img src="/icons/circle-plus.svg" alt="add game" /></button>
-		</div>
+		<button><img src="/icons/circle-minus.svg" alt="delete games" /></button>
+		<button on:click={goToCreatePage}
+			><img src="/icons/circle-plus.svg" alt="add game" /></button
+		>
 	</div>
 
 	<!-- <input id="search" type="text" placeholder="Search for games" /> -->
@@ -39,37 +39,38 @@
 <style>
 	#container {
 		min-width: var(--min-width);
-		padding: 10px var(--gutter-size-other) 0 var(--gutter-size-other);
-		margin-top: 100px;
+		padding: 100px var(--gutter-size-other) 0 var(--gutter-size-other);
 		display: flex;
 		flex-direction: column;
 		align-content: center;
+		min-height: 92vh;
 		gap: 30px;
 	}
 
 	#game-add-controls {
-		text-align: center;
+		display: flex;
+		gap: 2%;
+		justify-content: center;
+		padding: 10px 0;
 	}
 
 	#game-add-controls h1 {
-		display: inline;
+		margin: 0;
+		flex-grow: 2;
+		text-align: center;
 	}
 
-	#game-add-controls #game-buttons {
-		float: right;
-		display: inline;
-	}
-
-	#game-buttons button {
+	#game-add-controls button {
 		background-color: transparent;
 		border: 0px;
+		padding: 0;
 	}
 
-	#game-buttons img {
-		height: 25px;
+	#game-add-controls img {
+		height: 30px;
 	}
 
-	#game-buttons button:hover {
+	#game-add-controls button:hover {
 		cursor: pointer;
 	}
 

@@ -8,20 +8,22 @@
 </script>
 
 <button on:click={() => (gamePreviewOpen = true)}>
-	<h3>{gameInfo.gameTitle}</h3>
+	{gameInfo.gameTitle}
 </button>
 
 <GameSelectModal bind:isVisible={gamePreviewOpen} {gameInfo} />
 
 <style>
 	button {
-		padding: 10px;
-		height: 100px;
-		max-width: 200px;
+		padding: 10px 15px;
+		height: 12vh;
+		min-width: 100px;
 		text-overflow: ellipsis;
-		background-color: white;
-		border: 1px var(--black) solid;
+		background-color: transparent;
+		background-color: var(--primary-500);
 		border-radius: 10px;
+		color: var(--secondary-500);
+		font-size: var(--size-9);
 	}
 
 	button:hover {

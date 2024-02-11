@@ -7,9 +7,9 @@
 
 <nav>
 	<ul>
-		<li><img class="logo" src="/logo.png" alt="logo" /></li>
-		<li class:active={pathname === '/games'}><a href="/games">View Your Games</a></li>
-		<li class:active={pathname === '/create'}><a href="/create">Create New</a></li>
+		<li><img id="logo" src="/logo.png" alt="logo" /></li>
+		<li class:active={pathname === '/games'}><a href="/games">Your Games</a></li>
+		<li class:active={pathname === '/create'}><a href="/create">Create</a></li>
 		<li class:active={pathname === '/tutorial'}><a href="/tutorial">How to Play</a></li>
 		<li class:active={pathname === '/settings'}>
 			<form use:enhance method="post" action="/?/logout">
@@ -23,47 +23,55 @@
 
 <style>
 	nav {
-		height: 10%;
-		padding: 10px var(--gutter-size-nav) 0 var(--gutter-size-nav);
-		margin-bottom: 40px;
+		height: 8%;
+		width: 100%;
+		padding: 5px var(--gutter-size-nav);
 		min-width: var(--min-width);
+		background-color: var(--primary-600);
+		display: flex;
+		align-items: center;
 	}
 
 	ul {
+		width: 100%;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
 		align-content: center;
 		align-items: center;
 		padding: 0;
+		margin: 0;
 	}
 
 	li {
 		list-style-type: none;
-		padding: 10px 20px;
+		padding: 10px 5px;
 	}
 
-	.logo {
+	li:nth-child(1) {
+		padding-right: 30%;
+	}
+
+	#logo {
 		height: 40px;
 		width: auto;
+		filter: brightness(0) invert(1);
 	}
 
 	.active {
-		background-color: var(--black);
-		text-transform: uppercase;
+		border-bottom: 3px var(--secondary-500) solid;
 	}
 
-	a {
+	a,
+	a:visited,
+	input {
 		text-decoration: none;
-		color: var(--black);
-	}
-
-	a:visited {
-		color: var(--black);
+		color: var(--white);
+		font-size: var(--size-10);
+		font-family: Arial, Helvetica, sans-serif;
 	}
 
 	.active a {
-		color: var(--white);
 		font-weight: bold;
 	}
 
