@@ -43,9 +43,11 @@
 <div class="modal-background" on:click={close} on:keydown={handleKeydown} />
 
 <div class="modal" role="dialog" aria-modal="true" bind:this={modal}>
-	<button on:click={close}><img src="/icons/xmark.svg" alt="close modal" /></button>
-	<slot name="content" />
-	<slot />
+	<button id="close" on:click={close}><img src="/icons/xmark.svg" alt="close modal" /></button>
+	<div id="modal-content">
+		<slot name="content" />
+		<slot />
+	</div>
 </div>
 
 <style>
@@ -70,17 +72,22 @@
 		transform: translate(-50%, -50%);
 		padding: 1.5em;
 		border-radius: 0.5em;
-		background: white;
+		background: var(--white);
 	}
 
-	button {
+	#modal-content {
+		padding-top: 10%;
+	}
+
+	#close {
+		float: right;
 		display: block;
 		background-color: transparent;
 		box-shadow: none;
 		border: none;
 	}
 
-	button:hover {
+	#close:hover {
 		cursor: pointer;
 	}
 </style>

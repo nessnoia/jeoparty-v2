@@ -20,8 +20,8 @@
 		<div slot="content">
 			<h1>{gameInfo.gameTitle}</h1>
 			<div id="button-container">
-				<button on:click={goToEdit}>Edit Game</button>
-				<button on:click={goToPlay}>Start Game</button>
+				<button id="edit" on:click={goToEdit}>Edit</button>
+				<button id="play" on:click={goToPlay}>Play</button>
 			</div>
 		</div>
 	</ModalBase>
@@ -37,16 +37,20 @@
 		flex-direction: row;
 		gap: 1em;
 		justify-content: space-between;
-		padding: 0.5em 1em;
+		padding: 10% 2% 3% 2%;
 	}
 
 	button {
-		padding: 0.6em;
 		width: 50%;
-		font-size: var(--size-10);
+	}
+
+	#play {
+	}
+
+	#edit {
+		border: 3px var(--primary-500) solid;
+		color: var(--primary-500);
 		background-color: transparent;
-		border: 1px var(--black) solid;
-		border-radius: 0.3em;
 	}
 
 	button:hover {
