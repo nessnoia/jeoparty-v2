@@ -5,7 +5,7 @@
 	import * as Colyseus from 'colyseus.js';
 	import { PUBLIC_COLYSEUS_URL } from '$env/static/public';
 	import PlayerDetailed from '$lib/components/play/host/PlayerDetailed.svelte';
-	import { roomStore } from '$lib/colyseus-client';
+	import { roomStore } from '$lib/colyseus';
 	import Waiting from '$lib/components/play/Waiting.svelte';
 
 	export let data: PageData;

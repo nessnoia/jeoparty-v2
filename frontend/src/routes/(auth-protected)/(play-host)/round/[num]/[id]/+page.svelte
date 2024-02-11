@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { roomStore } from '$lib/colyseus-client';
+	import { roomStore } from '$lib/colyseus';
 	import BuzzersActiveLights from '$lib/components/play/host/BuzzersActiveLights.svelte';
 	import PlayBoard from '$lib/components/play/host/PlayBoard.svelte';
 	import PlayerDock from '$lib/components/play/host/PlayerDock.svelte';

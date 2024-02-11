@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { roomStore } from '$lib/colyseus-client';
+	import { roomStore } from '$lib/colyseus';
 	import type { Category, Clue } from '$lib/database-models/game-data';
 	import type { PlayerFinalJeoparty } from '$lib/player';
 	import type { Room } from 'colyseus.js';

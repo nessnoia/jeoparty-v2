@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { roomStore } from '$lib/colyseus-client';
+	import { roomStore } from '$lib/colyseus';
 	import type { Room } from 'colyseus.js';
 
 	export let buzzersActive: boolean;

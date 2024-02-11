@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import { roomStore } from '$lib/colyseus-client';
+	import { roomStore } from '$lib/colyseus';
 	import WagerSubmittal from '$lib/components/play/client/WagerSubmittal.svelte';
 	import type { Room } from 'colyseus.js';
 

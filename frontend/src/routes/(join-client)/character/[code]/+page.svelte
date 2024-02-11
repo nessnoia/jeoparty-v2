@@ -11,7 +11,7 @@
 	import type { PageData } from './$types';
 	import { PUBLIC_COLYSEUS_URL } from '$env/static/public';
 	import { goto } from '$app/navigation';
-	import { roomStore } from '$lib/colyseus-client';
+	import { roomStore } from '$lib/colyseus';
 
 	export let data: PageData;
 

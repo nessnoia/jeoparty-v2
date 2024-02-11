@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { roomStore } from '$lib/colyseus-client';
+	import { roomStore } from '$lib/colyseus';
 	import { type Round, sortClues } from '$lib/database-models/game-data';
 	import { createEventDispatcher } from 'svelte';
 	import PlayCategory from './PlayCategory.svelte';
@@ -51,7 +51,7 @@
 		});
 	} else if (!showCategories && round.type === 'normal' && !dailyDoubleOpen) {
 		room?.send('updateGameState', {
-			state: 'buzzer'
+			state: states.Buzzer
 		});
 	}
 
@@ -82,7 +82,7 @@
 
 	const onClueUsed = () => {
 		room?.send('updateGameState', {
-			state: 'buzzer'
+			state: states.Buzzer
 		});
 		numCluesPlayed++;
 		dailyDoubleOpen = false;

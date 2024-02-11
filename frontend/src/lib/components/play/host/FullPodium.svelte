@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { roomStore } from '$lib/colyseus-client';
+	import { roomStore } from '$lib/colyseus';
 	import Podium from '$lib/components/play/host/Podium.svelte';
 	import type { Player } from '$lib/player';
 	import type { Room } from 'colyseus.js';

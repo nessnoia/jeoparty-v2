@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
-	import { roomStore } from '$lib/colyseus-client';
+	import { roomStore } from '$lib/colyseus';
 	import FullPodium from '$lib/components/play/host/FullPodium.svelte';
 	import type { Room } from 'colyseus.js';
 	import type { PageData } from './$types';
