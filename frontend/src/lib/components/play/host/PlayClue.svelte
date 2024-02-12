@@ -73,24 +73,26 @@
 {/if}
 
 {#if clueOpened}
-	<div class="clue-showing">
-		{#if displayDailyDouble}
-			<div>
-				<p>Daily Double</p>
-			</div>
-		{/if}
+	<div class="clue-flexbox">
+		<div class="clue-showing">
+			{#if displayDailyDouble}
+				<div>
+					<p>Daily Double</p>
+				</div>
+			{/if}
 
-		{#if displayClue}
-			<div>
-				<p>{clue.clue}</p>
-			</div>
-		{/if}
+			{#if displayClue}
+				<div>
+					<p>{clue.clue}</p>
+				</div>
+			{/if}
 
-		{#if displayAnswer}
-			<div>
-				<p>{clue.answer}</p>
-			</div>
-		{/if}
+			{#if displayAnswer}
+				<div>
+					<p>{clue.answer}</p>
+				</div>
+			{/if}
+		</div>
 	</div>
 {/if}
 
@@ -116,25 +118,34 @@
 
 	.used-clue {
 		background-color: transparent;
+		padding: 3%;
+	}
+
+	.clue-flexbox {
+		position: absolute;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		left: 0;
+		top: 2.5%;
+		width: 100%;
+		height: 82.5%;
 	}
 
 	.clue-showing {
-		position: absolute;
 		display: flex;
 		justify-content: center;
 		align-content: center;
 		flex-direction: column;
-		top: 0;
-		left: 0;
-		height: 73.7%;
+		height: 90%;
 		width: 90%;
-		margin-top: 4.7%;
-		margin-left: 5%;
 		background-color: var(--primary-500);
 		color: var(--white);
 		font-size: 4.3vw;
 		text-transform: uppercase;
 		font-weight: bold;
+		padding: 2%;
 	}
 
 	.clue-showing p {
