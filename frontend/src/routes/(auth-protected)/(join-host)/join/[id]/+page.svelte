@@ -5,7 +5,7 @@
 	import * as Colyseus from 'colyseus.js';
 	import { PUBLIC_COLYSEUS_URL } from '$env/static/public';
 	import PlayerDetailed from '$lib/components/play/host/PlayerDetailed.svelte';
-	import { roomStore,  states, events } from '$lib/colyseus';
+	import { roomStore, states, events } from '$lib/colyseus';
 	import Waiting from '$lib/components/play/Waiting.svelte';
 
 	export let data: PageData;
@@ -53,7 +53,7 @@
 
 	{#if Object.keys(playerList).length === 0}
 		<div id="waiting-message">
-			<Waiting>
+			<Waiting size={100} invert={true}>
 				<p>Waiting for players to join...</p>
 			</Waiting>
 		</div>
@@ -78,8 +78,6 @@
 
 <style>
 	#container {
-		width: 100%;
-		height: 100%;
 		text-align: center;
 		display: flex;
 		flex-direction: column;
@@ -89,11 +87,16 @@
 
 	#waiting-message {
 		margin-top: calc(150px + 5em);
-		font-size: var(--size-6);
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
+	}
+
+	#waiting-message p {
+		font-size: var(--size-5);
+		margin-top: 5%;
+		margin-bottom: 5%;
 	}
 
 	#header-info {
@@ -105,7 +108,6 @@
 		gap: 2em;
 		position: fixed;
 		width: 100%;
-		background-color: white;
 	}
 
 	#logo {
@@ -163,13 +165,8 @@
 
 	#start {
 		margin: 1.5em auto;
-		background-color: var(--black);
-		color: var(--white);
-		border: none;
-		border-radius: 0.3em;
-		outline: none;
-		font-size: var(--size-7);
-		padding: 0.7em 1.5em;
+		padding: 1em 1.5em;
+		width: 18%;
 	}
 
 	#start:hover {
