@@ -67,8 +67,9 @@
 	}
 
 	form {
-		height: 32%;
+		height: min(40%, 20vw);
 		width: 60%;
+		min-width: var(--min-width);
 	}
 
 	#create-form {
