@@ -54,7 +54,7 @@
 	});
 </script>
 
-<div id="edit">
+<div id="container">
 	<div id="save-message">
 		{#if Object.keys($unsaved).length > 0}
 			<img src="/icons/spinner.svg" alt="save pending spinner" />
@@ -79,9 +79,14 @@
 <NotSavedModal bind:isVisible={warnNotSavedOpen} to={navLinkTo} />
 
 <style>
-	#edit {
+	span {
+		font-size: var(--size-10);
+	}
+
+	#container {
+		height: 92%;
 		min-width: var(--min-width);
-		padding: 0 var(--gutter-size-other);
+		padding: 3% var(--gutter-size-other);
 	}
 
 	#save-message {
@@ -90,6 +95,7 @@
 		justify-content: start;
 		align-items: center;
 		gap: 0.8em;
+		float: right;
 	}
 
 	#save-message img {

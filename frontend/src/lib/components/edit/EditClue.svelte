@@ -73,6 +73,7 @@
 			/>
 		{/if}
 		<div
+			class="textedit"
 			contenteditable="true"
 			placeholder="Clue"
 			bind:textContent={clue.clue}
@@ -84,6 +85,7 @@
 		<input type="file" id="img" name="img" accept="image/*" /> -->
 
 		<div
+			class="textedit"
 			contenteditable="true"
 			placeholder="Answer"
 			bind:textContent={clue.answer}
@@ -110,23 +112,33 @@
 {/if}
 
 <style>
+	input,
+	label,
+	.textedit {
+		font-size: var(--size-10);
+	}
+
 	.clue-editor {
 		display: flex;
 		flex-direction: column;
-		gap: 0.5em;
+		gap: 15px;
 		justify-content: space-evenly;
-		margin: 0.7em 0 1em 0;
-	}
-	button {
-		padding: 0.8em 1em;
-		width: 100%;
 		padding: 10% 0;
 	}
 
+	button {
+		width: 100%;
+		padding: 13% 5%;
+	}
+
+	button:hover {
+		cursor: pointer;
+	}
+
 	[contenteditable] {
-		border: thin solid var(--black);
-		border-radius: 0.1em;
-		padding: 0.3em;
+		border: 1px solid var(--black);
+		border-radius: 5px;
+		padding: 0.4em;
 	}
 
 	[contenteditable='true']:empty:before {

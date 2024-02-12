@@ -41,16 +41,16 @@
 	--grey-900: #18191d;
 	--black: #0e0e0f;
 
-	--size-1: calc(48px + 0.6vw);
-	--size-2: calc(36px + 0.6vw);
-	--size-3: calc(30px + 0.6vw);
-	--size-4: calc(24px + 0.6vw);
-	--size-5: calc(20px + 0.6vw);
-	--size-6: calc(18px + 0.6vw);
-	--size-7: calc(16px + 0.6vw);
-	--size-8: calc(14px + 0.6vw);
-	--size-9: calc(12px + 0.6vw);
-	--size-10: calc(11px + 0.6vw);
+	--size-1: calc(48px + 0.5vw);
+	--size-2: calc(36px + 0.5vw);
+	--size-3: calc(30px + 0.5vw);
+	--size-4: calc(24px + 0.5vw);
+	--size-5: calc(20px + 0.5vw);
+	--size-6: calc(18px + 0.5vw);
+	--size-7: calc(16px + 0.5vw);
+	--size-8: calc(14px + 0.5vw);
+	--size-9: calc(12px + 0.5vw);
+	--size-10: calc(11px + 0.5vw);
 
 	--min-width: 700px;
 	--gutter-size-nav: 50px;
@@ -84,6 +84,7 @@ body {
 	width: 100%;
 	display: inline-block;
 }
+
 h1 {
 	font-size: var(--size-3);
 }
@@ -116,7 +117,8 @@ button {
 	border-radius: 5px;
 }
 
-input {
+input,
+.textedit {
 	min-width: 0;
 	padding: 1% 3%;
 	border-radius: 5px;
@@ -129,13 +131,13 @@ input[type='checkbox'],
 input[type='radio'] {
 	appearance: none;
 	-webkit-appearance: none;
-	border: 1px solid var(--black);
-	padding: 6px;
+	border: 1px solid var(--primary-700);
+	padding: 8px;
 	border-radius: 3px;
 }
 
 input:checked {
-	background-color: var(--black);
+	background-color: var(--primary-700);
 }
 
 svg {
