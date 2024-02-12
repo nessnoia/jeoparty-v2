@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { roomStore,  states, events } from '$lib/colyseus';
+	import { roomStore, states, events } from '$lib/colyseus';
 	import { type Round, sortClues } from '$lib/database-models/game-data';
 	import { createEventDispatcher } from 'svelte';
 	import PlayCategory from './PlayCategory.svelte';
@@ -18,7 +18,8 @@
 	let secondMostRecentWinner = '';
 	let mostRecentWinner = firstPlayer;
 
-	let showCategories = round.type === 'normal';
+	/* let showCategories = round.type === 'normal'; */
+	let showCategories = false;
 	let showPlayerAnswers = false;
 	let dailyDoubleWagerSubmitted = false;
 
