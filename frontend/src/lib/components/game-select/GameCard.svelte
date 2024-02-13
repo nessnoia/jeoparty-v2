@@ -17,6 +17,7 @@
 	button {
 		padding: 10px 15px;
 		height: 12vh;
+		width: 100%;
 		min-width: 100px;
 		text-overflow: ellipsis;
 		background-color: transparent;
