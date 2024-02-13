@@ -22,22 +22,27 @@
 	}
 </script>
 
-<div class="podium">
+<div id="podium-container">
 	{#each playerList as player, i}
-		{#if i < 6}
+		{#if i < 5}
 			<Podium
 				character={player.character}
 				colourChoice={player.characterColour}
 				name={player.name}
 				score={player.score}
 				standing={i + 1}
+				numPlayers={playerList.length >= 5 ? 5 : playerList.length}
 			/>
 		{/if}
 	{/each}
 </div>
 
 <style>
-	.podium {
+	#podium-container {
 		display: flex;
+		justify-content: space-between;
+		align-items: flex-end;
+		width: 80%;
+		height: 80%;
 	}
 </style>
