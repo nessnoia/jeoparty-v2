@@ -41,7 +41,7 @@
 <style>
 	.light {
 		background-color: var(--grey-700);
-		height: 19.5%;
+		height: 100%;
 	}
 
 	.light.active {
@@ -53,6 +53,7 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
+		gap: 0.5%;
 		width: 2.5%;
 		height: 100%;
 		top: 0;

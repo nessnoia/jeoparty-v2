@@ -7,23 +7,55 @@
 </script>
 
 <div id="player-dock">
-	{#each players as player, i}
-		{#if i < 3}
-			<PlayerScore name={player.name} score={player.score} />
-		{/if}
-	{/each}
+	<div id="top-three-players">
+		{#each players as player, i}
+			{#if i < 3}
+				<PlayerScore
+					--border-style="1px solid var(--grey-100)"
+					name={player.name}
+					score={player.score}
+				/>
+			{/if}
+		{/each}
+	</div>
 
-	{#if buzzerWinner}
-		<PlayerScore name={buzzerWinner.name} score={buzzerWinner.score} />
-	{:else}
-		<div />
-	{/if}
+	<div id="buzzer-winner">
+		{#if buzzerWinner}
+			<PlayerScore
+				--border-style="6px solid var(--tertiary-500)"
+				name={buzzerWinner.name}
+				score={buzzerWinner.score}
+			/>
+		{:else}
+			<div id="buzzer-winner-placeholder" />
+		{/if}
+	</div>
 </div>
 
 <style>
 	#player-dock {
-		border: 1px solid black;
+		display: flex;
+		justify-content: space-between;
+		padding: 0.2% 5% 2% 5%;
+		width: 100%;
 		height: 100%;
-		margin-bottom: 1%;
+	}
+
+	#top-three-players {
+		display: flex;
+		justify-content: space-between;
+		width: 60%;
+		gap: 5%;
+	}
+
+	#buzzer-winner {
+		width: 20%;
+		height: 100%;
+	}
+
+	#buzzer-winner-placeholder {
+		background-color: var(--grey-800);
+		border: 5px var(--grey-900) outset;
+		height: 100%;
 	}
 </style>

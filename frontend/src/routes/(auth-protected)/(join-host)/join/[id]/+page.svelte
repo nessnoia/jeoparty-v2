@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { beforeNavigate, goto } from '$app/navigation';
+	import { goto } from '$app/navigation';
 	import type { PageData } from './$types';
 	import * as Colyseus from 'colyseus.js';
 	import { PUBLIC_COLYSEUS_URL } from '$env/static/public';
