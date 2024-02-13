@@ -5,6 +5,7 @@ import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	if (locals.user) throw redirect(302, '/games');
+	else throw redirect(302, '/tutorial');
 };
 
 export const actions: Actions = {
@@ -19,6 +20,6 @@ export const actions: Actions = {
 			path: '.',
 			...sessionCookie.attributes
 		});
-		redirect(302, '/login');
+		redirect(302, '/tutorial');
 	}
 };

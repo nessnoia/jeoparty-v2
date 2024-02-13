@@ -117,6 +117,10 @@ button {
 	border-radius: 5px;
 }
 
+button:hover {
+	cursor: pointer;
+}
+
 input,
 .textedit {
 	min-width: 0;
