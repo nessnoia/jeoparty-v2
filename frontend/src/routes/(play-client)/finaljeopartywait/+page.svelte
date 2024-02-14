@@ -21,9 +21,6 @@
 		});
 
 		room.state.listen('gameState', (change: any) => {
-			if (change == states.FinalPodium) {
-				goto('/finalpodium');
-			}
 			lastGameStateChange = change;
 		});
 	}

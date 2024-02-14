@@ -1,18 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { roomStore, states } from '$lib/colyseus';
 	import Waiting from '$lib/components/play/Waiting.svelte';
-	import type { Room } from 'colyseus.js';
-
-	$: room = $roomStore as Room | undefined;
-
-	$: if (room !== undefined) {
-		room.state.listen('gameState', (change: any) => {
-			if (change == states.Buzzer) {
-				goto('/buzzer');
-			}
-		});
-	}
 </script>
 
 <div id="container">

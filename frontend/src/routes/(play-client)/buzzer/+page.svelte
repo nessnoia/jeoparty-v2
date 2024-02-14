@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
-	import { goto } from '$app/navigation';
 	import { roomStore, states, events } from '$lib/colyseus';
 	import type { Player } from '$lib/player';
 	import type { Room } from 'colyseus.js';
@@ -29,14 +28,6 @@
 	$: if (room !== undefined) {
 		updatePlayerInfo(room.state.players);
 		room.state.listen('gameState', (change: string) => {
-			if (change == states.RoundPodium) {
-				goto('/podium');
-			}
-
-			if (change == states.FinalPodium) {
-				goto('/finalpodium');
-			}
-
 			// Question has been closed, clear buzzer colours.
 			if (change == states.Buzzer) {
 				wonBuzz = false;
@@ -54,12 +45,6 @@
 				// Need this so if someone wins the buzz, when the timer runs out their screen stays green.
 				if (!wonBuzz) {
 					lostBuzz = true;
-				}
-			}
-
-			if (change == states.DailyDouble) {
-				if (room?.state.dailyDouble.playerId == sessionId) {
-					goto('/dailydouble');
 				}
 			}
 		});
