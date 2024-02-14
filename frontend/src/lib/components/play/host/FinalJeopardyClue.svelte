@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { roomStore,  states, events } from '$lib/colyseus';
+	import { roomStore, states, events } from '$lib/colyseus';
 	import type { Category, Clue } from '$lib/database-models/game-data';
 	import type { PlayerFinalJeoparty } from '$lib/player';
 	import type { Room } from 'colyseus.js';
@@ -74,25 +74,33 @@
 
 {#if displayTitle}
 	<div>
-		<p>Final Jeoparty</p>
+		<h1>Final Jeoparty</h1>
 	</div>
 {/if}
 
 {#if displayCategory}
 	<div>
-		<p>{category.category}</p>
+		<h2>{category.category}</h2>
 	</div>
 {/if}
 
 {#if displayClue}
 	<div>
-		<p>{clue.clue}</p>
+		<h2>{clue.clue}</h2>
 	</div>
 {/if}
 
 <svelte:window on:keyup={handleKeyUp} />
 
 <style>
+	h1 {
+		font-size: var(--size-1);
+	}
+
+	h2 {
+		font-size: var(--size-2);
+	}
+
 	div {
 		display: flex;
 		justify-content: center;
@@ -102,12 +110,11 @@
 		width: 100%;
 		background-color: var(--primary-500);
 		color: var(--white);
-		font-size: 4.3vw;
 		text-transform: uppercase;
-		font-weight: bold;
 	}
 
-	div p {
+	div h2,
+	div h1 {
 		text-align: center;
 	}
 </style>
