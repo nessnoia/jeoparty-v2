@@ -19,7 +19,12 @@
 <div id="container">
 	<form on:submit|preventDefault={join}>
 		<h1>Join Game</h1>
-		<input placeholder="Enter Game Code..." type="text" bind:value={gameCode} />
+		<input
+			class:error={errorMessage != ''}
+			placeholder="Enter Game Code..."
+			type="text"
+			bind:value={gameCode}
+		/>
 		<button type="submit">Join Game</button>
 	</form>
 	<span>{errorMessage}</span>
@@ -38,6 +43,7 @@
 		flex-direction: column;
 		justify-content: flex-start;
 		height: 100%;
+		width: 100%;
 		padding: 10%;
 		gap: 2%;
 	}
@@ -52,8 +58,15 @@
 		background-color: var(--white);
 	}
 
+	.error {
+		border: 4px red solid;
+	}
+
 	#container {
 		background-color: var(--black);
 		color: var(--white);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 </style>
