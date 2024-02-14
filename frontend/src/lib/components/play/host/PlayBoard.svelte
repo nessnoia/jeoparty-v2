@@ -21,7 +21,6 @@
 	/* let showCategories = round.type === 'normal'; */
 	let showCategories = false;
 	let showPlayerAnswers = false;
-	let dailyDoubleWagerSubmitted = false;
 
 	let finalJeopartyResponses: Map<string, PlayerFinalJeoparty> = new Map();
 	let dispatch = createEventDispatcher();
@@ -62,11 +61,9 @@
 				if (change.field == 'playerWager' && dailyDoubleOpen) {
 					if (change.value !== -1) {
 						lastClueValue = change.value;
-						dailyDoubleWagerSubmitted = true;
 						dailyDoubleWager = change.value;
 					} else {
 						dailyDoubleWager = undefined;
-						dailyDoubleWagerSubmitted = false;
 					}
 				}
 			}
@@ -88,7 +85,6 @@
 		numCluesPlayed++;
 		dailyDoubleOpen = false;
 		dailyDoubleWager = undefined;
-		dailyDoubleWagerSubmitted = false;
 	};
 
 	const onClueOpened = (e: CustomEvent<{ value: number }>) => {
@@ -165,7 +161,7 @@
 						{#each category.clues.sort(sortClues) as clue}
 							<PlayClue
 								{clue}
-								{dailyDoubleWagerSubmitted}
+								{dailyDoubleWager}
 								on:clueUsed={onClueUsed}
 								on:clueOpened={onClueOpened}
 								on:dailyDouble={handleDailyDouble}

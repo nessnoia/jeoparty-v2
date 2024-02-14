@@ -209,8 +209,9 @@
 					</div>
 				</div>
 				<p>
-					In a normal round, to open a clue, click on the button that corresponds to the
-					clue you'd like to open.
+					In a normal round, the top three players will be displayed on the bottom of the
+					screen. To open a clue, click on the button that corresponds to the clue you'd
+					like to open.
 				</p>
 			</div>
 
@@ -252,7 +253,7 @@
 				<p>
 					If the clue that has been opened is a daily double, the player who chose it will
 					be prompted to enter their wager on their device. Once this has been entered,
-					the buzzer winners icon will change colours, and you will be able to display the
+					the wager will appear on the screen, and you will be able to display the
 					question.
 				</p>
 				<p>

@@ -26,98 +26,9 @@
 	let startTimer = false;
 	let timerLength = roundType === 'normal' ? 5 : 30;
 
-	let players: Map<string, Player> = new Map([
-		[
-			'1',
-			{
-				character: 'elephant',
-				characterColour: 34,
-				name: 'name',
-				score: 0,
-				place: 1
-			}
-		],
-		[
-			'2',
-			{
-				character: 'otter',
-				characterColour: 10,
-				name: 'name',
-				score: 0,
-				place: 1
-			}
-		],
-		[
-			'3',
-			{
-				character: 'penguin',
-				characterColour: 39,
-				name: 'name',
-				score: 0,
-				place: 1
-			}
-		]
-		// '4': {
-		// 	character: 'elephantDoctor',
-		// 	colour: '48',
-		// 	name: 'name'
-		// }
-		// '5': {
-		// 	character: 'kangaroo',
-		// 	colour: '127',
-		// 	name: 'name'
-		// },
-		// '6': {
-		// 	character: 'moose',
-		// 	colour: '225',
-		// 	name: 'name'
-		// },
-		// '7': {
-		// 	character: 'elephantHockey',
-		// 	colour: '0',
-		// 	name: 'name'
-		// },
-		// '8': {
-		// 	character: 'otterPhotographer',
-		// 	colour: '15',
-		// 	name: 'name'
-		// },
-		// '9': {
-		// 	character: 'penguinBaseball',
-		// 	colour: '45',
-		// 	name: 'name'
-		// },
-		// '10': {
-		// 	character: 'elephantGardener',
-		// 	colour: '37',
-		// 	name: 'name'
-		// },
-		// '11': {
-		// 	character: 'kangarooBaseball',
-		// 	colour: '110',
-		// 	name: 'name'
-		// }
-		// '12': {
-		// 	character: 'mooseHockey',
-		// 	colour: '255',
-		// 	name: 'name'
-		// },
-		// '13': {
-		// 	character: 'elephantGhost',
-		// 	colour: '37',
-		// 	name: 'name'
-		// },
-		// '14': {
-		// 	character: 'kangarooGhost',
-		// 	colour: '100',
-		// 	name: 'name'
-		// },
-		// '15': {
-		// 	character: 'mooseArtist',
-		// 	colour: '125',
-		// 	name: 'name'
-		// }
-	]);
+	// Need to define this to prevent errors on page refresh.
+	let players: Map<string, Player> = new Map();
+
 	$: room = $roomStore as Room | undefined;
 
 	$: if (buzzersActive) {
@@ -172,12 +83,6 @@
 				buzzerWinner={players.get(buzzerWinnerId)}
 			/>
 		</div>
-	{/if}
-	{#if dailyDoubleOpen}
-		<span>Wager: </span>
-		{#if dailyDoubleWager !== undefined}
-			<span>${dailyDoubleWager}</span>
-		{/if}
 	{/if}
 </div>
 

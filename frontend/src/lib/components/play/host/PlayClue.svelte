@@ -3,7 +3,7 @@
 	import { createEventDispatcher } from 'svelte';
 
 	export let clue: Clue;
-	export let dailyDoubleWagerSubmitted: boolean;
+	export let dailyDoubleWager: number | undefined;
 
 	const dispatch = createEventDispatcher();
 
@@ -28,11 +28,11 @@
 
 	const onKeyUp = (e: KeyboardEvent) => {
 		const key = e.key;
-		if (displayDailyDouble && dailyDoubleWagerSubmitted) {
+		if (displayDailyDouble) {
 			if (key === 'Esc' || key === 'Escape') {
 				displayDailyDouble = false;
 				clueOpened = false;
-			} else if (key === 'ArrowRight' || key === 'd') {
+			} else if ((key === 'ArrowRight' || key === 'd') && dailyDoubleWager !== undefined) {
 				displayDailyDouble = false;
 				displayClue = true;
 			}
@@ -77,19 +77,22 @@
 		<div class="clue-showing">
 			{#if displayDailyDouble}
 				<div>
-					<p>Daily Double</p>
+					<h1>Daily Double</h1>
+					{#if dailyDoubleWager !== undefined}
+						<h2>Wager: ${dailyDoubleWager}</h2>
+					{/if}
 				</div>
 			{/if}
 
 			{#if displayClue}
 				<div>
-					<p>{clue.clue}</p>
+					<h2>{clue.clue}</h2>
 				</div>
 			{/if}
 
 			{#if displayAnswer}
 				<div>
-					<p>{clue.answer}</p>
+					<h2>{clue.answer}</h2>
 				</div>
 			{/if}
 		</div>
@@ -99,6 +102,14 @@
 <svelte:window on:keyup|preventDefault={onKeyUp} />
 
 <style>
+	h1 {
+		font-size: var(--size-1);
+	}
+
+	h2 {
+		font-size: var(--size-2);
+	}
+
 	.clue-button,
 	.used-clue {
 		width: 100%;
@@ -148,7 +159,8 @@
 		padding: 2%;
 	}
 
-	.clue-showing p {
+	div h2,
+	div h1 {
 		text-align: center;
 	}
 </style>
