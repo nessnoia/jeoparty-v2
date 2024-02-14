@@ -8,7 +8,7 @@
 	let wager: number;
 	let sessionId = '';
 
-	let form: HTMLFormElement;
+	let answer: string;
 
 	$: room = $roomStore as Room | undefined;
 
@@ -22,7 +22,8 @@
 
 		room.state.listen('gameState', (change: any) => {
 			if (change == states.TimesUp) {
-				form.requestSubmit();
+				// Doing this manually because form.requestSubmit() was causing me problems.
+				/* room?.send(events.FinalJeopartyAnswer, { answer: answer }); */
 				goto('/finaljeopartywait');
 			}
 		});
@@ -40,11 +41,11 @@
 </script>
 
 <div id="container">
-	<form bind:this={form} on:submit|preventDefault={submitAnswer}>
+	<form on:submit|preventDefault={submitAnswer}>
 		<h1>Answer</h1>
 		<span>Your score: ${score ?? ''}</span>
 		<span>Your wager: ${wager ?? ''}</span>
-		<input name="answer" placeholder="Enter answer" type="text" required />
+		<input name="answer" placeholder="Enter answer" type="text" bind:value={answer} required />
 		<button type="submit">Submit Answer</button>
 	</form>
 </div>

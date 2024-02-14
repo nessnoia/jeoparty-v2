@@ -12,8 +12,10 @@
 
 	$: if (room !== undefined) {
 		let player = room.state.players.get(sessionId);
-		if (player !== undefined) {
+		if (player !== undefined && player.score > 0) {
 			score = player.score;
+		} else {
+			goto('/finalpodium');
 		}
 	}
 

@@ -14,6 +14,7 @@
 	let displayTitle = true;
 	let displayCategory = false;
 	let displayClue = false;
+	let numPlayers: number | undefined;
 
 	$: room = $roomStore as Room | undefined;
 
@@ -28,10 +29,7 @@
 			}
 		});
 
-		let numPlayers = room?.state.players.size;
-		if (displayCategory && numPlayers === responses.size) {
-			showClue();
-		}
+		numPlayers = room?.state.players.size;
 	}
 
 	const handleKeyUp = (e: KeyboardEvent) => {
@@ -47,13 +45,6 @@
 		if (displayCategory) {
 			if (key === 'ArrowRight' || key === 'd') {
 				showClue();
-			}
-			return;
-		}
-
-		if (displayClue) {
-			if (key === 'ArrowRight' || key === 'd') {
-				dispatch('showPlayerAnswers');
 			}
 			return;
 		}
@@ -81,6 +72,7 @@
 {#if displayCategory}
 	<div>
 		<h2>{category.category}</h2>
+		<h3>Wagers Submitted: {responses.size} / {numPlayers}</h3>
 	</div>
 {/if}
 
@@ -101,6 +93,10 @@
 		font-size: var(--size-2);
 	}
 
+	h3 {
+		font-size: var(--size-3);
+	}
+
 	div {
 		display: flex;
 		justify-content: center;
@@ -113,8 +109,9 @@
 		text-transform: uppercase;
 	}
 
+	div h1,
 	div h2,
-	div h1 {
+	div h3 {
 		text-align: center;
 	}
 </style>

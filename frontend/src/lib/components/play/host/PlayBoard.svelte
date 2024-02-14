@@ -69,13 +69,14 @@
 			}
 		};
 
-		room.state.finalJeoparty.onChange = () => {
-			finalJeopartyResponses = new Map(room?.state.finalJeoparty);
-			for (let [key, response] of finalJeopartyResponses) {
+		room.onStateChange((state) => {
+			(state as any).finalJeoparty.onAdd = (playerFinalJeoparty: any, key: any) => {
+				finalJeopartyResponses.set(key, playerFinalJeoparty);
 				let player = room?.state.players.get(key);
-				response.name = player.name;
-			}
-		};
+				finalJeopartyResponses.get(key)!.name = player.name;
+				finalJeopartyResponses = finalJeopartyResponses;
+			};
+		});
 	}
 
 	const onClueUsed = () => {
@@ -108,9 +109,10 @@
 	};
 
 	const onAllAnswersShown = (clueAnswer: string) => {
-		let clueAnswerBareBones = clueAnswer.toLowerCase().replace(/\s/g, '');
+		// Regex here means to only allow word characters through
+		let clueAnswerBareBones = clueAnswer.toLowerCase().replace(/[^\w]/gi, '');
 		for (let [id, response] of finalJeopartyResponses) {
-			let playerAnswerBareBones = response.answer.toLowerCase().replace(/\s/g, '');
+			let playerAnswerBareBones = response.answer.toLowerCase().replace(/[^\w]/gi, '');
 			let playerScoreUpdateValue = 0;
 			if (clueAnswerBareBones === playerAnswerBareBones) {
 				playerScoreUpdateValue = response.wager;
@@ -178,7 +180,7 @@
 					{#if showPlayerAnswers}
 						<FinalJeopartyResponses
 							{clue}
-							responses={Array.from(finalJeopartyResponses.values())}
+							responses={finalJeopartyResponses}
 							on:allAnswersShown={() => onAllAnswersShown(clue.answer)}
 						/>
 					{:else}

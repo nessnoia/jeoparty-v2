@@ -4,7 +4,7 @@
 	import { createEventDispatcher } from 'svelte';
 
 	export let clue: Clue;
-	export let responses: Array<PlayerFinalJeoparty>;
+	export let responses: Map<string, PlayerFinalJeoparty>;
 
 	const numResponsesPerPage = 15;
 
@@ -19,10 +19,10 @@
 				showAnswer = true;
 				return;
 			}
-			if (responses.length > page * numResponsesPerPage) page++;
+			if (responses.size > page * numResponsesPerPage) page++;
 			else dispatch('allAnswersShown');
 		} else if (key === 'ArrowLeft' || key === 'a') {
-			if (responses.length < page * numResponsesPerPage) page--;
+			if (responses.size < page * numResponsesPerPage) page--;
 		}
 	};
 </script>
@@ -30,13 +30,13 @@
 <div id="responses-container">
 	<h1>Final Jeoparty Responses</h1>
 	<div class="grid">
-		{#each responses as response, i}
+		{#each [...responses.values()] as response, i}
 			<!-- Show only numResponsesPerPage at a time -->
 			{#if i >= numResponsesPerPage * (page - 1) && i < numResponsesPerPage * page}
 				<div class="response">
 					<p class="name">{response.name}</p>
 					<p class="answer">{response.answer}</p>
-					<p class="wager">{response.wager}</p>
+					<p class="wager">$ {response.wager}</p>
 				</div>
 			{/if}
 		{/each}
@@ -101,9 +101,10 @@
 
 	.answer {
 		font-size: var(--size-5);
+		font-weight: bold;
 	}
 
 	.wager {
-		font-size: var(--size-6);
+		font-size: var(--size-7);
 	}
 </style>
