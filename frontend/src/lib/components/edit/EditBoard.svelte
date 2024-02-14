@@ -375,13 +375,19 @@
 					{/if}
 				</div>
 			{:else if round.type == 'final'}
-				<!-- Should only ever be on of each, but need to loop because of the possibly undefined arrays -->
-				{#each round.categories || [] as category}
-					<EditCategory {category} />
-					{#each category.clues || [] as clue}
-						<EditClue {clue} roundType={round.type} boardType={gameInfo.boardType} />
+				<div class="final-jeoparty">
+					<!-- Should only ever be one of each, but need to loop because of the possibly undefined arrays -->
+					{#each round.categories || [] as category}
+						<EditCategory {category} />
+						{#each category.clues || [] as clue}
+							<EditClue
+								{clue}
+								roundType={round.type}
+								boardType={gameInfo.boardType}
+							/>
+						{/each}
 					{/each}
-				{/each}
+				</div>
 			{/if}
 		{/if}
 	{/each}
@@ -534,5 +540,10 @@
 		border-bottom: 1px solid var(--grey-300);
 		padding: 13% 0;
 		margin: 4px;
+	}
+
+	.final-jeoparty {
+		padding: 4% 0;
+		width: 40%;
 	}
 </style>

@@ -123,7 +123,7 @@
 		flex-direction: column;
 		gap: 15px;
 		justify-content: space-evenly;
-		padding: 10% 0;
+		padding: max(20px, 2.5vh) 0;
 	}
 
 	button {
@@ -135,7 +135,9 @@
 		cursor: pointer;
 	}
 
-	[contenteditable] {
+	[contenteditable],
+	input[type='number'] {
+		width: 100%;
 		border: 1px solid var(--black);
 		border-radius: 5px;
 		padding: 0.4em;
