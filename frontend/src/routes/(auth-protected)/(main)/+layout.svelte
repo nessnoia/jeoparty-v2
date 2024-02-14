@@ -3,4 +3,12 @@
 </script>
 
 <NavBar />
-<slot />
+<div id="page-content">
+	<slot />
+</div>
+
+<style>
+	#page-content {
+		padding-top: 8vh;
+	}
+</style>

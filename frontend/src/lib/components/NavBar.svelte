@@ -36,13 +36,14 @@
 	}
 
 	nav {
-		height: 8%;
+		height: 8vh;
 		width: 100%;
 		padding: 5px var(--gutter-size-nav);
 		min-width: var(--min-width);
 		background-color: var(--primary-600);
 		display: flex;
 		align-items: center;
+		position: fixed;
 	}
 
 	ul {
