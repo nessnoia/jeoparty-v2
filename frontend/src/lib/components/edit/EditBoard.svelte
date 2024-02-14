@@ -433,7 +433,8 @@
 	/* } */
 
 	hr {
-		border: 2px solid var(--secondary-500);
+		border: 2px solid var(--grey-500);
+		height: 100%;
 	}
 
 	.rounds {
@@ -441,23 +442,30 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
+		align-items: center;
 		gap: 0.4em;
 	}
 
 	.rounds button {
-		background-color: transparent;
+		background-color: var(--grey-100);
 		color: var(--black);
 		font-weight: normal;
 		padding: 0.8em;
 		width: 100%;
+		height: 100%;
 	}
 
 	.rounds button:hover {
 		cursor: pointer;
+		background-color: var(--secondary-300);
 	}
 
 	.rounds button.active {
 		color: var(--black);
+		background-color: var(--secondary-400);
+	}
+
+	.rounds button.active:hover {
 		background-color: var(--secondary-400);
 	}
 
@@ -498,8 +506,7 @@
 	button.add-round,
 	button.add-category,
 	button.add-clue {
-		background-color: var(--secondary-200);
-		padding: 0;
+		background-color: var(--grey-100);
 	}
 
 	button.add-round:hover,
@@ -516,21 +523,16 @@
 	}
 
 	.add-category {
-		border: none;
-		outline: none;
-		border-left: 1px solid var(--secondary-600);
-		border-right: 1px solid var(--secondary-600);
-		border-top: none;
-		border-bottom: none;
-		width: 100%;
-		margin-top: 2.5em;
+		border-left: 1px solid var(--grey-300);
+		border-right: 1px solid var(--grey-300);
+		width: 60%;
+		margin: 4px;
 	}
 
 	button.add-clue {
-		border-top: 1px solid var(--secondary-600);
-		border-bottom: 1px solid var(--secondary-600);
-		border-left: none;
-		border-right: none;
-		padding: 10% 0;
+		border-top: 1px solid var(--grey-300);
+		border-bottom: 1px solid var(--grey-300);
+		padding: 13% 0;
+		margin: 4px;
 	}
 </style>

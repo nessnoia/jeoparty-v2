@@ -43,11 +43,24 @@
 				<div id="buttons">
 					<div class:active={type === 'normal'} class="radio-option">
 						<label for="normal">Normal</label>
-						<input name="type" type="radio" id="normal" value="normal" bind:group={type} checked />
+						<input
+							name="type"
+							type="radio"
+							id="normal"
+							value="normal"
+							bind:group={type}
+							checked
+						/>
 					</div>
 					<div class:active={type === 'final'} class="radio-option">
 						<label for="final">Final Jeoparty</label>
-						<input name="type" type="radio" id="final" value="final" bind:group={type} />
+						<input
+							name="type"
+							type="radio"
+							id="final"
+							value="final"
+							bind:group={type}
+						/>
 					</div>
 				</div>
 			</div>
@@ -64,17 +77,17 @@
 	#form {
 		display: flex;
 		flex-direction: column;
-		gap: 1em;
-		min-width: 500px;
+		align-items: center;
+		gap: 30px;
+		padding: 3%;
 	}
 
 	#title {
 		display: flex;
-		flex-direction: row;
-		justify-content: center;
+		justify-content: space-between;
 		align-items: center;
-		gap: 3em;
-		margin: 0 0.5em;
+		width: 100%;
+		gap: 6%;
 	}
 
 	#title input {
@@ -83,20 +96,16 @@
 
 	#radio-buttons {
 		display: flex;
-		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
-		gap: 5.8em;
+		gap: 16%;
 		width: 100%;
-		margin-left: 0.5em;
 	}
 
 	#buttons {
 		flex-grow: 1;
 		display: flex;
-		flex-direction: row;
 		gap: 1em;
-		margin-right: 1em;
 	}
 
 	.radio-option {
@@ -105,7 +114,7 @@
 		align-items: center;
 		justify-content: center;
 		gap: 1em;
-		padding: 0.5em 1em;
+		padding: 4%;
 		border: 1px solid var(--black);
 		border-radius: 0.2em;
 		width: 50%;
@@ -125,7 +134,7 @@
 	}
 
 	.radio-option.active {
-		border: 2.2px solid var(--black);
+		border: 3px solid var(--black);
 		border-radius: 0.2em;
 	}
 
@@ -141,19 +150,6 @@
 	}
 
 	#create {
-		padding: 0.7em 2em;
-		margin: 0.4em auto 1.5em auto;
-		width: 40%;
-		background-color: var(--black);
-		color: var(--white);
-		border: none;
-		border-radius: 0.2em;
-		font-weight: bold;
-		font-size: medium;
-		text-transform: uppercase;
-	}
-
-	#create:hover {
-		cursor: pointer;
+		width: 100%;
 	}
 </style>

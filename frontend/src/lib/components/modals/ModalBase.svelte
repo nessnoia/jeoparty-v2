@@ -66,7 +66,7 @@
 		top: 50%;
 		width: calc(100vw - 4em);
 		min-width: 500px;
-		max-width: 32em;
+		max-width: 40%;
 		max-height: calc(100vh - 4em);
 		overflow: auto;
 		transform: translate(-50%, -50%);

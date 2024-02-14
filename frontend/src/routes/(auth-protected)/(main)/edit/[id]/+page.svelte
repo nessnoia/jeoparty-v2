@@ -84,7 +84,7 @@
 	}
 
 	#container {
-		height: 92%;
+		min-height: 92vh;
 		min-width: var(--min-width);
 		padding: 3% var(--gutter-size-other);
 	}
