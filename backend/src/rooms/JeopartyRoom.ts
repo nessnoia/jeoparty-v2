@@ -91,6 +91,7 @@ export class JeopartyRoom extends Room<JeopartyRoomState> {
     });
 
     this.onMessage("finalJeopartyAnswer", (client, data) => {
+      console.log("final jeoparty", data);
       let finalJeoparty = this.state.finalJeoparty.get(client.sessionId);
       finalJeoparty.answer = data.answer;
     });
