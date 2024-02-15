@@ -57,7 +57,7 @@
 	}
 
 	#container {
-		padding: 10% var(--gutter-size-other);
+		padding: 6% 5%;
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
@@ -69,7 +69,7 @@
 	form {
 		height: min(40%, 20vw);
 		width: 60%;
-		min-width: var(--min-width);
+		padding: 5% 0;
 	}
 
 	#create-form {
@@ -78,7 +78,7 @@
 		justify-content: space-between;
 		align-items: start;
 		height: 100%;
-		gap: 10px;
+		gap: 30px;
 	}
 
 	#title {
@@ -161,5 +161,50 @@
 
 	#create:hover {
 		cursor: pointer;
+	}
+
+	@media only screen and (max-width: 750px) {
+		#container {
+			gap: 20px;
+			padding: 10%;
+		}
+
+		#title {
+			gap: 5px;
+			flex-direction: column;
+		}
+
+		#title input {
+			width: 100%;
+		}
+
+		#create-form {
+			padding: 1%;
+			gap: 15px;
+		}
+
+		#radio-buttons {
+			flex-direction: column;
+			gap: 10px;
+		}
+
+		#buttons {
+			width: 100%;
+		}
+
+		.radio-option {
+			width: 100%;
+			padding: 3% 4%;
+		}
+
+		form {
+			padding: 1%;
+			width: 90%;
+		}
+
+		#create {
+			padding: 5%;
+			margin-top: 3%;
+		}
 	}
 </style>
