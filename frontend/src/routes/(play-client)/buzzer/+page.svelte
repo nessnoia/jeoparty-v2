@@ -43,7 +43,7 @@
 
 			if (change == states.TimesUp) {
 				// Need this so if someone wins the buzz, when the timer runs out their screen stays green.
-				if (!wonBuzz) {
+				if (!wonBuzz && clueOpen) {
 					lostBuzz = true;
 				}
 			}
@@ -54,12 +54,12 @@
 		});
 
 		room.state.listen('buzzerWinner', (winId: string) => {
-			if (winId === sessionId) {
+			if (winId === sessionId && clueOpen) {
 				wonBuzz = true;
 			} else if (winId === '') {
 				wonBuzz = false;
 				lostBuzz = false;
-			} else {
+			} else if (clueOpen) {
 				lostBuzz = true;
 			}
 		});

@@ -79,6 +79,11 @@ export class JeopartyRoom extends Room<JeopartyRoomState> {
       }
     });
 
+    this.onMessage("clearBuzzerWinner", () => {
+        this.state.buzzerWinner = "";
+        this.state.buzzersActive = false;
+    })
+
     this.onMessage("updateDailyDoubleWager", (_, data) => {
       console.log("update wager", data.wager);
       this.state.dailyDouble.playerWager = data.wager;

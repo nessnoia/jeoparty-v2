@@ -22,6 +22,7 @@ export enum events {
 	ActivateBuzzers = 'activateBuzzers',
 	ActivateFJTimer = 'activateFJTimer',
 	Buzzer = 'buzzer',
+	ClearBuzzerWinner = 'clearBuzzerWinner',
 	DeactivateBuzzers = 'deactivateBuzzers',
 	DeactivateFJTimer = 'deactivateFJTimer',
 	FinalJeopartyAnswer = 'finalJeopartyAnswer',
@@ -33,11 +34,11 @@ export enum events {
 }
 
 export const attemptReconnect = async () => {
-	let roomId = sessionStorage.getItem('roomId');
-	let sessionId = sessionStorage.getItem('sessionId');
-	if (roomId !== null && sessionId !== null) {
+	let reconnectionToken = sessionStorage.getItem('reconnectionToken');
+	if (reconnectionToken !== null) {
 		const client = new Colyseus.Client(PUBLIC_COLYSEUS_URL);
-		const room = await client.reconnect(roomId, sessionId);
+		const room = await client.reconnect(reconnectionToken);
+		sessionStorage.setItem('reconnectionToken', room.reconnectionToken);
 		roomStore.set(room);
 	}
 };

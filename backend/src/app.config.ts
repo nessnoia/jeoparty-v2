@@ -1,4 +1,4 @@
-import Arena from "@colyseus/arena";
+import config from "@colyseus/tools";
 import { monitor } from "@colyseus/monitor";
 
 /**
@@ -6,7 +6,7 @@ import { monitor } from "@colyseus/monitor";
  */
 import { JeopartyRoom } from "./rooms/JeopartyRoom";
 
-export default Arena({
+export default config({
   getId: () => "Jeoparty",
 
   initializeGameServer: (gameServer) => {

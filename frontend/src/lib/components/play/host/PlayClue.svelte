@@ -32,6 +32,7 @@
 			if (key === 'Esc' || key === 'Escape') {
 				displayDailyDouble = false;
 				clueOpened = false;
+				dispatch('clueClosed');
 			} else if ((key === 'ArrowRight' || key === 'd') && dailyDoubleWager !== undefined) {
 				displayDailyDouble = false;
 				displayClue = true;
@@ -46,6 +47,7 @@
 			} else if (key === 'Esc' || key === 'Escape') {
 				displayClue = false;
 				clueOpened = false;
+				dispatch('clueClosed');
 			}
 			return;
 		}

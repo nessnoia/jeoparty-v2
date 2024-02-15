@@ -56,26 +56,24 @@
 	}
 
 	$: if (room !== undefined) {
-		room.state.dailyDouble.onChange = (changes: any) => {
-			for (let change of changes) {
-				if (change.field == 'playerWager' && dailyDoubleOpen) {
-					if (change.value !== -1) {
-						lastClueValue = change.value;
-						dailyDoubleWager = change.value;
-					} else {
-						dailyDoubleWager = undefined;
-					}
+		room.state.dailyDouble.listen('playerWager', (value: number) => {
+			if (dailyDoubleOpen) {
+				if (value !== -1) {
+					lastClueValue = value;
+					dailyDoubleWager = value;
+				} else {
+					dailyDoubleWager = undefined;
 				}
 			}
-		};
+		});
 
 		room.onStateChange((state) => {
-			(state as any).finalJeoparty.onAdd = (playerFinalJeoparty: any, key: any) => {
+			(state as any).finalJeoparty.onAdd((playerFinalJeoparty: any, key: any) => {
 				finalJeopartyResponses.set(key, playerFinalJeoparty);
 				let player = room?.state.players.get(key);
 				finalJeopartyResponses.get(key)!.name = player.name;
 				finalJeopartyResponses = finalJeopartyResponses;
-			};
+			});
 		});
 	}
 
@@ -88,12 +86,20 @@
 		dailyDoubleWager = undefined;
 	};
 
+	const onClueClosed = () => {
+		room?.send(events.UpdateGameState, {
+			state: states.Buzzer
+		});
+		dailyDoubleOpen = false;
+		dailyDoubleWager = undefined;
+	};
+
 	const onClueOpened = (e: CustomEvent<{ value: number }>) => {
 		room?.send(events.UpdateGameState, {
 			state: states.ClueOpen
 		});
 		lastClueValue = e.detail.value;
-		buzzerWinnerId = '';
+		room?.send(events.ClearBuzzerWinner);
 	};
 
 	const handleDailyDouble = () => {
@@ -166,6 +172,7 @@
 								{dailyDoubleWager}
 								on:clueUsed={onClueUsed}
 								on:clueOpened={onClueOpened}
+								on:clueClosed={onClueClosed}
 								on:dailyDouble={handleDailyDouble}
 							/>
 						{/each}

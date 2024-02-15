@@ -19,16 +19,16 @@
 		let client = new Colyseus.Client(PUBLIC_COLYSEUS_URL);
 		client.create('jeoparty', { gameCode }).then((room) => {
 			roomStore.set(room);
-			sessionStorage.setItem('roomId', room.id);
+			sessionStorage.setItem('reconnectionToken', room.reconnectionToken);
 			sessionStorage.setItem('sessionId', room.sessionId);
 			room.onStateChange((state) => {
-				(state as any).players.onAdd = (player: any, key: any) => {
+				(state as any).players.onAdd((player: any, key: any) => {
 					playerList[key] = player;
-				};
-				(state as any).players.onRemove = (_: any, key: any) => {
+				});
+				(state as any).players.onRemove((_: any, key: any) => {
 					delete playerList[key];
 					playerList = playerList;
-				};
+				});
 			});
 			// For some reason it seems to default to the last game state, so this is to make sure it starts fresh.
 			room.send(events.UpdateGameState, { state: states.Join });
@@ -71,7 +71,7 @@
 	{/if}
 </div>
 <div id="button-centre">
-	{#if Object.keys(playerList).length >= 3}
+	{#if Object.keys(playerList).length >= 0}
 		<button id="start" on:click={startGame}>Start Game</button>
 	{/if}
 </div>
