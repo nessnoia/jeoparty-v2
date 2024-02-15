@@ -446,9 +446,10 @@
 
 	.rounds {
 		width: 100%;
+		max-width: 1400px;
 		display: flex;
 		flex-direction: row;
-		justify-content: space-between;
+		justify-content: center;
 		align-items: center;
 		gap: 0.4em;
 	}
@@ -460,6 +461,7 @@
 		padding: 0.8em;
 		width: 100%;
 		height: 100%;
+		max-width: 700px;
 	}
 
 	.rounds button:hover {
@@ -499,7 +501,6 @@
 		flex-direction: row;
 		gap: 1.5em;
 		justify-content: space-between;
-		min-width: var(--min-width);
 	}
 
 	.clue-column {
@@ -547,5 +548,23 @@
 	.final-jeoparty {
 		padding: 4% 0;
 		width: 40%;
+	}
+
+	@media only screen and (max-width: 800px) {
+		.categories {
+			flex-direction: column;
+			width: 60vw;
+			margin: 3% 0;
+			align-items: center;
+		}
+
+		.add-category {
+			width: 100%;
+		}
+
+		.final-jeoparty {
+			padding-top: 10%;
+			width: 70%;
+		}
 	}
 </style>

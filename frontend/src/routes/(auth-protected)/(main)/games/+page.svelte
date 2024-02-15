@@ -15,14 +15,16 @@
 </script>
 
 <div id="container">
-	<div id="game-add-controls">
+	<div id="header-and-controls">
 		<h1>Your Games</h1>
 
-		<GameDelete bind:games />
-		<!--	<button on:click={goToCreatePage}
+		<div id="game-add-controls">
+			<GameDelete bind:games />
+			<!--	<button on:click={goToCreatePage}
 			><img src="/icons/circle-plus.svg" alt="add game" /></button
 		>-->
-		<button on:click={goToCreatePage} alt="create game">Create Game</button>
+			<button on:click={goToCreatePage} alt="create game">Create Game</button>
+		</div>
 	</div>
 
 	<!-- <input id="search" type="text" placeholder="Search for games" /> -->
@@ -40,7 +42,6 @@
 
 <style>
 	#container {
-		min-width: var(--min-width);
 		padding: 100px var(--gutter-size-other) 0 var(--gutter-size-other);
 		display: flex;
 		flex-direction: column;
@@ -49,32 +50,38 @@
 		gap: 30px;
 	}
 
-	#game-add-controls {
+	#header-and-controls {
 		display: flex;
 		gap: 2%;
 		justify-content: center;
 		align-items: center;
 		padding: 10px 0;
+		width: 100%;
 	}
 
-	#game-add-controls h1 {
+	#header-and-controls h1 {
 		margin: 0;
 		flex-grow: 2;
 		text-align: center;
 	}
 
+	#game-add-controls {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 10%;
+	}
+
 	#game-add-controls button {
+		flex-grow: 2;
+		white-space: nowrap;
 		background-color: transparent;
 		border: 0px;
-		padding: 0.5% 2%;
+		padding: 4% 2%;
 		font-size: var(--size-9);
 		border: 3px solid var(--black);
 		color: var(--black);
 	}
-
-	/* #game-add-controls img { */
-	/* 	height: 30px; */
-	/* } */
 
 	#game-add-controls button:hover {
 		cursor: pointer;
@@ -95,4 +102,21 @@
 		outline: none;
 		border: 1px solid var(--grey-200);
 	} */
+	@media only screen and (max-width: 600px) {
+		#header-and-controls {
+			flex-direction: column;
+			gap: 20px;
+		}
+
+		#game-add-controls {
+			width: 100%;
+			gap: 80px;
+			padding: 0 7%;
+		}
+
+		#game-add-controls button {
+			float: right;
+			white-space: wrap;
+		}
+	}
 </style>

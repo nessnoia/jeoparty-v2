@@ -354,13 +354,14 @@
 	p,
 	a,
 	li {
-		font-size: var(--size-9);
+		font-size: var(--size-8);
 	}
 
 	#buttons {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		justify-items: center;
 		width: 80%;
 		gap: 5%;
 	}
@@ -418,6 +419,7 @@
 		width: 100%;
 		gap: 5%;
 	}
+
 	.center > img {
 		width: 100%;
 		height: auto;
@@ -477,5 +479,75 @@
 		min-height: 300px;
 		width: auto;
 		height: 100%;
+	}
+
+	@media only screen and (max-width: 1400px) {
+		.left,
+		.right {
+			float: none;
+		}
+
+		.text-float-right,
+		.text-float-left {
+			padding: 0;
+		}
+
+		.block {
+			padding-top: 1%;
+		}
+
+		.center {
+			flex-direction: column;
+			height: 100%;
+			gap: 20px;
+		}
+
+		.text-float {
+			height: 100%;
+		}
+
+		.left,
+		.right {
+			float: none;
+			height: 100%;
+		}
+
+		img {
+			min-height: auto;
+			height: auto;
+			width: 100%;
+			max-width: 80vw;
+			margin: 2% 0;
+		}
+
+		.header-and-img {
+			flex-direction: column;
+			height: 100%;
+		}
+	}
+
+	@media only screen and (max-width: 900px) {
+		#container {
+			gap: 5vh;
+		}
+
+		h1,
+		h2,
+		h3 {
+			padding-top: 5%;
+		}
+
+		.center {
+			gap: 10px;
+		}
+
+		.text-float-right,
+		.text-float-left {
+			padding: 0;
+		}
+
+		#buttons button {
+			padding: 4%;
+		}
 	}
 </style>

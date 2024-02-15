@@ -65,8 +65,8 @@
 		left: 50%;
 		top: 50%;
 		width: calc(100vw - 4em);
-		min-width: 500px;
 		max-width: 40%;
+		min-width: 500px;
 		max-height: calc(100vh - 4em);
 		overflow: auto;
 		transform: translate(-50%, -50%);
@@ -89,5 +89,11 @@
 
 	#close:hover {
 		cursor: pointer;
+	}
+
+	@media only screen and (max-width: 600px) {
+		.modal {
+			min-width: 80vw;
+		}
 	}
 </style>

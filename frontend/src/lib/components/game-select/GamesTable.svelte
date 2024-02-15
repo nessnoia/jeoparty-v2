@@ -44,4 +44,16 @@
 	.draggable {
 		padding: 5px;
 	}
+
+	@media only screen and (max-width: 1100px) {
+		#games {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	@media only screen and (max-width: 600px) {
+		#games {
+			grid-template-columns: repeat(1, 1fr);
+		}
+	}
 </style>

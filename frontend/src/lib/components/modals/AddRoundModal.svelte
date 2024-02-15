@@ -152,4 +152,11 @@
 	#create {
 		width: 100%;
 	}
+
+	@media only screen and (max-width: 700px) {
+		#radio-buttons {
+			flex-direction: column;
+			gap: 20px;
+		}
+	}
 </style>
