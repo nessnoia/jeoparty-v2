@@ -19,6 +19,8 @@
 	let buzzersActive = false;
 	let clueOpen = false;
 
+	let numPlayers = 0;
+
 	if (browser) {
 		sessionId = sessionStorage.getItem('sessionId') ?? '';
 	}
@@ -66,6 +68,7 @@
 
 		room.state.listen('players', (playersChange: any) => {
 			updatePlayerInfo(playersChange);
+			numPlayers = playersChange.size;
 		});
 	}
 
@@ -118,10 +121,10 @@
 	<div id="stats">
 		{#if place !== undefined && place != -1}
 			<p>You are in {place} place.</p>
-			{#if pointsBehind !== undefined}
+			{#if pointsBehind !== undefined && place != 1}
 				<p>You are ${pointsBehind} behind {playerAhead}.</p>
 			{/if}
-			{#if pointsAhead !== undefined}
+			{#if pointsAhead !== undefined && place != numPlayers}
 				<p>You are ${pointsAhead} ahead of {playerBehind}.</p>
 			{/if}
 		{/if}
