@@ -24,7 +24,7 @@
 			if (change == states.TimesUp) {
 				// Doing this manually because form.requestSubmit() was causing me problems.
 				/* room?.send(events.FinalJeopartyAnswer, { answer: answer }); */
-				goto('/finaljeopartywait');
+				goto('/finaljeopartywait/answer');
 			}
 		});
 	}
@@ -36,7 +36,7 @@
 	const submitAnswer = (e: SubmitEvent) => {
 		let answer = new FormData(e.target as HTMLFormElement).get('answer');
 		room?.send(events.FinalJeopartyAnswer, { answer: answer });
-		goto('/finaljeopartywait');
+		goto('/finaljeopartywait/answer');
 	};
 </script>
 

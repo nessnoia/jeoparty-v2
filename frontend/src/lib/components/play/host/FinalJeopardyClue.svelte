@@ -29,7 +29,7 @@
 			}
 		});
 
-		numPlayers = room?.state.players.size;
+		numPlayers = [...room?.state.players.values()].filter((player) => player.score > 0).length;
 	}
 
 	const handleKeyUp = (e: KeyboardEvent) => {

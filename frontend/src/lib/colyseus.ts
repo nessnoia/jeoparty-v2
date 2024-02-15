@@ -27,6 +27,7 @@ export enum events {
 	DeactivateFJTimer = 'deactivateFJTimer',
 	FinalJeopartyAnswer = 'finalJeopartyAnswer',
 	FinalJeopartyWager = 'finalJeopartyWager',
+	SetBuzzerWinner = 'setBuzzerWinner',
 	UpdateDailyDoubleInfo = 'updateDailyDoubleInfo',
 	UpdateDailyDoubleWager = 'updateDailyDoubleWager',
 	UpdateGameState = 'updateGameState',

@@ -79,6 +79,11 @@ export class JeopartyRoom extends Room<JeopartyRoomState> {
       }
     });
 
+    this.onMessage("setBuzzerWinner", (_, data) => {
+        this.state.buzzerWinner = data.buzzerWinner;
+        this.state.buzzersActive = false;
+    })
+
     this.onMessage("clearBuzzerWinner", () => {
         this.state.buzzerWinner = "";
         this.state.buzzersActive = false;

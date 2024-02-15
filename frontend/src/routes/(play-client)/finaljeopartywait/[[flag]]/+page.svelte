@@ -3,13 +3,21 @@
 	import { roomStore, states } from '$lib/colyseus';
 	import Waiting from '$lib/components/play/Waiting.svelte';
 	import type { Room } from 'colyseus.js';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
 
 	let timerActive = false;
 	let lastGameStateChange = '';
+	let flag = data.flag;
 
-	$: if (lastGameStateChange == states.FinalJeopartyCategory) {
+	$: if (lastGameStateChange == states.FinalJeopartyCategory && flag != 'wager') {
 		goto('/finaljeopartywager');
-	} else if (lastGameStateChange == states.FinalJeopartyAnswer && timerActive) {
+	} else if (
+		lastGameStateChange == states.FinalJeopartyAnswer &&
+		timerActive &&
+		flag != 'answer'
+	) {
 		goto('/finaljeopartyanswer');
 	}
 

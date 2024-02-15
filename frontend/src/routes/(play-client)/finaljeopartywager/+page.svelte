@@ -27,7 +27,7 @@
 		room?.send(events.FinalJeopartyWager, {
 			wager: e.detail.wager
 		});
-		goto('/finaljeopartywait');
+		goto('/finaljeopartywait/wager');
 	};
 </script>
 

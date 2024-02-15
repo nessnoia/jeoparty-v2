@@ -111,7 +111,7 @@
 		room?.send(events.UpdateGameState, {
 			state: states.DailyDouble
 		});
-		buzzerWinnerId = mostRecentWinner;
+		room?.send(events.SetBuzzerWinner, { buzzerWinner: mostRecentWinner });
 	};
 
 	const onAllAnswersShown = (clueAnswer: string) => {

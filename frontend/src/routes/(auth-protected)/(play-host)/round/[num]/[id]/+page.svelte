@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { roomStore } from '$lib/colyseus';
+	import { roomStore, states } from '$lib/colyseus';
 	import BuzzersActiveLights from '$lib/components/play/host/BuzzersActiveLights.svelte';
 	import PlayBoard from '$lib/components/play/host/PlayBoard.svelte';
 	import PlayerDock from '$lib/components/play/host/PlayerDock.svelte';
@@ -22,6 +22,7 @@
 	let buzzersActive = false;
 	let dailyDoubleOpen = false;
 	let dailyDoubleWager: number | undefined;
+	let clueOpen = false;
 	let buzzerWinnerId = '';
 	let startTimer = false;
 	let timerLength = roundType === 'normal' ? 5 : 30;
@@ -39,7 +40,7 @@
 		players = new Map(room.state.players);
 		room.state.listen('buzzerWinner', (winId: string) => {
 			buzzerWinnerId = winId;
-			if (winId !== '') {
+			if (winId !== '' && !dailyDoubleOpen && clueOpen) {
 				buzzersActive = false;
 				startTimer = true;
 			}
@@ -47,6 +48,10 @@
 
 		room.state.listen('players', (playerChange: any) => {
 			players = new Map(playerChange);
+		});
+
+		room.state.listen('gameState', (state: string) => {
+			clueOpen = state === states.ClueOpen;
 		});
 	}
 
