@@ -7,6 +7,7 @@
 	import PlayerDetailed from '$lib/components/play/host/PlayerDetailed.svelte';
 	import { roomStore, states, events } from '$lib/colyseus';
 	import Waiting from '$lib/components/play/Waiting.svelte';
+	import { fade } from 'svelte/transition';
 
 	export let data: PageData;
 
@@ -40,7 +41,7 @@
 	};
 </script>
 
-<div id="container">
+<div id="container" in:fade={{ duration: 300, delay: 300 }} out:fade={{ duration: 300 }}>
 	<div id="header-info">
 		<img id="logo" src="/logo.png" alt="logo" />
 

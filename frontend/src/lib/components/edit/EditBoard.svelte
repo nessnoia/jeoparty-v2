@@ -16,6 +16,7 @@
 	import AddRoundModal from '../modals/AddRoundModal.svelte';
 	import GarbageCan from './GarbageCan.svelte';
 	import { cloneDeep } from 'lodash';
+	import { fade } from 'svelte/transition';
 
 	// TODO: Focus on last used element after form submit
 	export let gameInfo: GameInfo;
@@ -482,6 +483,7 @@
 		align-items: center;
 		gap: 1em;
 		padding-top: 3%;
+		padding-bottom: 1%;
 	}
 
 	.round-title label {

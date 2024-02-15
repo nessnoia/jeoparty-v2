@@ -2,6 +2,7 @@
 	import { unsaved } from '$lib/unsaved';
 	import { isClueUpdate, type ClueUpdater } from '$lib/update-models/game-data';
 	import { createEventDispatcher } from 'svelte';
+	import { slide } from 'svelte/transition';
 
 	export let clue: ClueUpdater;
 	export let roundType: string;
@@ -60,7 +61,7 @@
 {/if}
 
 {#if showClueEditor || roundType === 'final'}
-	<div class="clue-editor">
+	<div transition:slide={{ duration: roundType === 'final' ? 0 : 300 }} class="clue-editor">
 		{#if roundType === 'normal' && boardType === 'custom'}
 			<input
 				type="number"

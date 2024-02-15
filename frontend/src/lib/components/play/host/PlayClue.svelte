@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Clue } from '$lib/database-models/game-data';
 	import { createEventDispatcher } from 'svelte';
+	import { fly } from 'svelte/transition';
 
 	export let clue: Clue;
 	export let dailyDoubleWager: number | undefined;
@@ -75,7 +76,11 @@
 {/if}
 
 {#if clueOpened}
-	<div class="clue-flexbox">
+	<div
+		in:fly={{ x: -200, duration: 500, opacity: 1 }}
+		out:fly={{ x: 300, duration: 500, opacity: 0 }}
+		class="clue-flexbox"
+	>
 		<div class="clue-showing">
 			{#if displayDailyDouble}
 				<div>
