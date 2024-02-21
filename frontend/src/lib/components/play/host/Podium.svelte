@@ -99,7 +99,7 @@
 
 	.standing span {
 		font-size: calc(var(--size-6) * (7 - var(--standing)));
-		font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+		font-family: 'Anton';
 		color: var(--secondary-500);
 	}
 </style>

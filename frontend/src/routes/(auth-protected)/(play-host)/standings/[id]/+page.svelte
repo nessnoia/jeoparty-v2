@@ -29,7 +29,7 @@
 
 	h1 {
 		margin: 0;
-		font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+		font-family: 'Anton';
 		font-size: var(--size-1);
 		text-transform: uppercase;
 	}

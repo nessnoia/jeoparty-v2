@@ -57,6 +57,13 @@
 	--gutter-size-other: 70px;
 }
 
+@font-face {
+    font-family: 'Anton';
+    font-style: normal;
+    font-weight: 400;
+    src: url('/fonts/Anton/Anton-Regular.ttf');
+}
+
 * {
 	box-sizing: border-box;
 }

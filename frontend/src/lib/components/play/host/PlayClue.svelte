@@ -129,8 +129,8 @@
 		background-color: var(--primary-500);
 		color: var(--secondary-500);
 		font-size: var(--size-2);
-		font-weight: bold;
-		font-family: fantasy;
+		letter-spacing: 0.05em;
+		font-family: 'Anton';
 		text-shadow: 3px 3px 4px var(--black);
 	}
 
