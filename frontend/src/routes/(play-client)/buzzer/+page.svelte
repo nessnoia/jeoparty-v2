@@ -3,10 +3,12 @@
 	import type { Player } from '$lib/player';
 	import type { Room } from 'colyseus.js';
 	import type { LayoutData } from '../$types';
+	import { browser } from '$app/environment';
 
 	export let data: LayoutData;
 
 	let sessionId = data.sessionId;
+	if (browser) console.log(sessionId);
 
 	let score: number;
 	let place: number;
