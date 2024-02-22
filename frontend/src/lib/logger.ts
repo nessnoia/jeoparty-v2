@@ -12,7 +12,9 @@ export const logMessage = (async (msg: any) => {
         headers: {
             'content-type': 'application/json'
         }
-    });
+    }).catch((e) => {
+        return
+    };
     if (!response.ok) {
         console.log(new Date().toString(), msg);
     }
