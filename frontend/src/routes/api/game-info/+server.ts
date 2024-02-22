@@ -1,3 +1,4 @@
+import { logMessage } from '$lib/logger';
 import { collections } from '$lib/server/database';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
 
@@ -10,6 +11,7 @@ export const GET = (async ({}) => {
 			throw error(501, 'Failed to find game info');
 		}
 	} catch (err) {
+		logMessage({ 'errMsg': 'error while getting game infos', 'err': err })
 		throw error(502, String(err));
 	}
 }) satisfies RequestHandler;
@@ -22,9 +24,11 @@ export const POST = (async ({ request }) => {
 		if (result?.acknowledged) {
 			return json({ status: 202, id: result?.insertedId });
 		} else {
+			logMessage('failed to create new game info')
 			throw error(501, `Failed to create new game info: ${result?.insertedId}`);
 		}
 	} catch (err) {
+		logMessage({ 'errMsg': 'error while creating new game info', 'err': err })
 		throw error(502, String(err));
 	}
 }) satisfies RequestHandler;

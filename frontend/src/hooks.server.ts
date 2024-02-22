@@ -3,13 +3,14 @@ import { lucia } from '$lib/server/auth';
 import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 import { ATLAS_URI } from '$env/static/private';
+import { logMessage } from '$lib/logger';
 
 connectToDatabase(ATLAS_URI)
 	.then(() => {
-		console.log('Mongo started');
+		logMessage('Mongo started');
 	})
 	.catch((e) => {
-		console.error(e);
+		logMessage(e);
 	});
 
 export const handleAuth = (async ({ event, resolve }) => {

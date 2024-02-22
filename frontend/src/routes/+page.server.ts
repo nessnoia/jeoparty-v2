@@ -2,6 +2,7 @@ import { lucia } from '$lib/server/auth';
 import { fail, redirect } from '@sveltejs/kit';
 
 import type { Actions, PageServerLoad } from './$types';
+import { logMessage } from '$lib/logger';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	if (locals.user) throw redirect(302, '/games');
@@ -11,6 +12,7 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions: Actions = {
 	logout: async (event) => {
 		if (!event.locals.session) {
+			logMessage('failed to logout, no session exists')
 			return fail(401);
 		}
 		await lucia.invalidateSession(event.locals.session.id);

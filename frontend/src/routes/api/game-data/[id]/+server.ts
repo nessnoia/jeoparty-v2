@@ -8,6 +8,7 @@ import {
 	isRoundUpdate,
 	type GameDataUpdater
 } from '$lib/update-models/game-data';
+import { logMessage } from '$lib/logger';
 
 export const GET = (async ({ params }) => {
 	try {
@@ -20,6 +21,7 @@ export const GET = (async ({ params }) => {
 			throw error(501, `Failed to find game data by ID: ${params.id}`);
 		}
 	} catch (err) {
+		logMessage({ 'errMsg': `error while getting game data by ID: ${params.id}`, 'err': err })
 		throw error(502, String(err));
 	}
 }) satisfies RequestHandler;
@@ -36,6 +38,7 @@ export const POST = (async ({ params, request }) => {
 			throw error(501, `Failed to create a new game by ID: ${result?.insertedId}`);
 		}
 	} catch (err) {
+		logMessage({ 'errMsg': `error while creating new game data by ID: ${params.id}`, 'err': err })
 		throw error(502, String(err));
 	}
 }) satisfies RequestHandler;
@@ -136,7 +139,7 @@ export const PUT = (async ({ params, request }) => {
 
 		return json({ status: 202 });
 	} catch (err) {
-		console.log(err);
+		logMessage({ 'errMsg': `error while updating game data by ID: ${params.id}`, 'err': err })
 		throw error(502, String(err));
 	}
 }) satisfies RequestHandler;

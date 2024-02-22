@@ -3,7 +3,6 @@
 	import GamesTable from '$lib/components/game-select/GamesTable.svelte';
 	import GameDelete from '$lib/components/game-select/GameDelete.svelte';
 	import type { PageData } from './$types';
-	import { enhance } from '$app/forms';
 
 	export let data: PageData;
 

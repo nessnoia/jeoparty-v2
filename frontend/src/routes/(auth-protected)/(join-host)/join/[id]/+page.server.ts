@@ -1,3 +1,4 @@
+import { logMessage } from '$lib/logger';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params, fetch }) => {
@@ -8,5 +9,9 @@ export const load: PageServerLoad = async ({ params, fetch }) => {
 			code: await codeRes.json(),
 			gameId: params.id
 		};
+	}
+	return {
+		code: { code: '' },
+		gameId: params.id
 	}
 };

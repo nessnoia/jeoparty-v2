@@ -11,4 +11,9 @@ export const load: PageServerLoad = async ({ params, fetch }) => {
 			gameId: params.id
 		};
 	}
+	return {
+		gameData: {},
+		roundNum: -1,
+		gameId: ''
+	}
 };

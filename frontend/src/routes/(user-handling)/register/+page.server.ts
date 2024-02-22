@@ -4,6 +4,7 @@ import { generateId } from 'lucia';
 import { Argon2id } from 'oslo/password';
 
 import type { Actions, PageServerLoad } from './$types';
+import { logMessage } from '$lib/logger';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	if (locals.user) throw redirect(302, '/games');
@@ -71,7 +72,8 @@ export const actions: Actions = {
 				path: '.',
 				...sessionCookie.attributes
 			});
-		} catch {
+		} catch (err) {
+			logMessage({ 'errMsg': 'error while registering user', 'err': err })
 			return fail(500, {
 				message: 'Unknown error occurred'
 			});

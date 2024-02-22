@@ -16,7 +16,7 @@
 		for (let [id, playerObj] of room.state.players) {
 			if (sessionId === id) {
 				player = playerObj;
-				console.log(player);
+
 				break;
 			}
 		}

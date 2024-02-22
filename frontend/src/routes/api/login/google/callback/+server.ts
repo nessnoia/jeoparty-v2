@@ -3,6 +3,7 @@ import { OAuth2RequestError } from 'arctic';
 import { generateId } from 'lucia';
 
 import type { RequestEvent } from '@sveltejs/kit';
+import { logMessage } from '$lib/logger';
 
 export const GET = async (event: RequestEvent) => {
 	const code = event.url.searchParams.get('code');
@@ -55,14 +56,15 @@ export const GET = async (event: RequestEvent) => {
 				Location: '/'
 			}
 		});
-	} catch (e) {
+	} catch (err) {
 		// the specific error message depends on the provider
-		if (e instanceof OAuth2RequestError) {
+		if (err instanceof OAuth2RequestError) {
 			// invalid code
 			return new Response(null, {
 				status: 400
 			});
 		}
+		logMessage({ 'errMsg': 'error while logging in via google', 'err': err })
 		return new Response(null, {
 			status: 500
 		});

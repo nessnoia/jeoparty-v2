@@ -1,5 +1,7 @@
+import { logMessage } from '$lib/logger';
 import { collections } from '$lib/server/database';
 import { error, json, type RequestHandler } from '@sveltejs/kit';
+import { log } from 'console';
 
 export const GET = (async () => {
 	try {
@@ -20,9 +22,11 @@ export const GET = (async () => {
 		if (res) {
 			return json({ status: 202, code: code });
 		} else {
+			logMessage(`failed to create new game instance: ${code}`)
 			throw error(501, `Failed to create new game instance: ${code}`);
 		}
 	} catch (err) {
+		logMessage({ 'errMsg': 'error while creating game instance', 'err': err })
 		throw error(502, String(err));
 	}
 }) satisfies RequestHandler;
@@ -35,9 +39,11 @@ export const DELETE = (async ({ request }) => {
 		if (res) {
 			return json({ status: 202 });
 		} else {
+			logMessage(`failed to delete game instance: ${data._id}`)
 			throw error(501, `Failed to delete game instance: ${data._id}`);
 		}
 	} catch (err) {
+		logMessage({ 'errMsg': 'error while deleting game instance', 'err': err })
 		throw error(502, String(err));
 	}
 }) satisfies RequestHandler;

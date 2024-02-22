@@ -3,6 +3,7 @@ import type { GameInfo } from '$lib/database-models/game-info';
 import { error, redirect } from '@sveltejs/kit';
 import { generateCustomGameData, generateNormalGameData } from '$lib/defaults/game-data';
 import { isString } from '$lib/util';
+import { logMessage } from '$lib/logger';
 
 export const actions = {
 	default: async ({ fetch, request, locals }) => {
@@ -24,12 +25,12 @@ export const actions = {
 						method: 'POST',
 						body: JSON.stringify(gameData)
 					});
-				});
+				})
 
 			if (promise.ok) {
 				throw redirect(303, '/edit/' + gameId);
 			} else {
-				throw error(promise.status, promise.statusText);
+				throw error(promise?.status || 500, promise?.statusText);
 			}
 		}
 	}
