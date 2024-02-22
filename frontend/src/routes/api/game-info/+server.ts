@@ -24,7 +24,6 @@ export const POST = (async ({ request }) => {
 		if (result?.acknowledged) {
 			return json({ status: 202, id: result?.insertedId });
 		} else {
-			logMessage('failed to create new game info')
 			throw error(501, `Failed to create new game info: ${result?.insertedId}`);
 		}
 	} catch (err) {

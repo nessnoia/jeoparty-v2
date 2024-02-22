@@ -1,13 +1,15 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import { roomStore } from '$lib/colyseus';
 	import Waiting from '$lib/components/play/Waiting.svelte';
 	import type { Player } from '$lib/player';
 	import type { Room } from 'colyseus.js';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
+
+	let sessionId = data.sessionId;
 
 	let playerList: Player[] = [];
-	let sessionId = '';
-
 	let score: number;
 	let place: number;
 
@@ -58,10 +60,6 @@
 			}
 		}
 	};
-
-	if (browser) {
-		sessionId = sessionStorage.getItem('sessionId') ?? '';
-	}
 </script>
 
 <div id="container">

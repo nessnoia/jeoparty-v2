@@ -1,12 +1,14 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import { roomStore } from '$lib/colyseus';
 	import type { Player } from '$lib/player';
 	import type { Room } from 'colyseus.js';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
+
+	let sessionId = data.sessionId;
 
 	let player: Player;
-	let sessionId = '';
-
 	let numPlayers = 0;
 
 	$: room = $roomStore as Room | undefined;
@@ -16,14 +18,9 @@
 		for (let [id, playerObj] of room.state.players) {
 			if (sessionId === id) {
 				player = playerObj;
-
 				break;
 			}
 		}
-	}
-
-	if (browser) {
-		sessionId = sessionStorage.getItem('sessionId') ?? '';
 	}
 </script>
 

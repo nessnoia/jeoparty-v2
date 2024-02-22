@@ -1,14 +1,17 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import { goto } from '$app/navigation';
 	import { roomStore, events } from '$lib/colyseus';
 	import WagerSubmittal from '$lib/components/play/client/WagerSubmittal.svelte';
 	import type { Room } from 'colyseus.js';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
+
+	let sessionId = data.sessionId;
 
 	let score: number;
 	let maxWager: number;
 
-	let sessionId = '';
 	$: room = $roomStore as Room | undefined;
 
 	$: if (room !== undefined) {
@@ -18,10 +21,6 @@
 			maxWager =
 				score > room.state.dailyDouble.clueValue ? score : room.state.dailyDouble.clueValue;
 		}
-	}
-
-	if (browser) {
-		sessionId = sessionStorage.getItem('sessionId') ?? '';
 	}
 
 	const submitDailyDouble = (e: CustomEvent<{ wager: number }>) => {

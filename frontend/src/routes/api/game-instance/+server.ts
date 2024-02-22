@@ -39,7 +39,6 @@ export const DELETE = (async ({ request }) => {
 		if (res) {
 			return json({ status: 202 });
 		} else {
-			logMessage(`failed to delete game instance: ${data._id}`)
 			throw error(501, `Failed to delete game instance: ${data._id}`);
 		}
 	} catch (err) {

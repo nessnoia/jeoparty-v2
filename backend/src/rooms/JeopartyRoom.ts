@@ -146,7 +146,7 @@ export class JeopartyRoom extends Room<JeopartyRoomState> {
         this.state.players.get(client.sessionId).connected = true;
         console.log(client.sessionId, "reconnect!");
       }
-      await reconnection;
+      await reconnection
     } catch (e) {
       if (this.state.host.sessionId === client.sessionId) {
         this.state.host = undefined;

@@ -1,10 +1,12 @@
 <script lang="ts">
-	import { browser } from '$app/environment';
 	import { roomStore, states, events } from '$lib/colyseus';
 	import type { Player } from '$lib/player';
 	import type { Room } from 'colyseus.js';
+	import type { PageData } from './$types';
 
-	let sessionId = '';
+	export let data: PageData;
+
+	let sessionId = data.sessionId;
 
 	let score: number;
 	let place: number;
@@ -20,10 +22,6 @@
 	let clueOpen = false;
 
 	let numPlayers = 0;
-
-	if (browser) {
-		sessionId = sessionStorage.getItem('sessionId') ?? '';
-	}
 
 	$: room = $roomStore as Room | undefined;
 
