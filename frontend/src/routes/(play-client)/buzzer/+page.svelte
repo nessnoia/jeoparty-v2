@@ -71,7 +71,7 @@
 	}
 
 	const buzz = () => {
-		if (clueOpen) {
+		if (clueOpen && buzzersActive) {
 			room?.send(events.Buzzer);
 		}
 	};
