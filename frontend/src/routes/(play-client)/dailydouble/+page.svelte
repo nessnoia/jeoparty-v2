@@ -3,9 +3,9 @@
 	import { roomStore, events } from '$lib/colyseus';
 	import WagerSubmittal from '$lib/components/play/client/WagerSubmittal.svelte';
 	import type { Room } from 'colyseus.js';
-	import type { PageData } from './$types';
+	import type { LayoutData } from '../$types';
 
-	export let data: PageData;
+	export let data: LayoutData;
 
 	let sessionId = data.sessionId;
 

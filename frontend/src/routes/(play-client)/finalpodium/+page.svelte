@@ -2,9 +2,9 @@
 	import { roomStore } from '$lib/colyseus';
 	import type { Player } from '$lib/player';
 	import type { Room } from 'colyseus.js';
-	import type { PageData } from './$types';
+	import type { LayoutData } from '../$types';
 
-	export let data: PageData;
+	export let data: LayoutData;
 
 	let sessionId = data.sessionId;
 
