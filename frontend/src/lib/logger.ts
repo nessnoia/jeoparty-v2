@@ -15,7 +15,7 @@ export const logMessage = (async (msg: any) => {
     }).catch((e) => {
         return
     });
-    if (!response.ok) {
+    if (!response) {
         console.log(new Date().toString(), msg);
     }
 })
