@@ -55,6 +55,7 @@
 			roomStore.set(room);
 			reconnectionToken = room.reconnectionToken;
 			sessionId = room.sessionId;
+			console.log(sessionId);
 		});
 	};
 </script>
