@@ -51,6 +51,7 @@
 		align-items: center;
 		gap: 5%;
 		padding: 0 8%;
+		min-height: 100%;
 	}
 
 	h1 {

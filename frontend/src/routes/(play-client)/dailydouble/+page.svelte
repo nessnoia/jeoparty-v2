@@ -41,6 +41,7 @@
 	#container {
 		background-color: var(--black);
 		color: var(--white);
+		min-height: 100%;
 		/* font-size: var(--size-7); */
 	}
 </style>

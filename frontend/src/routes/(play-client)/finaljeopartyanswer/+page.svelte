@@ -80,5 +80,6 @@
 	#container {
 		background-color: var(--black);
 		color: var(--white);
+		min-height: 100%;
 	}
 </style>

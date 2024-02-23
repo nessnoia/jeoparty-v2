@@ -115,6 +115,7 @@
 		background-color: var(--black);
 		color: var(--white);
 		width: 100%;
+		min-height: 100%;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -259,7 +260,7 @@
 	}
 
 	#join-game {
-		padding: 2% 4%;
+		padding: 4%;
 		width: 100%;
 		border-radius: 5px;
 		border: none;

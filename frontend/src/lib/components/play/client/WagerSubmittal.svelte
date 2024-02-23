@@ -17,7 +17,7 @@
 	<span>Your score: ${score ?? ''}</span>
 	<span>Max wager: ${maxWager ?? ''}</span>
 	<div id="wager-input">
-		<label for="bet">Wager</label>
+		<label for="bet">Wager:</label>
 		<span>$</span><input
 			name="bet"
 			placeholder="Enter wager"
@@ -43,6 +43,7 @@
 		flex-direction: column;
 		justify-content: flex-start;
 		height: 100%;
+		width: 100%;
 		padding: 10%;
 		gap: 2%;
 	}
@@ -54,6 +55,7 @@
 	input {
 		border: none;
 		background-color: var(--white);
+		flex-grow: 1;
 	}
 
 	/* Chrome, Safari, Edge, Opera */

@@ -3,18 +3,17 @@
 	import type { Player } from '$lib/player';
 	import type { Room } from 'colyseus.js';
 	import type { LayoutData } from '../$types';
-	import { browser } from '$app/environment';
 
 	export let data: LayoutData;
 
 	let sessionId = data.sessionId;
 
-	let score: number;
-	let place: number;
+	let score: number = 600;
+	let place: number = 2;
 
-	let pointsBehind: number;
+	let pointsBehind: number = 400;
 	let playerAhead: string;
-	let pointsAhead: number;
+	let pointsAhead: number = 400;
 	let playerBehind: string;
 
 	let wonBuzz = false;
@@ -140,12 +139,14 @@
 
 	#container {
 		background-color: var(--primary-700);
-		padding: 5%;
+		padding: 2% 5% 7% 5%;
+		min-height: 100%;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		align-content: center;
 		justify-content: space-between;
+		touch-action: pan-x pan-y;
 	}
 
 	#score {
