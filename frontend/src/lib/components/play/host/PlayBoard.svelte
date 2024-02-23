@@ -224,7 +224,9 @@
 	}
 
 	.categories {
+		/* display: grid; */
 		display: flex;
+		/* grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); */
 		flex-direction: row;
 		align-items: stretch;
 		height: 100%;
@@ -232,9 +234,8 @@
 	}
 
 	.clues {
-		display: flex;
-		flex-direction: column;
-		align-items: stretch;
+		display: grid;
+		grid-template-rows: 16% auto;
 		width: 100%;
 		gap: 0.4em;
 	}
