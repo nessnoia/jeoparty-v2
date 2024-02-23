@@ -8,7 +8,6 @@
 	export let data: LayoutData;
 
 	let sessionId = data.sessionId;
-	if (browser) console.log(sessionId);
 
 	let score: number;
 	let place: number;

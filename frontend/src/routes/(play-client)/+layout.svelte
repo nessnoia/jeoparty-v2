@@ -3,14 +3,16 @@
 	import { goto } from '$app/navigation';
 	import { attemptReconnect, roomStore, states } from '$lib/colyseus';
 	import type { Room } from 'colyseus.js';
+	import type { LayoutData } from './$types';
 
-	let sessionId = '';
+	export let data: LayoutData;
+
+	let sessionId = data.sessionId;
 
 	if (browser) {
 		if ($roomStore === undefined) {
 			attemptReconnect();
 		}
-		sessionId = sessionStorage.getItem('sessionId') ?? '';
 	}
 
 	$: room = $roomStore as Room | undefined;
