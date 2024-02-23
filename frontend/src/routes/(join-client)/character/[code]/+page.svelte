@@ -11,14 +11,15 @@
 	import type { PageData } from './$types';
 	import { PUBLIC_COLYSEUS_URL } from '$env/static/public';
 	import { roomStore } from '$lib/colyseus';
-	import { enhance } from '$app/forms';
-	import type { SubmitFunction } from '@sveltejs/kit';
+	import { applyAction, deserialize, enhance } from '$app/forms';
+	import type { ActionResult, SubmitFunction } from '@sveltejs/kit';
+	import { invalidateAll } from '$app/navigation';
 
 	export let data: PageData;
 
 	let gameCode = data.code;
-	let sessionId: string;
-	let reconnectionToken: string;
+	// let sessionId: string;
+	// let reconnectionToken: string;
 	let randomElephantIndexes = data.indexes;
 
 	let nickname = '';
@@ -43,7 +44,7 @@
 		activityChoiceString = choice;
 	}
 
-	const join: SubmitFunction = () => {
+	const join: SubmitFunction = ({ formData }) => {
 		let client = new Colyseus.Client(PUBLIC_COLYSEUS_URL);
 		let joinObj = {
 			gameCode: gameCode,
@@ -51,11 +52,11 @@
 			character: characterChoiceString,
 			colour: colourChoice
 		};
+
 		client.join('jeoparty', joinObj).then((room) => {
 			roomStore.set(room);
-			reconnectionToken = room.reconnectionToken;
-			sessionId = room.sessionId;
-			console.log(sessionId);
+			formData.set('reconnectionToken', room.reconnectionToken);
+			formData.set('sessionId', room.sessionId);
 		});
 	};
 </script>
@@ -109,8 +110,6 @@
 	<div class="colour" />
 
 	<form method="POST" use:enhance={join}>
-		<input type="hidden" name="sessionId" bind:value={sessionId} />
-		<input type="hidden" name="reconnectionToken" bind:value={reconnectionToken} />
 		<button id="join-game" class:hidden={nickname === ''}>Join Game</button>
 	</form>
 </div>
