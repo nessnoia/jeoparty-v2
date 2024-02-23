@@ -50,8 +50,8 @@
 		};
 		client.join('jeoparty', joinObj).then((room) => {
 			roomStore.set(room);
-			document.cookie = `reconnectionToken=${room.reconnectionToken}; httpOnly=true; path="/"; secure`
-			document.cookie = `sessionId=${room.sessionId}; httpOnly=true; path="/"; secure`
+			document.cookie = `reconnectionToken=${room.reconnectionToken}; HttpOnly; path=/; Secure`
+			document.cookie = `sessionId=${room.sessionId}; HttpOnly; path=/; Secure`
 		});
 		goto('/waitingroom');
 	};
