@@ -10,7 +10,6 @@
 	import * as Colyseus from 'colyseus.js';
 	import type { PageData } from './$types';
 	import { PUBLIC_COLYSEUS_URL } from '$env/static/public';
-	import { goto } from '$app/navigation';
 	import { roomStore } from '$lib/colyseus';
 	import { enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
@@ -57,7 +56,6 @@
 			reconnectionToken = room.reconnectionToken;
 			sessionId = room.sessionId;
 		});
-		goto('/waitingroom');
 	};
 </script>
 
@@ -139,6 +137,10 @@
 		margin: 0;
 		text-transform: uppercase;
 		font-size: var(--size-6);
+	}
+
+	form {
+		width: 100%;
 	}
 
 	#nickname {

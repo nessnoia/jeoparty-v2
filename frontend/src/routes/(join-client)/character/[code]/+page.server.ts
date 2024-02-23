@@ -1,3 +1,4 @@
+import { redirect } from "@sveltejs/kit";
 import type { Actions } from "../../../$types";
 
 export const actions = {
@@ -8,5 +9,6 @@ export const actions = {
 
 		event.cookies.set('sessionId', String(sessionId), { path: '/' });
 		event.cookies.set('reconnectionToken', String(reconnectionToken), { path: '/' });
+		throw redirect(303, '/waitingroom');
 	}
 } satisfies Actions;
