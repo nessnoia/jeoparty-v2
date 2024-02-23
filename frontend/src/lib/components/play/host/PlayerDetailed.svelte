@@ -15,7 +15,9 @@
 	</div>
 	<div class="podium">
 		<p class="score">${score}</p>
-		<p class="name">{name}</p>
+		<div class="name">
+			<p>{name}</p>
+		</div>
 	</div>
 </div>
 
@@ -23,6 +25,7 @@
 	.player {
 		display: flex;
 		flex-direction: column;
+		align-items: center;
 	}
 
 	.character {
@@ -39,11 +42,13 @@
 		background-color: blue;
 		border: 1px solid var(--black);
 		padding: 0.5em;
-		border-radius: 3px;
+		width: 180px;
+		height: 200px;
 	}
 
 	p {
 		margin: 0;
+		width: 100%;
 	}
 
 	.score {
@@ -51,13 +56,27 @@
 	}
 
 	.name {
-		padding: 1.5em 1em;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		flex-grow: 1;
+		padding: 4%;
+		margin: 0;
+		width: 100%;
+		word-wrap: break-word;
+		font-family: Caveat;
+		font-weight: 600;
+	}
+	
+	.name p {
+		font-size: var(--size-4);
+		line-height: 0.8em;
 	}
 
 	.score,
 	.name {
 		border: 1px solid var(--black);
 		background-color: var(--white);
-		border-radius: 2px;
 	}
 </style>

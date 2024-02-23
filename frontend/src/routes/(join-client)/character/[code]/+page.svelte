@@ -63,6 +63,7 @@
 		id="nickname"
 		placeholder="Nickname"
 		type="text"
+		maxlength=20
 		bind:value={nickname}
 		class:error={errorName}
 	/>

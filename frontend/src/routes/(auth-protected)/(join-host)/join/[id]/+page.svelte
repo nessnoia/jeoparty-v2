@@ -109,6 +109,7 @@
 		gap: 2em;
 		position: fixed;
 		width: 100%;
+		background-color: var(--white);
 	}
 
 	#logo {

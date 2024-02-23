@@ -64,6 +64,13 @@
     src: url('/fonts/Anton/Anton-Regular.ttf');
 }
 
+@font-face {
+    font-family: 'Caveat';
+    font-style: normal;
+    font-weight: 600;
+    src: url('/fonts/Caveat/static/Caveat-SemiBold.ttf');
+}
+
 * {
 	box-sizing: border-box;
 }
