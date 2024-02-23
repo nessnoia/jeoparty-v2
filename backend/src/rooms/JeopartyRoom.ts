@@ -6,6 +6,7 @@ import { MapSchema } from "@colyseus/schema";
 
 export class JeopartyRoom extends Room<JeopartyRoomState> {
   onCreate(options: any) {
+    console.log("create")
     this.setState(new JeopartyRoomState());
 
     // what messages do we need?
@@ -113,11 +114,11 @@ export class JeopartyRoom extends Room<JeopartyRoomState> {
   }
 
   onJoin(client: Client, options: any) {
-    console.log(client.sessionId, options.name, "joined!");
     if (!this.state.hostJoined) {
       this.state.host = new Host();
       this.state.host.sessionId = client.sessionId;
       this.state.hostJoined = true;
+      console.log(client.sessionId, "host joined!");
     } else {
       const player = new Player(
         options.name,
@@ -125,6 +126,7 @@ export class JeopartyRoom extends Room<JeopartyRoomState> {
         options.colour,
       );
       this.state.players.set(client.sessionId, player);
+      console.log(client.sessionId, options.name, "joined!");
     }
   }
 
@@ -138,15 +140,14 @@ export class JeopartyRoom extends Room<JeopartyRoomState> {
       if (consented) {
         throw new Error("consented leave");
       }
-      const reconnection = this.allowReconnection(client, 20);
+      await this.allowReconnection(client, 15);
       if (this.state.host.sessionId === client.sessionId) {
         this.state.host.connected = true;
-        console.log(client.sessionId, "reconnect!");
+        
       } else {
         this.state.players.get(client.sessionId).connected = true;
-        console.log(client.sessionId, "reconnect!");
       }
-      await reconnection
+      console.log(client.sessionId, "reconnect!");
     } catch (e) {
       if (this.state.host.sessionId === client.sessionId) {
         this.state.host = undefined;

@@ -17,6 +17,7 @@ const JeopartyRoomState_1 = require("./schema/JeopartyRoomState");
 const schema_1 = require("@colyseus/schema");
 class JeopartyRoom extends colyseus_1.Room {
     onCreate(options) {
+        console.log("create");
         this.setState(new JeopartyRoomState_1.JeopartyRoomState());
         // what messages do we need?
         // game states: join, round transition, standard round, podium, final jeoparty category, final jeopardy question, final jeopardy
@@ -27,15 +28,16 @@ class JeopartyRoom extends colyseus_1.Room {
         // from client: buzzer pressed, character update (game joined), daily double wager submitted, final jeopardy info submitted
         // HOST MESSAGES
         this.onMessage("updateGameState", (_, data) => {
-            console.log("update", data.state);
+            console.log("update state", data);
             this.state.gameState = data.state;
         });
         this.onMessage("activateBuzzers", () => {
-            console.log("active");
+            console.log("buzzers activated");
             this.state.buzzersActive = true;
             this.state.buzzerWinner = "";
         });
         this.onMessage("deactivateBuzzers", () => {
+            console.log("buzzers deactivated");
             this.state.buzzersActive = false;
         });
         this.onMessage("updatePlayerScore", (_, data) => {
@@ -54,30 +56,34 @@ class JeopartyRoom extends colyseus_1.Room {
             }
         });
         this.onMessage("updateDailyDoubleInfo", (_, data) => {
+            console.log("daily double update", data);
             this.state.dailyDouble.playerId = data.playerId;
             this.state.dailyDouble.clueValue = data.clueValue;
             this.state.dailyDouble.playerWager = -1;
         });
         this.onMessage("activateFJTimer", () => {
-            console.log("active");
+            console.log("activate final jeoparty timer");
             this.state.fjTimerActive = true;
         });
         this.onMessage("deactivateFJTimer", () => {
+            console.log("deactivate final jeoparty timer");
             this.state.fjTimerActive = false;
         });
         // CLIENT MESSAGES
         this.onMessage("buzzer", (client) => {
-            console.log("buzz");
+            console.log("deactivate final jeoparty timer");
             if (this.state.buzzerWinner === "") {
                 this.state.buzzerWinner = client.sessionId;
                 this.state.buzzersActive = false;
             }
         });
         this.onMessage("setBuzzerWinner", (_, data) => {
+            console.log("set buzzer winner", data);
             this.state.buzzerWinner = data.buzzerWinner;
             this.state.buzzersActive = false;
         });
         this.onMessage("clearBuzzerWinner", () => {
+            console.log("clear buzzer winner");
             this.state.buzzerWinner = "";
             this.state.buzzersActive = false;
         });
@@ -97,15 +103,16 @@ class JeopartyRoom extends colyseus_1.Room {
         });
     }
     onJoin(client, options) {
-        console.log(client.sessionId, "joined!");
         if (!this.state.hostJoined) {
             this.state.host = new Host_1.Host();
             this.state.host.sessionId = client.sessionId;
             this.state.hostJoined = true;
+            console.log(client.sessionId, "host joined!");
         }
         else {
             const player = new Player_1.Player(options.name, options.character, options.colour);
             this.state.players.set(client.sessionId, player);
+            console.log(client.sessionId, options.name, "joined!");
         }
     }
     onLeave(client, consented) {
@@ -123,12 +130,11 @@ class JeopartyRoom extends colyseus_1.Room {
                 yield this.allowReconnection(client, 15);
                 if (this.state.host.sessionId === client.sessionId) {
                     this.state.host.connected = true;
-                    console.log(client.sessionId, "reconnect!");
                 }
                 else {
                     this.state.players.get(client.sessionId).connected = true;
-                    console.log(client.sessionId, "reconnect!");
                 }
+                console.log(client.sessionId, "reconnect!");
             }
             catch (e) {
                 if (this.state.host.sessionId === client.sessionId) {
