@@ -11,15 +11,12 @@
 	import type { PageData } from './$types';
 	import { PUBLIC_COLYSEUS_URL } from '$env/static/public';
 	import { roomStore } from '$lib/colyseus';
-	import { applyAction, deserialize, enhance } from '$app/forms';
-	import type { ActionResult, SubmitFunction } from '@sveltejs/kit';
-	import { invalidateAll } from '$app/navigation';
+	import { enhance } from '$app/forms';
+	import type { SubmitFunction } from '@sveltejs/kit';
 
 	export let data: PageData;
 
 	let gameCode = data.code;
-	// let sessionId: string;
-	// let reconnectionToken: string;
 	let randomElephantIndexes = data.indexes;
 
 	let nickname = '';
@@ -44,7 +41,7 @@
 		activityChoiceString = choice;
 	}
 
-	const join: SubmitFunction = ({ formData }) => {
+	const join: SubmitFunction = async ({ formData }) => {
 		let client = new Colyseus.Client(PUBLIC_COLYSEUS_URL);
 		let joinObj = {
 			gameCode: gameCode,
@@ -53,11 +50,10 @@
 			colour: colourChoice
 		};
 
-		client.join('jeoparty', joinObj).then((room) => {
-			roomStore.set(room);
-			formData.set('reconnectionToken', room.reconnectionToken);
-			formData.set('sessionId', room.sessionId);
-		});
+		let room: Colyseus.Room = await client.join('jeoparty', joinObj)
+		roomStore.set(room);
+		formData.set('reconnectionToken', room.reconnectionToken);
+		formData.set('sessionId', room.sessionId);
 	};
 </script>
 
