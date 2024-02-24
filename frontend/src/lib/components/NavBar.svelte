@@ -62,11 +62,12 @@
 		width: 100%;
 		display: flex;
 		flex-direction: row;
-		justify-content: space-between;
+		justify-content: flex-end;
 		align-content: center;
 		align-items: center;
 		padding: 0;
 		margin: 0;
+		gap: 10%;
 	}
 
 	li {
@@ -76,7 +77,6 @@
 
 	#logo {
 		height: 40px;
-		padding-right: 30%;
 		width: auto;
 		filter: brightness(0) invert(1);
 	}
@@ -127,6 +127,7 @@
 			top: 8vh;
 			background-color: var(--primary-500);
 			padding: 2% 5%;
+			justify-content: space-between;
 		}
 
 		li {
