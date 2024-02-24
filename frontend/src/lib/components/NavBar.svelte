@@ -16,7 +16,7 @@
 		on:click={() => goto('/games')}
 		on:keydown={() => goto('/games')}
 	/>
-	<ul class:toggle-hidden={showNavMobile}>
+	<ul class:toggle-hidden={showNavMobile} class:logged-in={loggedIn}>
 		<li class:hidden={!loggedIn} class:active={pathname === '/games'}>
 			<a href="/games">Your Games</a>
 		</li>
@@ -67,7 +67,10 @@
 		align-items: center;
 		padding: 0;
 		margin: 0;
-		gap: 10%;
+	}
+
+	ul.logged-in {
+		justify-content: space-between;
 	}
 
 	li {
@@ -79,6 +82,7 @@
 		height: 40px;
 		width: auto;
 		filter: brightness(0) invert(1);
+		padding-right: 30%;
 	}
 
 	.active {
@@ -127,6 +131,10 @@
 			top: 8vh;
 			background-color: var(--primary-500);
 			padding: 2% 5%;
+			justify-content: flex-end;
+		}
+
+		ul.logged-in {
 			justify-content: space-between;
 		}
 
