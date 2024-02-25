@@ -5,17 +5,21 @@
 	import type { Room } from 'colyseus.js';
 	import type { LayoutData } from './$types';
 
-	export let data: LayoutData;
+	// export let data: LayoutData;
 
-	let sessionId = data.sessionId;
-	let reconnectionToken = data.reconnectionToken;
+	// let sessionId = data.sessionId;
+	// let reconnectionToken = data.reconnectionToken;
+
+	let sessionId = '';
 
 	if (browser) {
 		if ($roomStore === undefined) {
-			attemptReconnect(reconnectionToken ?? null).then((newToken) => {
-				document.cookie = `reconnectionToken=${newToken}`
-			});
+			// attemptReconnect(reconnectionToken ?? null).then((newToken) => {
+			// 	document.cookie = `reconnectionToken=${newToken}`
+			// });
+			attemptReconnect();
 		}
+		sessionId = localStorage.getItem('sessionId') ?? '';
 	}
 
 	$: room = $roomStore as Room | undefined;

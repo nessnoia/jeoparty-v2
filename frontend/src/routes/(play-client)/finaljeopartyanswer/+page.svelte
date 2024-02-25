@@ -3,10 +3,15 @@
 	import { roomStore, states, events } from '$lib/colyseus';
 	import type { Room } from 'colyseus.js';
 	import type { LayoutData } from '../$types';
+	import { browser } from '$app/environment';
 
-	export let data: LayoutData;
+	// export let data: LayoutData;
 
-	let sessionId = data.sessionId;
+	// let sessionId = data.sessionId;
+	let sessionId = '';
+	if (browser) {
+		sessionId = localStorage.getItem('sessionId') ?? '';
+	}
 
 	let score: number;
 	let wager: number;

@@ -41,7 +41,8 @@
 		activityChoiceString = choice;
 	}
 
-	const join: SubmitFunction = async ({ formData }) => {
+	// const join: SubmitFunction = async ({ formData }) => {
+	const join = () => {
 		let client = new Colyseus.Client(PUBLIC_COLYSEUS_URL);
 		let joinObj = {
 			gameCode: gameCode,
@@ -50,10 +51,15 @@
 			colour: colourChoice
 		};
 
-		let room: Colyseus.Room = await client.join('jeoparty', joinObj)
-		roomStore.set(room);
-		formData.set('reconnectionToken', room.reconnectionToken);
-		formData.set('sessionId', room.sessionId);
+		// let room: Colyseus.Room = await client.join('jeoparty', joinObj)
+		client.join('jeoparty', joinObj).then((room) => {
+			roomStore.set(room);
+			localStorage.setItem('reconnectionToken', room.reconnectionToken);
+			localStorage.setItem('sessionId', room.sessionId);
+		})
+		// roomStore.set(room);
+		// formData.set('reconnectionToken', room.reconnectionToken);
+		// formData.set('sessionId', room.sessionId);
 	};
 </script>
 
@@ -106,9 +112,9 @@
 	<input id="colour-selector" type="range" min="0" max="360" bind:value={colourChoice} />
 	<div class="colour" />
 
-	<form method="POST" use:enhance={join}>
-		<button id="join-game" class:hidden={nickname === ''}>Join Game</button>
-	</form>
+	<!-- <form method="POST" use:enhance={join}> -->
+		<button id="join-game" class:hidden={nickname === ''} on:click={join}>Join Game</button>
+	<!-- </form> -->
 </div>
 
 <style>

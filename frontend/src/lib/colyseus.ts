@@ -34,12 +34,12 @@ export enum events {
 	UpdatePlayerScore = 'updatePlayerScore'
 }
 
-export const attemptReconnect = async (reconnectionToken: string | null): Promise<string> => {
+export const attemptReconnect = async () => {
+	let reconnectionToken = localStorage.getItem('reconnectionToken');
 	if (reconnectionToken !== null) {
 		const client = new Colyseus.Client(PUBLIC_COLYSEUS_URL);
 		const room = await client.reconnect(reconnectionToken);
 		roomStore.set(room);
-		return room.reconnectionToken ?? '';
+		localStorage.setItem('reconnectionToken', room.reconnectionToken);
 	}
-	return '';
 };

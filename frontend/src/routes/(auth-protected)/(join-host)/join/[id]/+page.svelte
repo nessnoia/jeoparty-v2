@@ -20,8 +20,8 @@
 		let client = new Colyseus.Client(PUBLIC_COLYSEUS_URL);
 		client.create('jeoparty', { gameCode }).then((room) => {
 			roomStore.set(room);
-			sessionStorage.setItem('reconnectionToken', room.reconnectionToken);
-			sessionStorage.setItem('sessionId', room.sessionId);
+			localStorage.setItem('reconnectionToken', room.reconnectionToken);
+			localStorage.setItem('sessionId', room.sessionId);
 			room.onStateChange((state) => {
 				(state as any).players.onAdd((player: any, key: any) => {
 					playerList[key] = player;
