@@ -13,6 +13,7 @@
 	import { roomStore } from '$lib/colyseus';
 	import { enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
+	import { goto } from '$app/navigation';
 
 	export let data: PageData;
 
@@ -57,6 +58,7 @@
 			localStorage.setItem('reconnectionToken', room.reconnectionToken);
 			localStorage.setItem('sessionId', room.sessionId);
 		})
+		goto('/waitingroom');
 		// roomStore.set(room);
 		// formData.set('reconnectionToken', room.reconnectionToken);
 		// formData.set('sessionId', room.sessionId);
