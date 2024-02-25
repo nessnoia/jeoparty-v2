@@ -9,7 +9,7 @@
 	// export let data: LayoutData;
 
 	// let sessionId = data.sessionId;
-	let sessionId = '';
+	$: sessionId = '';
 	if (browser) {
 		sessionId = localStorage.getItem('sessionId') ?? '';
 	}
