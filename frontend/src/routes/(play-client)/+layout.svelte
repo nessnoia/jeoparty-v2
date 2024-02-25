@@ -8,10 +8,13 @@
 	export let data: LayoutData;
 
 	let sessionId = data.sessionId;
+	let reconnectionToken = data.reconnectionToken;
 
 	if (browser) {
 		if ($roomStore === undefined) {
-			attemptReconnect();
+			attemptReconnect(reconnectionToken ?? null).then((newToken) => {
+				document.cookie = `reconnectionToken=${newToken}`
+			});
 		}
 	}
 

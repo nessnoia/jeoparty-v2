@@ -8,7 +8,10 @@
 
 	if (browser) {
 		if ($roomStore === undefined) {
-			attemptReconnect();
+			let token = sessionStorage.getItem('reconnectionToken');
+			attemptReconnect(token).then((newToken) => {
+				sessionStorage.setItem('reconnectionToken', newToken);
+			});
 		}
 	}
 </script>
