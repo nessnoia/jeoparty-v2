@@ -12,7 +12,7 @@
 
 	let sessionId = '';
 
-	if (browser) {
+	$: if (browser) {
 		if ($roomStore === undefined) {
 			// attemptReconnect(reconnectionToken ?? null).then((newToken) => {
 			// 	document.cookie = `reconnectionToken=${newToken}`
